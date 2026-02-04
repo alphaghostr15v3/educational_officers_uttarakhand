@@ -1,0 +1,188 @@
+:root {
+    --uk-saffron: #FF9933;
+    --uk-green: #138808;
+    --uk-white: #FFFFFF;
+    --uk-blue: #000080;
+    --gov-blue: #1a5c96;
+    --gov-dark: #2c3e50;
+    --gov-light: #f8f9fa;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: var(--gov-dark);
+}
+
+.top-bar {
+    background-color: var(--gov-blue);
+    color: white;
+    padding: 5px 0;
+    font-size: 0.85rem;
+}
+
+.uk-header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid var(--uk-saffron);
+}
+
+.navbar-brand img {
+    height: 70px;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--gov-dark) !important;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 1rem 1.2rem !important;
+    transition: all 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--uk-saffron) !important;
+    border-bottom: 3px solid var(--uk-saffron);
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.news-ticker {
+    background: var(--uk-green);
+    color: white;
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker-content {
+    display: inline-block;
+    animation: ticker 25s linear infinite;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.quick-link-card {
+    border: none;
+    border-top: 5px solid var(--gov-blue);
+    border-radius: 8px;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    background-color: var(--gov-dark);
+    color: white;
+    padding: 50px 0;
+}
+
+.footer h5 {
+    color: var(--uk-saffron);
+    border-bottom: 2px solid var(--uk-saffron);
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.notice-board {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.notice-item {
+    padding: 15px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.notice-item:last-child {
+    border-bottom: none;
+}
+
+/* Portal Forms Grid */
+.portal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.portal-grid-item {
+    background: white;
+    border-radius: 12px;
+    padding: 25px 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.portal-grid-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.portal-grid-item .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portal-grid-item .icon-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.portal-grid-item .title-en {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #1a5c96;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.portal-grid-item .title-hi {
+    font-size: 0.75rem;
+    color: #6c757d;
+    font-weight: 500;
+}
