@@ -17,6 +17,22 @@
     @stack('styles')
 </head>
 <body>
+    @auth
+        @if(in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']))
+        <div class="bg-dark text-white py-1 sticky-top" style="z-index: 1060; opacity: 0.95; border-bottom: 2px solid var(--uk-saffron);">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="small">
+                    <i class="fas fa-user-shield me-1"></i> Logged in as: <span class="fw-bold">{{ auth()->user()->name }}</span>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="{{ route('admin.frontend.index') }}" class="btn btn-warning btn-sm py-0 small fw-bold"><i class="fas fa-edit me-1"></i> Content Manager</a>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-light btn-sm py-0 small"><i class="fas fa-columns me-1"></i> Dashboard</a>
+                </div>
+            </div>
+        </div>
+        @endif
+    @endauth
+
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="container d-flex justify-content-between">
@@ -28,7 +44,7 @@
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="text-white text-decoration-none me-3"><i class="fas fa-th-large me-1"></i> Admin Panel</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-white text-decoration-none me-3"><i class="fas fa-lock me-1"></i> Admin Login</a>
+                    <a href="{{ route('admin.login') }}" class="text-white text-decoration-none me-3"><i class="fas fa-lock me-1"></i> Admin Login</a>
                 @endauth
                 <a href="#" class="text-white text-decoration-none">Hindi</a>
             </div>
@@ -55,19 +71,25 @@
                             <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Officers</a>
+                            <a class="nav-link {{ request()->routeIs('officers') ? 'active' : '' }}" href="{{ route('officers') }}">Officers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Orders</a>
+                            <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Notice Board</a>
+                            <a class="nav-link {{ request()->is('senority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Donation</a>
+                            <a class="nav-link {{ request()->is('tools*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Tools</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('donation') ? 'active' : '' }}" href="{{ route('donation') }}">Donation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -150,6 +172,18 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myCarousel = document.querySelector('#heroCarousel');
+            if(myCarousel) {
+                var carousel = new bootstrap.Carousel(myCarousel, {
+                    interval: 5000,
+                    ride: 'carousel',
+                    pause: 'hover'
+                });
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Circular;
 use App\Models\Division;
 use App\Models\District;
+use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
 class AdminCircularController extends Controller
@@ -46,8 +47,10 @@ class AdminCircularController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('circulars', 'public');
-            $validated['file_path'] = $path;
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/circulars'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $validated['uploaded_by'] = auth()->id();

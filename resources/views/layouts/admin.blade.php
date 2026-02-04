@@ -55,6 +55,9 @@
                     <a href="{{ route('admin.portal-forms.index') }}" class="nav-link {{ request()->routeIs('admin.portal-forms.*') ? 'active' : '' }}">
                         <i class="fas fa-th"></i> Home Page Grid
                     </a>
+                    <a href="{{ route('admin.hero-slides.index') }}" class="nav-link {{ request()->routeIs('admin.hero-slides.*') ? 'active' : '' }}">
+                        <i class="fas fa-images"></i> Hero Sliders
+                    </a>
                 </div>
 
                 @if(auth()->user()->role === 'state_admin')
@@ -98,7 +101,7 @@
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2 text-muted"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form action="{{ route('logout') }}" method="POST">
+                                <form action="{{ route('admin.logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger fw-bold"><i class="fas fa-sign-out-alt me-2"></i> Logout</button>
                                 </form>

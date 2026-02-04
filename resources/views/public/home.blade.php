@@ -1,17 +1,68 @@
 @extends('layouts.public')
 
 @section('content')
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <h1 class="hero-title mb-3">Welcome to Ministerial Officers Portal</h1>
-        <p class="lead mb-4 fw-bold">Department of Education, Government of Uttarakhand</p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="#" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
-            <a href="#" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+<!-- Hero Carousel -->
+<div id="heroCarousel" class="carousel slide carousel-fade hero-carousel-custom" data-bs-ride="carousel" data-bs-interval="5000">
+    @if($hero_slides->count() > 0)
+        <div class="carousel-indicators">
+            @foreach($hero_slides as $index => $slide)
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></button>
+            @endforeach
         </div>
-    </div>
-</section>
+        <div class="carousel-inner">
+            @foreach($hero_slides as $index => $slide)
+                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                    <div class="hero-split-slide">
+                        <div class="hero-split-text animate__animated animate__fadeIn">
+                            <div class="breadcrumb-slider">
+                                <a href="{{ url('/') }}">Forside</a>
+                                <span class="separator">></span>
+                                <span>International</span>
+                            </div>
+                            
+                            <h1 class="animate__animated animate__fadeInDown">{{ $slide->title }}</h1>
+                            <p class="animate__animated animate__fadeInUp">{{ $slide->subtitle }}</p>
+                            
+                            <div class="d-flex gap-3 animate__animated animate__zoomIn">
+                                @if($slide->link)
+                                    <a href="{{ $slide->link }}" class="btn btn-warning btn-lg px-4 fw-bold">Read More</a>
+                                @else
+                                    <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
+                                    <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="hero-split-image" style="background-image: url('{{ $slide->image_url }}');"></div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    @else
+        <!-- Fallback Static Hero if no slides exist -->
+        <div class="hero-split-slide">
+            <div class="hero-split-text animate__animated animate__fadeIn">
+                <div class="breadcrumb-slider">
+                    <a href="{{ url('/') }}">Home</a>
+                    <span class="separator">></span>
+                    <span>Welcome</span>
+                </div>
+                <h1 class="animate__animated animate__fadeInDown">Welcome to Ministerial Officers Portal</h1>
+                <p class="animate__animated animate__fadeInUp">Department of Education, Government of Uttarakhand</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
+                    <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                </div>
+            </div>
+            <div class="hero-split-image" style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+        </div>
+    @endif
+</div>
 
 <!-- News Ticker -->
 <div class="news-ticker">
@@ -35,10 +86,10 @@
             <h3 class="mb-4 fw-bold border-start border-4 border-warning ps-3">Important Downloads & Links</h3>
             <div class="portal-grid mb-5">
                 @forelse($portal_forms as $form)
-                <a href="{{ $form->file_path ? asset('storage/' . $form->file_path) : ($form->external_url ?? '#') }}" class="portal-grid-item" {{ $form->external_url ? 'target="_blank"' : '' }}>
+                <a href="{{ $form->file_path ? asset('uploads/portal/forms/' . $form->file_path) : ($form->external_url ?? '#') }}" class="portal-grid-item" {{ $form->external_url ? 'target="_blank"' : '' }}>
                     <div class="icon-wrapper">
                         @if($form->icon)
-                            <img src="{{ asset('storage/' . $form->icon) }}" alt="{{ $form->title }}">
+                            <img src="{{ asset('uploads/portal/icons/' . $form->icon) }}" alt="{{ $form->title }}">
                         @else
                             <i class="fas fa-file-alt fa-2x text-muted"></i>
                         @endif

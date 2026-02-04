@@ -8,18 +8,34 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/orders', [HomeController::class, 'orders'])->name('orders');
 Route::get('/seniority', [HomeController::class, 'seniority'])->name('seniority');
+Route::get('/officers', [HomeController::class, 'officers'])->name('officers');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/donation', [HomeController::class, 'donation'])->name('donation');
 Route::post('/donation', [HomeController::class, 'processDonation'])->name('donation.process');
 
+// Tools Routes
+Route::prefix('tools')->name('tools.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Public\ToolsController::class, 'index'])->name('index');
+    Route::get('/compress-pdf', [\App\Http\Controllers\Public\ToolsController::class, 'compressPdf'])->name('compress-pdf');
+    Route::get('/hindi-converter', [\App\Http\Controllers\Public\ToolsController::class, 'hindiConverter'])->name('hindi-converter');
+    Route::get('/image-resizer', [\App\Http\Controllers\Public\ToolsController::class, 'imageResizer'])->name('image-resizer');
+    Route::get('/add-page-numbers', [\App\Http\Controllers\Public\ToolsController::class, 'addPageNumbers'])->name('add-page-numbers');
+    Route::get('/word-to-pdf', [\App\Http\Controllers\Public\ToolsController::class, 'wordToPdf'])->name('word-to-pdf');
+    Route::get('/jpg-to-pdf', [\App\Http\Controllers\Public\ToolsController::class, 'jpgToPdf'])->name('jpg-to-pdf');
+});
+
 Auth::routes();
 
-// Redirect admin to login if they go to /admin or /admin/login directly
+// Redirect admin to dashboard if they go to /admin
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
 });
-Route::get('/admin/login', function () {
-    return redirect()->route('login');
+
+// Admin Authentication Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [\App\Http\Controllers\Admin\Auth\AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Admin\Auth\AdminLoginController::class, 'login'])->name('login.post');
+    Route::post('/logout', [\App\Http\Controllers\Admin\Auth\AdminLoginController::class, 'logout'])->name('logout');
 });
 
 // Admin Routes (Protected)
@@ -43,10 +59,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Donation Management
     Route::get('/donations', [\App\Http\Controllers\Admin\AdminDonationController::class, 'index'])->name('donations.index');
 
+    // Frontend Content Management (Specialized)
+    Route::get('/content-manager', [\App\Http\Controllers\Admin\FrontendAdminController::class, 'index'])->name('frontend.index');
+    Route::get('/content-manager/slider', [\App\Http\Controllers\Admin\FrontendAdminController::class, 'slider'])->name('frontend.slider');
+
     // User Management (State Admin Only)
-    Route::resource('users', \App\Http\Controllers\Admin\UserManagementController::class);
-    Route::resource('divisions', \App\Http\Controllers\Admin\DivisionController::class);
-    Route::resource('districts', \App\Http\Controllers\Admin\DistrictController::class);
+    Route::middleware(['role:state_admin'])->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserManagementController::class);
+        Route::resource('divisions', \App\Http\Controllers\Admin\DivisionController::class);
+        Route::resource('districts', \App\Http\Controllers\Admin\DistrictController::class);
+        Route::resource('hero-slides', \App\Http\Controllers\Admin\AdminHeroSlideController::class);
+    });
     
     // System Features (State Admin)
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');

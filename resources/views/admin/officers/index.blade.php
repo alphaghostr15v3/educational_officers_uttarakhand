@@ -28,7 +28,7 @@
                         <td class="ps-4 fw-bold text-primary">{{ $officer->employee_code }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ $officer->photo ? asset('storage/' . $officer->photo) : 'https://ui-avatars.com/api/?name=' . $officer->name }}" class="rounded-circle me-2" style="width: 32px; height: 32px;">
+                                <img src="{{ $officer->photo ? asset('uploads/officers/' . $officer->photo) : 'https://ui-avatars.com/api/?name=' . $officer->name }}" class="rounded-circle me-2" style="width: 32px; height: 32px;">
                                 <div>
                                     <div class="fw-bold small">{{ $officer->name }}</div>
                                     <div class="text-muted" style="font-size: 0.75rem;">{{ $officer->designation }}</div>

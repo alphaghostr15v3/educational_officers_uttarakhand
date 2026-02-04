@@ -30,7 +30,7 @@
                         <td><span class="badge bg-secondary small" style="font-size: 0.6rem;">{{ strtoupper($list->cadre) }}</span></td>
                         <td><small class="text-muted">{{ $list->uploadedBy->name }}</small></td>
                         <td class="text-end pe-4">
-                            <a href="{{ asset('storage/' . $list->file_path) }}" target="_blank" class="btn btn-light btn-sm text-danger"><i class="fas fa-file-pdf"></i></a>
+                             <a href="{{ asset('uploads/seniority/' . $list->file_path) }}" target="_blank" class="btn btn-light btn-sm text-danger"><i class="fas fa-file-pdf"></i></a>
                             <form action="{{ route('admin.seniority.destroy', $list) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-light btn-sm text-muted"><i class="fas fa-trash"></i></button>

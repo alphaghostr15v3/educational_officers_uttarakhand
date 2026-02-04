@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Officer;
 use App\Models\District;
 use App\Models\Division;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
 class AdminOfficerController extends Controller
@@ -57,7 +57,10 @@ class AdminOfficerController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('officers', 'public');
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/officers'), $filename);
+            $validated['photo'] = $filename;
         }
 
         $officer = Officer::create($validated);
@@ -102,9 +105,13 @@ class AdminOfficerController extends Controller
 
         if ($request->hasFile('photo')) {
             if ($officer->photo) {
-                Storage::disk('public')->delete($officer->photo);
+                $oldPath = public_path('uploads/officers/' . $officer->photo);
+                if (File::exists($oldPath)) File::delete($oldPath);
             }
-            $validated['photo'] = $request->file('photo')->store('officers', 'public');
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/officers'), $filename);
+            $validated['photo'] = $filename;
         }
 
         $officer->update($validated);
@@ -119,7 +126,8 @@ class AdminOfficerController extends Controller
         $this->authorizeAccess($officer);
         
         if ($officer->photo) {
-            Storage::disk('public')->delete($officer->photo);
+            $path = public_path('uploads/officers/' . $officer->photo);
+            if (File::exists($path)) File::delete($path);
         }
         
         $name = $officer->name;

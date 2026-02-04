@@ -44,7 +44,7 @@
                             </span>
                         </td>
                         <td class="text-end pe-4">
-                            <a href="{{ asset('storage/' . $order->file_path) }}" target="_blank" class="btn btn-outline-danger btn-sm me-2" title="View PDF">
+                            <a href="{{ asset('uploads/orders/' . $order->file_path) }}" target="_blank" class="btn btn-outline-danger btn-sm me-2" title="View PDF">
                                 <i class="fas fa-file-pdf"></i>
                             </a>
                             <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this order?')">

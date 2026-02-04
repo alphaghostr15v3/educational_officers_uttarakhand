@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PortalForm;
 use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminPortalFormController extends Controller
 {
@@ -33,11 +33,17 @@ class AdminPortalFormController extends Controller
         ]);
 
         if ($request->hasFile('icon')) {
-            $validated['icon'] = $request->file('icon')->store('portal/icons', 'public');
+            $file = $request->file('icon');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/portal/icons'), $filename);
+            $validated['icon'] = $filename;
         }
 
         if ($request->hasFile('file')) {
-            $validated['file_path'] = $request->file('file')->store('portal/forms', 'public');
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/portal/forms'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $form = PortalForm::create($validated);
@@ -64,13 +70,25 @@ class AdminPortalFormController extends Controller
         ]);
 
         if ($request->hasFile('icon')) {
-            if ($portalForm->icon) Storage::disk('public')->delete($portalForm->icon);
-            $validated['icon'] = $request->file('icon')->store('portal/icons', 'public');
+            if ($portalForm->icon) {
+                $path = public_path('uploads/portal/icons/' . $portalForm->icon);
+                if (File::exists($path)) File::delete($path);
+            }
+            $file = $request->file('icon');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/portal/icons'), $filename);
+            $validated['icon'] = $filename;
         }
 
         if ($request->hasFile('file')) {
-            if ($portalForm->file_path) Storage::disk('public')->delete($portalForm->file_path);
-            $validated['file_path'] = $request->file('file')->store('portal/forms', 'public');
+            if ($portalForm->file_path) {
+                $path = public_path('uploads/portal/forms/' . $portalForm->file_path);
+                if (File::exists($path)) File::delete($path);
+            }
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/portal/forms'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $portalForm->update($validated);
@@ -82,8 +100,14 @@ class AdminPortalFormController extends Controller
 
     public function destroy(PortalForm $portalForm)
     {
-        if ($portalForm->icon) Storage::disk('public')->delete($portalForm->icon);
-        if ($portalForm->file_path) Storage::disk('public')->delete($portalForm->file_path);
+        if ($portalForm->icon) {
+            $path = public_path('uploads/portal/icons/' . $portalForm->icon);
+            if (File::exists($path)) File::delete($path);
+        }
+        if ($portalForm->file_path) {
+            $path = public_path('uploads/portal/forms/' . $portalForm->file_path);
+            if (File::exists($path)) File::delete($path);
+        }
         
         $title = $portalForm->title;
         $id = $portalForm->id;

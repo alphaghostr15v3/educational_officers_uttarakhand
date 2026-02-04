@@ -27,7 +27,7 @@
                     <tr>
                         <td class="ps-4">
                             @if($form->icon)
-                                <img src="{{ asset('storage/' . $form->icon) }}" class="rounded shadow-sm" style="width: 40px; height: 40px; object-fit: contain; background: #f8f9fa;">
+                                <img src="{{ asset('uploads/portal/icons/' . $form->icon) }}" class="rounded shadow-sm" style="width: 40px; height: 40px; object-fit: contain; background: #f8f9fa;">
                             @else
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 40px; height: 40px;">
                                     <i class="fas fa-image"></i>

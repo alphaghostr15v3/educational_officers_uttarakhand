@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Division;
 use App\Models\District;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
 class AdminOrderController extends Controller
@@ -51,7 +51,10 @@ class AdminOrderController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $validated['file_path'] = $request->file('file')->store('orders', 'public');
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/orders'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $validated['uploaded_by'] = auth()->id();
@@ -65,7 +68,8 @@ class AdminOrderController extends Controller
     public function destroy(Order $order)
     {
         if ($order->file_path) {
-            Storage::disk('public')->delete($order->file_path);
+            $path = public_path('uploads/orders/' . $order->file_path);
+            if (File::exists($path)) File::delete($path);
         }
         $title = $order->title;
         $id = $order->id;

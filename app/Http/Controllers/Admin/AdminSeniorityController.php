@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SeniorityList;
+use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
 class AdminSeniorityController extends Controller
@@ -30,8 +31,10 @@ class AdminSeniorityController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('seniority_lists', 'public');
-            $validated['file_path'] = $path;
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/seniority'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $validated['uploaded_by'] = auth()->id();
@@ -46,6 +49,11 @@ class AdminSeniorityController extends Controller
 
     public function destroy(SeniorityList $seniority)
     {
+        if ($seniority->file_path) {
+            $path = public_path('uploads/seniority/' . $seniority->file_path);
+            if (File::exists($path)) File::delete($path);
+        }
+        
         $title = $seniority->title;
         $id = $seniority->id;
         $seniority->delete();

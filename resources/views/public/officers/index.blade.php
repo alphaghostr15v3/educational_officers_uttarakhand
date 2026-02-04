@@ -63,7 +63,7 @@
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
                                 @if($officer->photo)
-                                    <img src="{{ asset('storage/'.$officer->photo) }}" class="rounded-circle w-100 h-100" style="object-fit: cover;">
+                                    <img src="{{ asset('uploads/officers/'.$officer->photo) }}" class="rounded-circle w-100 h-100" style="object-fit: cover;">
                                 @else
                                     {{ strtoupper(substr($officer->name, 0, 1)) }}
                                 @endif

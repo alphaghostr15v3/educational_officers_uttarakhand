@@ -36,7 +36,7 @@
                         </td>
                         <td><small class="text-muted">{{ $circular->uploadedBy->name }}</small></td>
                         <td class="text-end pe-4">
-                            <a href="{{ asset('storage/' . $circular->file_path) }}" target="_blank" class="btn btn-light btn-sm text-danger"><i class="fas fa-file-pdf"></i></a>
+                             <a href="{{ asset('uploads/circulars/' . $circular->file_path) }}" target="_blank" class="btn btn-light btn-sm text-danger"><i class="fas fa-file-pdf"></i></a>
                         </td>
                     </tr>
                     @empty

@@ -1,77 +1,83 @@
 @extends('layouts.public')
 
 @section('content')
-<div class="container my-5">
-    <div class="row">
-        <!-- Sidebar Navigation -->
-        <div class="col-md-3">
-            <div class="list-group shadow-sm">
-                <a href="#history" class="list-group-item list-group-item-action active bg-primary border-primary">Department History</a>
-                <a href="#mission" class="list-group-item list-group-item-action">Mission & Vision</a>
-                <a href="#structure" class="list-group-item list-group-item-action">Organizational Structure</a>
-            </div>
-            
-            <div class="mt-4 p-3 bg-white rounded shadow-sm">
-                <h6 class="fw-bold text-uppercase border-bottom pb-2">Director's Message</h6>
-                <div class="text-center my-3">
-                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" class="rounded-circle img-fluid border border-3 border-warning" alt="Director">
+<!-- Header Banner -->
+<div class="about-header py-5 mb-5" style="background: linear-gradient(rgba(0, 43, 92, 0.8), rgba(0, 43, 92, 0.8)), url('{{ asset('images/about_association.png') }}'); background-size: cover; background-position: center; height: 350px; display: flex; align-items: center;">
+    <div class="container text-center text-white">
+        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown">Educational Ministerial Officers</h1>
+        <h2 class="h3 fw-light animate__animated animate__fadeInUp">Association Uttarakhand</h2>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-5">
+        <!-- Association Overview -->
+        <div class="col-lg-7">
+            <div class="pe-lg-4">
+                <h3 class="fw-bold mb-4 text-primary border-bottom pb-2">Association Overview</h3>
+                <p class="lead mb-4 text-dark fw-bold">एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड</p>
+                <p class="mb-4 text-muted" style="font-size: 1.1rem; line-height: 1.8;">
+                    एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड राज्य के शिक्षा विभाग के मिनिस्ट्रीयल कर्मचारियों के हितों और कल्याण के लिए समर्पित एक संगठन है। इसका उद्देश्य कर्मचारियों को एक मंच प्रदान करना और आधुनिक तकनीकी सुविधाओं से जोड़ना है।
+                </p>
+                
+                <div class="p-4 bg-light rounded-4 border-start border-5 border-warning mb-5">
+                    <h4 class="fw-bold text-dark mb-3"><i class="fas fa-bullseye text-danger me-2"></i>Our Mission / हमारा मिशन</h4>
+                    <p class="mb-0 text-muted">
+                        मिनिस्ट्रीयल कर्मचारियों को डिजिटल सेवाओं से जोड़कर कार्यप्रणाली को पारदर्शी और कुशल बनाना। यह वेबसाइट एक केंद्रीकृत सूचना केंद्र के रूप में कार्य करती है। उत्तराखण्ड शिक्षा विभाग के मिनिस्ट्रीयल कर्मचारियों के हित और कल्याण के लिए समर्पित संगठन।
+                    </p>
                 </div>
-                <p class="small text-muted mb-0">"Our commitment to excellence in ministerial administration defines the core of our educational infrastructure."</p>
-                <div class="mt-2 fw-bold small">- Director of Education</div>
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="col-md-9">
-            <div class="bg-white p-5 rounded shadow-sm">
-                <h2 id="history" class="fw-bold mb-4 border-bottom pb-2 text-primary">About Department</h2>
-                <p>The Department of Education in Uttarakhand has a long-standing tradition of academic and administrative excellence. Since the formation of the state in 2000, the ministerial cadre has played a pivotal role in maintaining the logistical and administrative backbone of our educational institutions.</p>
-                
-                <h4 id="mission" class="fw-bold mt-5 mb-3 text-success">Mission & Vision</h4>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 bg-light p-3">
-                            <h5 class="fw-bold"><i class="fas fa-bullseye text-danger me-2"></i>Mission</h5>
-                            <p class="small mb-0">To ensure seamless administrative support to the educational sector through efficient management of ministerial staff data, promotions, and welfare.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 bg-light p-3">
-                            <h5 class="fw-bold"><i class="fas fa-eye text-primary me-2"></i>Vision</h5>
-                            <p class="small mb-0">A fully digitized and transparent administrative framework where every ministerial officer can access their records and departmental information instantly.</p>
-                        </div>
-                    </div>
+        <!-- Association Photo & Sidebar -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+                <img src="{{ asset('images/about_association.png') }}" class="card-img-top" alt="Association Members">
+                <div class="card-body bg-white text-center">
+                    <p class="small text-muted italic mb-0">Members of the Educational Ministerial Officers Association, Uttarakhand</p>
                 </div>
+            </div>
 
-                <h4 id="structure" class="fw-bold mt-5 mb-3 text-secondary">Organizational Structure</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Designation</th>
-                                <th>Role Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold text-primary">Directorate Level</td>
-                                <td>Policy making and overall administration of ministerial cadre across Uttarakhand.</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold text-primary">Division Level</td>
-                                <td>Supervision of district operations and handling of divisional seniority lists.</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold text-primary">District Level</td>
-                                <td>Execution of departmental orders and managing school-level administrative staff.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <p class="mt-4">The Educational Ministerial Officers Portal represents our latest step toward a "Digital Uttarakhand", empowering our workforce with tools for better governance and communication.</p>
+            <!-- Core Objectives List -->
+            <div class="bg-white p-4 rounded-4 shadow-sm border border-light">
+                <h5 class="fw-bold mb-4 text-dark border-bottom pb-2">Core Objectives / मुख्य उद्देश्य</h5>
+                <ul class="list-unstyled">
+                    <li class="d-flex mb-3">
+                        <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                        <span>कर्मचारियों को तकनीकी और डिजिटल सुविधाएं देना</span>
+                    </li>
+                    <li class="d-flex mb-3">
+                        <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                        <span>आवेदन पत्र, आदेश, शासनादेश ऑनलाइन उपलब्ध कराना</span>
+                    </li>
+                    <li class="d-flex mb-3">
+                        <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                        <span>रिक्तियों और संपर्क विवरण पारदर्शी रूप से साझा करना</span>
+                    </li>
+                    <li class="d-flex mb-3">
+                        <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                        <span>वित्तीय और कर सलाह सेवाएं देना</span>
+                    </li>
+                    <li class="d-flex mb-3">
+                        <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                        <span>छात्रवृत्ति और स्कूल/कार्यालय जानकारी उपलब्ध कराना</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .about-header {
+        position: relative;
+        overflow: hidden;
+    }
+    .rounded-4 {
+        border-radius: 1.5rem !important;
+    }
+    .text-primary {
+        color: #1a5c96 !important;
+    }
+</style>
 @endsection
