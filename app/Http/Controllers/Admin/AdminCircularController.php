@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Circular;
 use App\Models\Division;
 use App\Models\District;
+use App\Services\ActivityLogService;
 
 class AdminCircularController extends Controller
 {
@@ -50,7 +51,9 @@ class AdminCircularController extends Controller
         }
 
         $validated['uploaded_by'] = auth()->id();
-        Circular::create($validated);
+        $circular = Circular::create($validated);
+
+        ActivityLogService::log('create', "Uploaded new circular: {$circular->circular_number} - {$circular->title}", Circular::class, $circular->id);
 
         return redirect()->route('admin.circulars.index')->with('success', 'Circular uploaded successfully.');
     }

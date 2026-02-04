@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Division;
 use App\Models\District;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ActivityLogService;
 
 class AdminOrderController extends Controller
 {
@@ -54,7 +55,9 @@ class AdminOrderController extends Controller
         }
 
         $validated['uploaded_by'] = auth()->id();
-        Order::create($validated);
+        $order = Order::create($validated);
+
+        ActivityLogService::log('create', "Uploaded new order: {$order->order_number} - {$order->title}", Order::class, $order->id);
 
         return redirect()->route('admin.orders.index')->with('success', 'Order uploaded successfully.');
     }
@@ -64,7 +67,11 @@ class AdminOrderController extends Controller
         if ($order->file_path) {
             Storage::disk('public')->delete($order->file_path);
         }
+        $title = $order->title;
+        $id = $order->id;
         $order->delete();
+
+        ActivityLogService::log('delete', "Deleted order: {$title}", Order::class, $id);
         return redirect()->route('admin.orders.index')->with('success', 'Order deleted successfully.');
     }
 }

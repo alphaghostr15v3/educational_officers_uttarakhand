@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SeniorityList;
+use App\Services\ActivityLogService;
 
 class AdminSeniorityController extends Controller
 {
@@ -36,14 +37,20 @@ class AdminSeniorityController extends Controller
         $validated['uploaded_by'] = auth()->id();
         $validated['is_published'] = true;
 
-        SeniorityList::create($validated);
+        $list = SeniorityList::create($validated);
+
+        ActivityLogService::log('create', "Uploaded seniority list: {$list->title} ({$list->year})", SeniorityList::class, $list->id);
 
         return redirect()->route('admin.seniority.index')->with('success', 'Seniority list uploaded successfully.');
     }
 
     public function destroy(SeniorityList $seniority)
     {
+        $title = $seniority->title;
+        $id = $seniority->id;
         $seniority->delete();
+
+        ActivityLogService::log('delete', "Removed seniority list: {$title}", SeniorityList::class, $id);
         return back()->with('success', 'Seniority list removed.');
     }
 }

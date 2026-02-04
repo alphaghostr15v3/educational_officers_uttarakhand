@@ -101,16 +101,38 @@ body {
 }
 
 .footer {
-    background-color: var(--gov-dark);
-    color: white;
-    padding: 50px 0;
+    background-color: #1a252f;
+    color: #ecf0f1;
+    padding: 70px 0 0 0;
+    border-top: 5px solid var(--uk-saffron);
 }
 
+.footer h3,
 .footer h5 {
+    color: #fff;
+    border-bottom: none;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.footer .footer-link {
+    color: #bdc3c7;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.footer .footer-link:hover {
     color: var(--uk-saffron);
-    border-bottom: 2px solid var(--uk-saffron);
-    display: inline-block;
-    margin-bottom: 20px;
+    padding-left: 8px;
+    text-decoration: none;
+}
+
+.footer .copyright-bar {
+    background-color: #121a21;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px 0;
 }
 
 .notice-board {

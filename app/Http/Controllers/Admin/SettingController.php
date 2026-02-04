@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use App\Services\ActivityLogService;
 
 class SettingController extends Controller
 {
@@ -24,6 +25,8 @@ class SettingController extends Controller
         foreach ($data as $key => $value) {
             Setting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
+
+        ActivityLogService::log('update', "Updated system configuration settings", Setting::class);
 
         return back()->with('success', 'System settings updated successfully.');
     }

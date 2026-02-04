@@ -8,6 +8,7 @@ use App\Models\Officer;
 use App\Models\District;
 use App\Models\Division;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ActivityLogService;
 
 class AdminOfficerController extends Controller
 {
@@ -59,7 +60,9 @@ class AdminOfficerController extends Controller
             $validated['photo'] = $request->file('photo')->store('officers', 'public');
         }
 
-        Officer::create($validated);
+        $officer = Officer::create($validated);
+
+        ActivityLogService::log('create', "Added new officer: {$officer->name}", Officer::class, $officer->id);
 
         return redirect()->route('admin.officers.index')->with('success', 'Officer added successfully.');
     }
@@ -106,6 +109,8 @@ class AdminOfficerController extends Controller
 
         $officer->update($validated);
 
+        ActivityLogService::log('update', "Updated officer details: {$officer->name}", Officer::class, $officer->id);
+
         return redirect()->route('admin.officers.index')->with('success', 'Officer updated successfully.');
     }
 
@@ -117,7 +122,11 @@ class AdminOfficerController extends Controller
             Storage::disk('public')->delete($officer->photo);
         }
         
+        $name = $officer->name;
+        $id = $officer->id;
         $officer->delete();
+
+        ActivityLogService::log('delete', "Removed officer: {$name}", Officer::class, $id);
 
         return redirect()->route('admin.officers.index')->with('success', 'Officer deleted successfully.');
     }

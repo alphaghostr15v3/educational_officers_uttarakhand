@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\Officer;
 use App\Models\Candidate;
+use App\Services\ActivityLogService;
 
 class AdminElectionController extends Controller
 {
@@ -54,6 +55,8 @@ class AdminElectionController extends Controller
 
         $election = Election::create($validated);
 
+        ActivityLogService::log('create', "Created new election: {$election->title}", Election::class, $election->id);
+
         return redirect()->route('admin.elections.index')->with('success', 'Election created successfully. Now add candidates.');
     }
 
@@ -75,7 +78,9 @@ class AdminElectionController extends Controller
             'manifesto' => 'nullable|string',
         ]);
 
-        $election->candidates()->create($validated);
+        $candidate = $election->candidates()->create($validated);
+
+        ActivityLogService::log('update', "Added candidate (Officer ID: {$candidate->officer_id}) to election: {$election->title}", Election::class, $election->id);
 
         return back()->with('success', 'Candidate added successfully.');
     }
@@ -87,6 +92,8 @@ class AdminElectionController extends Controller
         }
 
         $election->update(['status' => 'active']);
+
+        ActivityLogService::log('status_change', "Activated election: {$election->title}", Election::class, $election->id);
         return back()->with('success', 'Election is now live!');
     }
 }

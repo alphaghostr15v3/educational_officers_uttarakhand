@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Services\ActivityLogService;
 
 class AdminNewsController extends Controller
 {
@@ -31,14 +32,20 @@ class AdminNewsController extends Controller
         $validated['created_by'] = auth()->id();
         $validated['is_published'] = true;
 
-        News::create($validated);
+        $news = News::create($validated);
+
+        ActivityLogService::log('create', "Published news: {$news->title}", News::class, $news->id);
 
         return redirect()->route('admin.news.index')->with('success', 'News published successfully.');
     }
 
     public function destroy(News $news)
     {
+        $title = $news->title;
+        $id = $news->id;
         $news->delete();
+
+        ActivityLogService::log('delete', "Removed news item: {$title}", News::class, $id);
         return back()->with('success', 'News item removed.');
     }
 }

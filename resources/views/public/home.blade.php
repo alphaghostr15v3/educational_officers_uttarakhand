@@ -18,10 +18,11 @@
     <div class="container d-flex">
         <div class="fw-bold pe-3" style="background: var(--uk-green); z-index: 2; position: relative;">LATEST NEWS:</div>
         <div class="ticker-content flex-grow-1">
-            <span class="me-5">🚩 Promotion list for Senior Assistant 2024 has been released.</span>
-            <span class="me-5">🚩 Revised seniority list of Clerical Cadre published.</span>
-            <span class="me-5">🚩 Important notice regarding General Election 2024 and Ministerial voting.</span>
-            <span class="me-5">🚩 New transfer policy for ministerial officers updated.</span>
+            @forelse($news as $item)
+                <span class="me-5">🚩 {{ $item->title }}</span>
+            @empty
+                <span class="me-5">🚩 Welcome to the Educational Ministerial Officers Portal, Uttarakhand.</span>
+            @endforelse
         </div>
     </div>
 </div>
@@ -60,9 +61,21 @@
         <!-- About Brief -->
         <div class="col-md-8">
             <div class="p-4 bg-white rounded shadow-sm h-100 border-top border-4 border-primary">
-                <h4 class="fw-bold mb-3">About the Portal</h4>
-                <p>This dedicated portal serves as the central hub for all Ministerial Officers under the Department of Education, Uttarakhand. It facilitates transparent data management, timely dissemination of orders, and automated seniority tracking. Our mission is to digitize all ministerial operations to ensure efficiency and ease of access for every officer across the state.</p>
-                <button class="btn btn-outline-primary fw-bold mt-3">Read More <i class="fas fa-arrow-right ms-2"></i></button>
+                <h4 class="fw-bold mb-3 text-primary">एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड</h4>
+                <p class="mb-4">एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड राज्य के शिक्षा विभाग के मिनिस्ट्रीयल कर्मचारियों के हितों और कल्याण के लिए समर्पित एक संगठन है। इसका उद्देश्य कर्मचारियों को एक मंच प्रदान करना और आधुनिक तकनीकी सुविधाओं से जोड़ना है।</p>
+                
+                <h5 class="fw-bold text-dark mb-3">Our Mission / हमारा मिशन</h5>
+                <p class="mb-4">मिनिस्ट्रीयल कर्मचारियों को डिजिटल सेवाओं से जोड़कर कार्यप्रणाली को पारदर्शी और कुशल बनाना। यह वेबसाइट एक केंद्रीकृत सूचना केंद्र के रूप में कार्य करती है। उत्तराखण्ड शिक्षा विभाग के मिनिस्ट्रीयल कर्मचारियों के हित और कल्याण के लिए समर्पित संगठन।</p>
+
+                <h5 class="fw-bold text-dark mb-3">Core Objectives / मुख्य उद्देश्य:</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> कर्मचारियों को तकनीकी और डिजिटल सुविधाएं देना</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> आवेदन पत्र, आदेश, शासनादेश ऑनलाइन उपलब्ध कराना</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> रिक्तियों और संपर्क विवरण पारदर्शी रूप से साझा करना</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> वित्तीय और कर सलाह सेवाएं देना</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> छात्रवृत्ति और स्कूल/कार्यालय जानकारी उपलब्ध कराना</li>
+                </ul>
+                <button class="btn btn-primary fw-bold mt-3 px-4">Read More <i class="fas fa-arrow-right ms-2"></i></button>
             </div>
         </div>
 

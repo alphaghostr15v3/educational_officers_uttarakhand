@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PortalForm;
+use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,7 +40,9 @@ class AdminPortalFormController extends Controller
             $validated['file_path'] = $request->file('file')->store('portal/forms', 'public');
         }
 
-        PortalForm::create($validated);
+        $form = PortalForm::create($validated);
+
+        ActivityLogService::log('create', "Added portal form: {$form->title}", PortalForm::class, $form->id);
 
         return redirect()->route('admin.portal-forms.index')->with('success', 'Portal form added successfully.');
     }
@@ -49,7 +52,7 @@ class AdminPortalFormController extends Controller
         return view('admin.portal_forms.edit', compact('portal_form'));
     }
 
-    public function update(Request $request, PortalForm $portal_form)
+    public function update(Request $request, PortalForm $portalForm)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -61,26 +64,32 @@ class AdminPortalFormController extends Controller
         ]);
 
         if ($request->hasFile('icon')) {
-            if ($portal_form->icon) Storage::disk('public')->delete($portal_form->icon);
+            if ($portalForm->icon) Storage::disk('public')->delete($portalForm->icon);
             $validated['icon'] = $request->file('icon')->store('portal/icons', 'public');
         }
 
         if ($request->hasFile('file')) {
-            if ($portal_form->file_path) Storage::disk('public')->delete($portal_form->file_path);
+            if ($portalForm->file_path) Storage::disk('public')->delete($portalForm->file_path);
             $validated['file_path'] = $request->file('file')->store('portal/forms', 'public');
         }
 
-        $portal_form->update($validated);
+        $portalForm->update($validated);
+
+        ActivityLogService::log('update', "Updated portal form: {$portalForm->title}", PortalForm::class, $portalForm->id);
 
         return redirect()->route('admin.portal-forms.index')->with('success', 'Portal form updated successfully.');
     }
 
-    public function destroy(PortalForm $portal_form)
+    public function destroy(PortalForm $portalForm)
     {
-        if ($portal_form->icon) Storage::disk('public')->delete($portal_form->icon);
-        if ($portal_form->file_path) Storage::disk('public')->delete($portal_form->file_path);
+        if ($portalForm->icon) Storage::disk('public')->delete($portalForm->icon);
+        if ($portalForm->file_path) Storage::disk('public')->delete($portalForm->file_path);
         
-        $portal_form->delete();
+        $title = $portalForm->title;
+        $id = $portalForm->id;
+        $portalForm->delete();
+
+        ActivityLogService::log('delete', "Removed portal form: {$title}", PortalForm::class, $id);
 
         return redirect()->route('admin.portal-forms.index')->with('success', 'Portal form removed successfully.');
     }

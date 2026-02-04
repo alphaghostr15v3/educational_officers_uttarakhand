@@ -54,10 +54,48 @@
                                 <td class="fw-bold">{{ $district->name }}</td>
                                 <td><span class="badge bg-info-subtle text-info">{{ $district->division->name }}</span></td>
                                 <td class="text-end pe-4">
+                                    <button class="btn btn-light btn-sm text-primary me-2" data-bs-toggle="modal" data-bs-target="#editDistrict{{ $district->id }}"><i class="fas fa-edit"></i></button>
                                     <form action="{{ route('admin.districts.destroy', $district) }}" method="POST" class="d-inline">
                                         @csrf @method('DELETE')
-                                        <button class="btn btn-light btn-sm text-danger"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-light btn-sm text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
                                     </form>
+
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" id="editDistrict{{ $district->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content text-start">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title fw-bold">Edit District: {{ $district->name }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <form action="{{ route('admin.districts.update', $district) }}" method="POST">
+                                                    @csrf @method('PUT')
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label small fw-bold">Parent Division</label>
+                                                            <select name="division_id" class="form-select" required>
+                                                                @foreach($divisions as $div)
+                                                                    <option value="{{ $div->id }}" {{ $district->division_id == $div->id ? 'selected' : '' }}>{{ $div->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label small fw-bold">District Name</label>
+                                                            <input type="text" name="name" class="form-control" value="{{ $district->name }}" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label small fw-bold">District Code</label>
+                                                            <input type="text" name="code" class="form-control" value="{{ $district->code }}" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary fw-bold">Update District</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
