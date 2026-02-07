@@ -90,15 +90,11 @@
                             </ul>
                         </li>
 
-                        <!-- Departmental Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {{ (request()->routeIs('orders') || request()->is('seniority*')) ? 'active' : '' }}" href="#" id="deptDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Departmental
-                            </a>
-                            <ul class="dropdown-menu shadow border-0" aria-labelledby="deptDropdown">
-                                <li><a class="dropdown-item" href="{{ route('orders') }}"><i class="fas fa-file-invoice me-2 text-success"></i> Official Orders</a></li>
-                                <li><a class="dropdown-item" href="{{ route('seniority') }}"><i class="fas fa-list-ol me-2 text-success"></i> Seniority Lists</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('seniority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
                         </li>
 
                         <li class="nav-item">
