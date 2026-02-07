@@ -38,8 +38,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\Admin\Auth\AdminLoginController::class, 'logout'])->name('logout');
 });
 
+// Employee/User Panel Routes
+Route::prefix('employee')->name('employee.')->group(function () {
+    // Auth Routes
+    Route::get('/login', [\App\Http\Controllers\Employee\Auth\MemberLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Employee\Auth\MemberLoginController::class, 'login']);
+    Route::post('/logout', [\App\Http\Controllers\Employee\Auth\MemberLoginController::class, 'logout'])->name('logout');
+
+    // Registration Routes
+    Route::get('/register', [\App\Http\Controllers\Employee\Auth\MemberRegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\Employee\Auth\MemberRegisterController::class, 'register']);
+
+    // Dashboard (Protected)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Employee\EmployeeDashboardController::class, 'index'])->name('dashboard');
+    });
+});
+
 // Admin Routes (Protected)
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('officers', \App\Http\Controllers\Admin\AdminOfficerController::class);
     Route::resource('orders', \App\Http\Controllers\Admin\AdminOrderController::class);

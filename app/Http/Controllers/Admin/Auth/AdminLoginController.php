@@ -30,6 +30,10 @@ class AdminLoginController extends Controller
             // Ensure only users with admin roles can access
             if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
                 $request->session()->regenerate();
+                
+                // Add success message
+                session()->flash('success', 'Welcome back, ' . $user->name . '!');
+                
                 return redirect()->intended(route('admin.dashboard'));
             }
 
@@ -41,7 +45,7 @@ class AdminLoginController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'email' => [trans('auth.failed')],
+            'email' => ['The provided credentials do not match our records.'],
         ]);
     }
 
