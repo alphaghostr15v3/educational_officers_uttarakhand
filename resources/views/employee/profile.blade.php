@@ -47,12 +47,39 @@
         position: relative;
         z-index: 2;
         overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .profile-avatar:hover {
+        transform: scale(1.05);
+        border-color: rgba(255, 255, 255, 0.5);
     }
 
     .profile-avatar img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    .avatar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .profile-avatar:hover .avatar-overlay {
+        opacity: 1;
     }
 
     .nav-tabs-premium {
@@ -132,12 +159,16 @@
     <div class="profile-header">
         <div class="row align-items-center position-relative" style="z-index: 2;">
             <div class="col-md-auto text-center text-md-start mb-3 mb-md-0">
-                <div class="profile-avatar mx-auto">
+                <div class="profile-avatar mx-auto" onclick="document.getElementById('profile_picture_input').click()">
                     @if($user->profile_picture)
-                        <img src="{{ asset($user->profile_picture) }}" alt="{{ $user->name }}">
+                        <img src="{{ asset($user->profile_picture) }}" alt="{{ $user->name }}" id="avatar_preview">
                     @else
-                        {{ substr($user->name, 0, 1) }}
+                        <span id="avatar_initial">{{ substr($user->name, 0, 1) }}</span>
+                        <img src="" alt="{{ $user->name }}" id="avatar_preview" style="display: none;">
                     @endif
+                    <div class="avatar-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
                 </div>
             </div>
             <div class="col-md text-center text-md-start">
@@ -257,7 +288,7 @@
                                 @csrf
                                 <div class="col-md-12">
                                     <label class="form-label label-premium">Profile Picture</label>
-                                    <input type="file" name="profile_picture" class="form-control form-control-premium @error('profile_picture') is-invalid @enderror">
+                                    <input type="file" name="profile_picture" id="profile_picture_input" class="form-control form-control-premium @error('profile_picture') is-invalid @enderror" onchange="previewImage(this)">
                                     <small class="text-muted">Max size: 2MB (JPEG, PNG, JPG, GIF)</small>
                                     @error('profile_picture')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -333,4 +364,24 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('avatar_preview');
+                var initial = document.getElementById('avatar_initial');
+                
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                if (initial) {
+                    initial.style.display = 'none';
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@endpush
 @endsection

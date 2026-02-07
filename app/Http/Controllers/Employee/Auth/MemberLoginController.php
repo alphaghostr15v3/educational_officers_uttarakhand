@@ -25,11 +25,10 @@ class MemberLoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        // if (!$user->is_active) {
-        //     auth()->logout();
-        //     return back()->with('error', 'Your account is not active yet. Please contact the administrator.');
-        // }
+        if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+            return redirect()->route('admin.dashboard');
+        }
 
-        return redirect()->intended($this->redirectPath());
+        return redirect()->route('employee.dashboard');
     }
 }

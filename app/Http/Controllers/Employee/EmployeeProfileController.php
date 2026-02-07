@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class EmployeeProfileController extends Controller
 {
@@ -30,8 +31,11 @@ class EmployeeProfileController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             // Delete old picture if exists
-            if ($user->profile_picture && file_exists(public_path($user->profile_picture))) {
-                unlink(public_path($user->profile_picture));
+            if ($user->profile_picture) {
+                $oldPath = public_path($user->profile_picture);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
 
             $file = $request->file('profile_picture');

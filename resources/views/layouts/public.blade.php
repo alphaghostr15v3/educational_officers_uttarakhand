@@ -56,7 +56,7 @@
         <nav class="navbar navbar-expand-lg py-0">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" alt="UK Logo" class="me-2">
+                    <img src="https://emou.co.in/images/logo.png" alt="UK Logo" class="me-2" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png'">
                     <div>
                         <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'Educational Ministerial Officers' }}</div>
                         <div class="small fw-bold text-muted">Government of Uttarakhand</div>
@@ -66,7 +66,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         </li>
@@ -76,12 +76,31 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('officers') ? 'active' : '' }}" href="{{ route('officers') }}">Officers</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
+                        
+                        <!-- Learning & Infrastructure Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="learningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Infrastructure
+                            </a>
+                            <ul class="dropdown-menu shadow border-0" aria-labelledby="learningDropdown">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-award me-2 text-primary"></i> Centre of Excellence</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-building me-2 text-primary"></i> Infrastructure Details</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-tools me-2 text-primary"></i> Classroom & Workshop</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-school me-2 text-primary"></i> Facilities</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('senority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
+
+                        <!-- Departmental Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ (request()->routeIs('orders') || request()->is('seniority*')) ? 'active' : '' }}" href="#" id="deptDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Departmental
+                            </a>
+                            <ul class="dropdown-menu shadow border-0" aria-labelledby="deptDropdown">
+                                <li><a class="dropdown-item" href="{{ route('orders') }}"><i class="fas fa-file-invoice me-2 text-success"></i> Official Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('seniority') }}"><i class="fas fa-list-ol me-2 text-success"></i> Seniority Lists</a></li>
+                            </ul>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('tools*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Tools</a>
                         </li>
@@ -92,17 +111,44 @@
                             <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
                         </li>
                         
-                        <!-- Login Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
-                                <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-users me-2"></i> Employee Login</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.login') }}"><i class="fas fa-user-shield me-2"></i> Admin Login</a></li>
-                            </ul>
-                        </li>
+                        <!-- Authentication Links -->
+                        @auth
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold text-primary" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
+                                    @if(in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']))
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-columns me-2"></i> Admin Panel</a></li>
+                                    @else
+                                        <li><a class="dropdown-item" href="{{ route('employee.dashboard') }}"><i class="fas fa-th-large me-2"></i> My Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('employee.profile') }}"><i class="fas fa-user-edit me-2"></i> My Profile</a></li>
+                                    @endif
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault(); document.getElementById('logout-form-public').submit();">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </a>
+                                        <form id="logout-form-public" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @else
+                            <!-- Login Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="loginDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-users me-2"></i> Employee Login</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.login') }}"><i class="fas fa-user-shield me-2"></i> Admin Login</a></li>
+                                </ul>
+                            </li>
+                        @endauth
                     </ul>
                 </div>
             </div>

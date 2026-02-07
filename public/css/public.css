@@ -35,15 +35,34 @@ body {
     font-weight: 600;
     color: var(--gov-dark) !important;
     text-transform: uppercase;
-    font-size: 0.9rem;
-    padding: 1rem 1.2rem !important;
+    font-size: 0.85rem; /* Slightly smaller for better fit */
+    padding: 0.8rem 1rem !important; /* More compact padding */
     transition: all 0.3s;
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+}
+
+.nav-link i {
+    font-size: 1rem;
+    margin-top: -2px; /* Visual centering */
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--uk-saffron) !important;
-    border-bottom: 3px solid var(--uk-saffron);
+    position: relative;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    background-color: var(--uk-saffron);
 }
 
 .hero-section {

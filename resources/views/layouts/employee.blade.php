@@ -168,6 +168,9 @@
                 <li class="{{ request()->routeIs('employee.notifications*') ? 'active' : '' }}">
                     <a href="{{ route('employee.notifications.index') }}"><i class="fas fa-bell"></i> My Notifications</a>
                 </li>
+                <li>
+                    <a href="{{ route('donation') }}"><i class="fas fa-hand-holding-heart"></i> Welfare Fund</a>
+                </li>
             </ul>
         </nav>
 

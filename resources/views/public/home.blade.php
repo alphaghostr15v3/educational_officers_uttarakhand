@@ -24,12 +24,17 @@
                             <p class="animate__animated animate__fadeInUp">{{ $slide->subtitle }}</p>
                             
                             <div class="d-flex gap-3 animate__animated animate__zoomIn">
-                                @if($slide->link)
-                                    <a href="{{ $slide->link }}" class="btn btn-warning btn-lg px-4 fw-bold">Read More</a>
-                                @else
-                                    <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
+                                @auth
+                                    <a href="{{ in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
                                     <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
-                                @endif
+                                @else
+                                    @if($slide->link)
+                                        <a href="{{ $slide->link }}" class="btn btn-warning btn-lg px-4 fw-bold">Read More</a>
+                                    @else
+                                        <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
+                                        <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                         <div class="hero-split-image" style="background-image: url('{{ $slide->image_url }}');"></div>
@@ -55,8 +60,13 @@
                 <h1 class="animate__animated animate__fadeInDown">Welcome to Ministerial Officers Portal</h1>
                 <p class="animate__animated animate__fadeInUp">Department of Education, Government of Uttarakhand</p>
                 <div class="d-flex gap-3">
-                    <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
-                    <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                    @auth
+                        <a href="{{ in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
+                        <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                    @else
+                        <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>
+                        <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
+                    @endauth
                 </div>
             </div>
             <div class="hero-split-image" style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
