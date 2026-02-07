@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-transparent border-0 pt-0">
-                    <a href="#" class="small text-success text-decoration-none">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                    <a href="{{ route('employee.circulars.index') }}" class="small text-success text-decoration-none">View All <i class="fas fa-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
@@ -186,7 +186,7 @@
                 </div>
                 <div class="card-body">
                     <p class="small text-muted mb-3">View your complete service history, including postings and promotions.</p>
-                    <a href="{{ route('service-book') }}" class="btn btn-primary w-100">
+                    <a href="{{ route('employee.service-book') }}" class="btn btn-primary w-100">
                         <i class="fas fa-book me-2"></i> View Service Book
                     </a>
                 </div>
@@ -198,7 +198,7 @@
                 </div>
                 <div class="card-body">
                     <p class="small text-muted mb-3">Notice an error in your data? Request a correction from the admin.</p>
-                    <a href="{{ route('service-book.correction') }}" class="btn btn-outline-danger w-100">
+                    <a href="{{ route('employee.service-book.correction') }}" class="btn btn-outline-danger w-100">
                         <i class="fas fa-edit me-2"></i> Request Correction
                     </a>
                 </div>

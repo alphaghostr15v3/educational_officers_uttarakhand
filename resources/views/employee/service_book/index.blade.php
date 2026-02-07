@@ -8,7 +8,7 @@
             <p class="text-muted">Comprehensive history of your service in the department.</p>
         </div>
         <div class="col-md-6 text-md-end">
-            <a href="{{ route('service-book.correction') }}" class="btn btn-outline-danger shadow-sm">
+            <a href="{{ route('employee.service-book.correction') }}" class="btn btn-outline-danger shadow-sm">
                 <i class="fas fa-edit me-2"></i> Request Correction
             </a>
         </div>
@@ -47,11 +47,11 @@
                 </div>
                 <div class="col-md-3">
                     <div class="text-muted small text-uppercase fw-bold">Date of Joining</div>
-                    <div class="fw-bold">{{ $user->staff->joining_date ? $user->staff->joining_date->format('d M, Y') : 'N/A' }}</div>
+                    <div class="fw-bold">{{ ($user->staff && $user->staff->joining_date) ? $user->staff->joining_date->format('d M, Y') : 'N/A' }}</div>
                 </div>
                 <div class="col-md-3">
                     <div class="text-muted small text-uppercase fw-bold">Retirement Date</div>
-                    <div class="fw-bold">{{ $user->staff->retirement_date ? $user->staff->retirement_date->format('d M, Y') : 'N/A' }}</div>
+                    <div class="fw-bold">{{ ($user->staff && $user->staff->retirement_date) ? $user->staff->retirement_date->format('d M, Y') : 'N/A' }}</div>
                 </div>
             </div>
         </div>

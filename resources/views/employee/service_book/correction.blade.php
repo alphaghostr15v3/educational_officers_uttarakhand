@@ -8,7 +8,7 @@
                 <div class="col-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('service-book') }}">Service Book</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('employee.service-book') }}">Service Book</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Request Correction</li>
                         </ol>
                     </nav>
@@ -19,7 +19,7 @@
 
             <div class="card border-0 shadow-sm border-start border-danger border-4">
                 <div class="card-body p-4">
-                    <form action="{{ route('service-book.correction.submit') }}" method="POST">
+                    <form action="{{ route('employee.service-book.correction.submit') }}" method="POST">
                         @csrf
                         
                         <div class="mb-4">

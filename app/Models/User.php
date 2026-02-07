@@ -29,6 +29,7 @@ class User extends Authenticatable
         'school_id',
         'employee_code',
         'mobile',
+        'profile_picture',
         'is_active',
         'last_login_at',
     ];
@@ -91,6 +92,11 @@ class User extends Authenticatable
     public function scopeDistrictAdmins($query)
     {
         return $query->where('role', 'district_admin');
+    }
+
+    public function staff(): HasOne
+    {
+        return $this->hasOne(Staff::class);
     }
 
     public function electionDuties()

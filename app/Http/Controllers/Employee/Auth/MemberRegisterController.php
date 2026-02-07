@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Division;
 use App\Models\District;
+use App\Models\School;
+use App\Models\Staff;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class MemberRegisterController extends Controller
@@ -26,7 +29,8 @@ class MemberRegisterController extends Controller
     {
         $divisions = Division::where('is_active', true)->get();
         $districts = District::where('is_active', true)->get();
-        return view('employee.auth.register', compact('divisions', 'districts'));
+        $schools = School::where('is_active', true)->orderBy('name')->get();
+        return view('employee.auth.register', compact('divisions', 'districts', 'schools'));
     }
 
     protected function validator(array $data)
@@ -39,21 +43,37 @@ class MemberRegisterController extends Controller
             'mobile' => ['required', 'string', 'max:15'],
             'division_id' => ['required', 'exists:divisions,id'],
             'district_id' => ['required', 'exists:districts,id'],
+            'designation' => ['required', 'string', 'max:255'],
+            'school_id' => ['required', 'exists:schools,id'],
+            'joining_date' => ['required', 'date'],
         ]);
     }
 
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => 'officer', // Default role for members as per migration logic
-            'employee_code' => $data['employee_code'],
-            'mobile' => $data['mobile'],
-            'division_id' => $data['division_id'],
-            'district_id' => $data['district_id'],
-            'is_active' => true, // Activating by default for now
-        ]);
+        return DB::transaction(function () use ($data) {
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role' => 'officer',
+                'employee_code' => $data['employee_code'],
+                'mobile' => $data['mobile'],
+                'division_id' => $data['division_id'],
+                'district_id' => $data['district_id'],
+                'school_id' => $data['school_id'],
+                'is_active' => true,
+            ]);
+
+            Staff::create([
+                'user_id' => $user->id,
+                'school_id' => $data['school_id'],
+                'designation' => $data['designation'],
+                'joining_date' => $data['joining_date'],
+                'current_status' => 'active',
+            ]);
+
+            return $user;
+        });
     }
 }

@@ -148,10 +148,7 @@
                     <a href="{{ route('employee.dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a>
                 </li>
                 <li class="{{ request()->routeIs('employee.service-book*') ? 'active' : '' }}">
-                    <a href="{{ route('service-book') }}"><i class="fas fa-book"></i> My Service Book</a>
-                </li>
-                <li class="{{ request()->routeIs('employee.profile') ? 'active' : '' }}">
-                    <a href="{{ route('employee.profile') }}"><i class="fas fa-user-cog"></i> Profile Settings</a>
+                    <a href="{{ route('employee.service-book') }}"><i class="fas fa-book"></i> My Service Book</a>
                 </li>
                 <li>
                     <a href="{{ route('orders') }}"><i class="fas fa-file-pdf"></i> Official Orders</a>
@@ -165,19 +162,11 @@
                 <li class="{{ request()->routeIs('employee.transfers*') ? 'active' : '' }}">
                     <a href="{{ route('employee.transfers.index') }}"><i class="fas fa-exchange-alt"></i> My Transfers</a>
                 </li>
-                <li class="{{ request()->is('school/circulars*') ? 'active' : '' }}">
-                    <a href="{{ route('school.circulars.index') }}"><i class="fas fa-bullhorn"></i> Circulars</a>
+                <li class="{{ request()->routeIs('employee.circulars*') ? 'active' : '' }}">
+                    <a href="{{ route('employee.circulars.index') }}"><i class="fas fa-bullhorn"></i> Circulars</a>
                 </li>
                 <li class="{{ request()->routeIs('employee.notifications*') ? 'active' : '' }}">
-                    <a href="#"><i class="fas fa-bell"></i> My Notifications</a>
-                </li>
-                <li class="mt-4">
-                    <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();" class="text-danger">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
+                    <a href="{{ route('employee.notifications.index') }}"><i class="fas fa-bell"></i> My Notifications</a>
                 </li>
             </ul>
         </nav>
@@ -246,11 +235,14 @@
                         <div class="dropdown profile-dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown">
                                 <span class="me-2 d-none d-sm-inline">{{ auth()->user()->name }}</span>
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=2563eb&color=fff" alt="User">
+                                @if(auth()->user()->profile_picture)
+                                    <img src="{{ asset(auth()->user()->profile_picture) }}" alt="User" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover;">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=2563eb&color=fff" alt="User">
+                                @endif
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3">
-                                <li><a class="dropdown-item py-2" href="#"><i class="fas fa-user-circle me-2"></i> Profile</a></li>
-                                <li><a class="dropdown-item py-2" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('employee.profile') }}"><i class="fas fa-user-circle me-2"></i> Profile</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="{{ route('logout') }}" method="POST">

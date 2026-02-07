@@ -61,6 +61,7 @@ Route::prefix('employee')->name('employee.')->group(function () {
         // Service Book Routes
         Route::get('/service-book', [\App\Http\Controllers\Employee\EmployeeServiceBookController::class, 'index'])->name('service-book');
         Route::get('/service-book/correction', [\App\Http\Controllers\Employee\EmployeeServiceBookController::class, 'requestCorrection'])->name('service-book.correction');
+        Route::post('/service-book/correction', [\App\Http\Controllers\Employee\EmployeeServiceBookController::class, 'submitCorrection'])->name('service-book.correction.submit');
         // Leave Routes
         Route::get('/leaves', [\App\Http\Controllers\Employee\EmployeeLeaveController::class, 'index'])->name('leaves.index');
         Route::get('/leaves/create', [\App\Http\Controllers\Employee\EmployeeLeaveController::class, 'create'])->name('leaves.create');
@@ -70,6 +71,13 @@ Route::prefix('employee')->name('employee.')->group(function () {
         Route::get('/transfers', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'index'])->name('transfers.index');
         Route::get('/transfers/create', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'create'])->name('transfers.create');
         Route::post('/transfers', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'store'])->name('transfers.store');
+
+        // Circulars Route
+        Route::get('/circulars', [\App\Http\Controllers\Employee\EmployeeCircularController::class, 'index'])->name('circulars.index');
+
+        // Notifications Route
+        Route::get('/notifications', [\App\Http\Controllers\Employee\EmployeeNotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/{notification}/read', [\App\Http\Controllers\Employee\EmployeeNotificationController::class, 'markAsRead'])->name('notifications.mark-read');
     });
 });
 

@@ -293,6 +293,40 @@
                         @enderror
                     </div>
 
+                    <!-- School -->
+                    <div class="col-md-12 mb-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Current School/Office</label>
+                        <select id="school_id" class="form-select-custom w-100 @error('school_id') is-invalid @enderror" name="school_id" required>
+                            <option value="">Select School/Office</option>
+                            @foreach($schools as $school)
+                                <option value="{{ $school->id }}" {{ old('school_id') == $school->id ? 'selected' : '' }} data-district="{{ $school->district_id }}">{{ $school->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('school_id')
+                            <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <!-- Designation -->
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Current Designation</label>
+                        <input id="designation" type="text" class="form-control-custom w-100 @error('designation') is-invalid @enderror" 
+                               name="designation" value="{{ old('designation') }}" required placeholder="e.g. Senior Assistant">
+                        @error('designation')
+                            <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <!-- Date of Joining -->
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Date of Joining</label>
+                        <input id="joining_date" type="date" class="form-control-custom w-100 @error('joining_date') is-invalid @enderror" 
+                               name="joining_date" value="{{ old('joining_date') }}" required>
+                        @error('joining_date')
+                            <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
                     <!-- Password -->
                     <div class="col-md-6 mb-2">
                         <label class="form-label fw-bold small text-muted text-uppercase">Password</label>
@@ -330,12 +364,16 @@
 </div>
 
 <script>
+    const districts = @json($districts);
+    const schools = @json($schools);
+
     document.getElementById('division_id').addEventListener('change', function() {
         const divisionId = this.value;
         const districtSelect = document.getElementById('district_id');
-        const districts = @json($districts);
+        const schoolSelect = document.getElementById('school_id');
         
         districtSelect.innerHTML = '<option value="">Select District</option>';
+        schoolSelect.innerHTML = '<option value="">Select School/Office</option>';
         
         if (divisionId) {
             const filteredDistricts = districts.filter(d => d.division_id == divisionId);
@@ -344,6 +382,23 @@
                 option.value = district.id;
                 option.textContent = district.name;
                 districtSelect.appendChild(option);
+            });
+        }
+    });
+
+    document.getElementById('district_id').addEventListener('change', function() {
+        const districtId = this.value;
+        const schoolSelect = document.getElementById('school_id');
+        
+        schoolSelect.innerHTML = '<option value="">Select School/Office</option>';
+        
+        if (districtId) {
+            const filteredSchools = schools.filter(s => s.district_id == districtId);
+            filteredSchools.forEach(school => {
+                const option = document.createElement('option');
+                option.value = school.id;
+                option.textContent = school.name;
+                schoolSelect.appendChild(option);
             });
         }
     });
