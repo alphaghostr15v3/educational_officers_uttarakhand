@@ -12,7 +12,7 @@ class SeniorityList extends Model
 
     protected $fillable = ['title', 'year', 'cadre', 'file_path', 'uploaded_by', 'is_published'];
 
-    public function uploader(): BelongsTo
+    public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
     }

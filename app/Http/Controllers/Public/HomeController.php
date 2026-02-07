@@ -28,10 +28,38 @@ class HomeController extends Controller
         return view('public.about');
     }
 
-    public function orders()
+    public function orders(Request $request)
     {
-        $orders = \App\Models\Order::where('is_published', true)->latest()->paginate(20);
-        return view('public.orders', compact('orders'));
+        $category = $request->query('category');
+        $search = $request->query('search');
+
+        if ($category === 'circular') {
+            $query = \App\Models\Circular::where('is_published', true);
+            if ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('circular_number', 'like', "%{$search}%");
+                });
+            }
+            $items = $query->latest()->paginate(15)->withQueryString();
+        } else {
+            $query = \App\Models\Order::where('is_published', true);
+            
+            if ($category && $category !== 'all') {
+                $query->where('category', $category);
+            }
+
+            if ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('order_number', 'like', "%{$search}%");
+                });
+            }
+
+            $items = $query->latest()->paginate(15)->withQueryString();
+        }
+
+        return view('public.orders', compact('items', 'category'));
     }
 
     public function seniority()

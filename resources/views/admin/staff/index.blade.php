@@ -38,7 +38,12 @@
                             <span class="badge bg-success">{{ ucfirst($staff->current_status) }}</span>
                         </td>
                         <td class="text-end px-4">
-                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ route('admin.staff.show', $staff) }}" class="btn btn-sm btn-light text-success me-1" title="View"><i class="fas fa-eye"></i></a>
+                            <a href="{{ route('admin.staff.edit', $staff) }}" class="btn btn-sm btn-light text-primary me-1" title="Edit"><i class="fas fa-edit"></i></a>
+                            <form action="{{ route('admin.staff.destroy', $staff) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this staff member? This will also delete their login account.')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-light text-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                     @empty

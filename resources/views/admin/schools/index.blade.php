@@ -41,7 +41,15 @@
                             @endif
                         </td>
                         <td class="text-end px-4">
-                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            <div class="btn-group">
+                                <a href="{{ route('admin.schools.show', $school) }}" class="btn btn-sm btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('admin.schools.edit', $school) }}" class="btn btn-sm btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('admin.schools.destroy', $school) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this school? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

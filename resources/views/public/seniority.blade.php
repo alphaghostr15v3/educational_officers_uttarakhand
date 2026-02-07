@@ -44,7 +44,7 @@
     </div>
 
     <!-- Latest Lists Table -->
-    <div class="mt-5">
+    <div class="mt-5 text-start">
         <h3 class="fw-bold mb-4 border-start border-4 border-success ps-3">Recently Published Lists</h3>
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-0">
@@ -55,44 +55,29 @@
                                 <th class="ps-4">Year</th>
                                 <th>List Title</th>
                                 <th>Cadre</th>
-                                <th>Category</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($lists as $list)
                             <tr>
-                                <td class="ps-4 fw-bold text-success">2024</td>
-                                <td>Interim Seniority List of Junior Assistants</td>
-                                <td>Clerical</td>
-                                <td>General</td>
+                                <td class="ps-4 fw-bold text-success">{{ $list->year }}</td>
+                                <td>{{ $list->title }}</td>
+                                <td><span class="badge bg-success-subtle text-success">{{ $list->cadre }}</span></td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-outline-danger px-4 fw-bold">
-                                        <i class="fas fa-eye me-1"></i> View
+                                    <a href="{{ asset('uploads/seniority/' . $list->file_path) }}" target="_blank" class="btn btn-sm btn-outline-danger px-4 fw-bold">
+                                        <i class="fas fa-file-pdf me-1"></i> View PDF
                                     </a>
                                 </td>
                             </tr>
+                            @empty
                             <tr>
-                                <td class="ps-4 fw-bold text-success">2024</td>
-                                <td>Final Seniority List of Senior Assistants</td>
-                                <td>SA Cadre</td>
-                                <td>Garhwal Division</td>
-                                <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-outline-danger px-4 fw-bold">
-                                        <i class="fas fa-eye me-1"></i> View
-                                    </a>
+                                <td colspan="4" class="text-center py-5">
+                                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-folder-5342750-4461327.png" alt="Empty" style="height: 120px;" class="mb-3 d-block mx-auto">
+                                    <h6 class="text-muted">No seniority lists published yet.</h6>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="ps-4 fw-bold text-success">2023</td>
-                                <td>Consolidated Seniority List (State Level)</td>
-                                <td>All Cadres</td>
-                                <td>Annual</td>
-                                <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-outline-danger px-4 fw-bold">
-                                        <i class="fas fa-eye me-1"></i> View
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

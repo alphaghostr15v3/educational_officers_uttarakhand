@@ -15,7 +15,7 @@ class Circular extends Model
         'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published'
     ];
 
-    public function uploader(): BelongsTo
+    public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
     }

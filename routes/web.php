@@ -128,6 +128,7 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
     
     // School Management (District Admin)
+    Route::get('staff/export', [\App\Http\Controllers\Admin\DistrictStaffController::class, 'export'])->name('staff.export');
     Route::resource('schools', \App\Http\Controllers\Admin\DistrictSchoolController::class);
     Route::resource('staff', \App\Http\Controllers\Admin\DistrictStaffController::class);
     Route::resource('transfers', \App\Http\Controllers\Admin\AdminTransferController::class);
@@ -146,7 +147,6 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::resource('portal-forms', \App\Http\Controllers\Admin\AdminPortalFormController::class);
     Route::resource('elections', \App\Http\Controllers\Admin\AdminElectionController::class);
     Route::resource('election-duties', \App\Http\Controllers\Admin\AdminElectionDutyController::class);
-    Route::get('staff/export', [\App\Http\Controllers\Admin\DistrictStaffController::class, 'export'])->name('staff.export');
     Route::get('donations/export', [\App\Http\Controllers\Admin\AdminDonationController::class, 'export'])->name('donations.export');
     Route::resource('notifications', \App\Http\Controllers\Admin\AdminNotificationController::class);
     Route::post('elections/{election}/activate', [\App\Http\Controllers\Admin\AdminElectionController::class, 'activate'])->name('elections.activate');
