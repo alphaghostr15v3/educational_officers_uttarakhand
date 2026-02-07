@@ -53,7 +53,7 @@ class MemberRegisterController extends Controller
             'mobile' => $data['mobile'],
             'division_id' => $data['division_id'],
             'district_id' => $data['district_id'],
-            'is_active' => false, // Require admin activation
+            'is_active' => true, // Activating by default for now
         ]);
     }
 }

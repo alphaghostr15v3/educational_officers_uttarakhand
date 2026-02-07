@@ -69,4 +69,10 @@ class HomeController extends Controller
 
         return back()->with('success', 'Thank you for your contribution! Receipt No: ' . $validated['receipt_number']);
     }
+
+    public function gallery()
+    {
+        $photos = \App\Models\Gallery::where('is_active', true)->latest()->paginate(16);
+        return view('public.gallery', compact('photos'));
+    }
 }

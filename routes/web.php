@@ -12,6 +12,7 @@ Route::get('/officers', [HomeController::class, 'officers'])->name('officers');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/donation', [HomeController::class, 'donation'])->name('donation');
 Route::post('/donation', [HomeController::class, 'processDonation'])->name('donation.process');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
 // Tools Routes
 Route::prefix('tools')->name('tools.')->group(function () {
@@ -52,19 +53,94 @@ Route::prefix('employee')->name('employee.')->group(function () {
     // Dashboard (Protected)
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Employee\EmployeeDashboardController::class, 'index'])->name('dashboard');
+        
+        // Profile Routes
+        Route::get('/profile', [\App\Http\Controllers\Employee\EmployeeProfileController::class, 'index'])->name('profile');
+        Route::post('/profile', [\App\Http\Controllers\Employee\EmployeeProfileController::class, 'update'])->name('profile.update');
+
+        // Service Book Routes
+        Route::get('/service-book', [\App\Http\Controllers\Employee\EmployeeServiceBookController::class, 'index'])->name('service-book');
+        Route::get('/service-book/correction', [\App\Http\Controllers\Employee\EmployeeServiceBookController::class, 'requestCorrection'])->name('service-book.correction');
+        // Leave Routes
+        Route::get('/leaves', [\App\Http\Controllers\Employee\EmployeeLeaveController::class, 'index'])->name('leaves.index');
+        Route::get('/leaves/create', [\App\Http\Controllers\Employee\EmployeeLeaveController::class, 'create'])->name('leaves.create');
+        Route::post('/leaves', [\App\Http\Controllers\Employee\EmployeeLeaveController::class, 'store'])->name('leaves.store');
+
+        // Transfer Routes
+        Route::get('/transfers', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'index'])->name('transfers.index');
+        Route::get('/transfers/create', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'create'])->name('transfers.create');
+        Route::post('/transfers', [\App\Http\Controllers\Employee\EmployeeTransferController::class, 'store'])->name('transfers.store');
     });
 });
+
+// School Routes
+Route::prefix('school')->name('school.')->group(function () {
+    // Auth Routes
+    Route::get('/login', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'login']);
+
+    // Dashboard (Protected)
+    Route::middleware(['auth', 'school'])->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\School\SchoolDashboardController::class, 'index'])->name('dashboard');
+        
+        // Staff Management
+        Route::resource('staff', \App\Http\Controllers\School\SchoolStaffController::class);
+        
+        // Student Strength
+        Route::get('/students', [\App\Http\Controllers\School\SchoolStudentStrengthController::class, 'index'])->name('students.index');
+        Route::post('/students', [\App\Http\Controllers\School\SchoolStudentStrengthController::class, 'update'])->name('students.update');
+        
+        // Infrastructure
+        Route::get('/infrastructure', [\App\Http\Controllers\School\SchoolInfrastructureController::class, 'index'])->name('infrastructure.index');
+        Route::post('/infrastructure', [\App\Http\Controllers\School\SchoolInfrastructureController::class, 'update'])->name('infrastructure.update');
+        
+        // Placeholders for now for other services
+        // Transfer Application
+        Route::get('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'create'])->name('transfers.create');
+        Route::post('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'store'])->name('transfers.store');
+
+        // Leave Application
+        Route::get('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'create'])->name('leaves.create');
+        Route::post('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'store'])->name('leaves.store');
+
+        // Documents
+        Route::resource('documents', \App\Http\Controllers\School\SchoolDocumentController::class)->only(['index', 'store', 'destroy']);
+
+        // Circulars
+        Route::get('/circulars', [\App\Http\Controllers\School\SchoolCircularController::class, 'index'])->name('circulars.index');
+        Route::get('/circulars/{circular}', [\App\Http\Controllers\School\SchoolCircularController::class, 'show'])->name('circulars.show');
+        
+        Route::post('/logout', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'logout'])->name('logout');
+    });
+});
+
 
 // Admin Routes (Protected)
 Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
+    
+    // School Management (District Admin)
+    Route::resource('schools', \App\Http\Controllers\Admin\DistrictSchoolController::class);
+    Route::resource('staff', \App\Http\Controllers\Admin\DistrictStaffController::class);
+    Route::resource('transfers', \App\Http\Controllers\Admin\AdminTransferController::class);
+    Route::post('transfers/{transfer}/status', [\App\Http\Controllers\Admin\AdminTransferController::class, 'updateStatus'])->name('transfers.status.update');
+    Route::resource('promotions', \App\Http\Controllers\Admin\AdminPromotionController::class);
+    Route::post('promotions/{promotion}/status', [\App\Http\Controllers\Admin\AdminPromotionController::class, 'updateStatus'])->name('promotions.status.update');
+    Route::get('/vacancies', [\App\Http\Controllers\Admin\AdminVacancyController::class, 'index'])->name('vacancy.index');
+    Route::resource('leaves', \App\Http\Controllers\Admin\AdminLeaveController::class);
     Route::resource('officers', \App\Http\Controllers\Admin\AdminOfficerController::class);
     Route::resource('orders', \App\Http\Controllers\Admin\AdminOrderController::class);
     Route::resource('circulars', \App\Http\Controllers\Admin\AdminCircularController::class);
+    Route::resource('gallery', \App\Http\Controllers\Admin\AdminGalleryController::class)->except(['show', 'edit', 'update']);
+    Route::post('gallery/{gallery}/toggle', [\App\Http\Controllers\Admin\AdminGalleryController::class, 'toggleStatus'])->name('gallery.toggle');
     Route::resource('news', \App\Http\Controllers\Admin\AdminNewsController::class);
     Route::resource('seniority', \App\Http\Controllers\Admin\AdminSeniorityController::class);
     Route::resource('portal-forms', \App\Http\Controllers\Admin\AdminPortalFormController::class);
     Route::resource('elections', \App\Http\Controllers\Admin\AdminElectionController::class);
+    Route::resource('election-duties', \App\Http\Controllers\Admin\AdminElectionDutyController::class);
+    Route::get('staff/export', [\App\Http\Controllers\Admin\DistrictStaffController::class, 'export'])->name('staff.export');
+    Route::get('donations/export', [\App\Http\Controllers\Admin\AdminDonationController::class, 'export'])->name('donations.export');
+    Route::resource('notifications', \App\Http\Controllers\Admin\AdminNotificationController::class);
     Route::post('elections/{election}/activate', [\App\Http\Controllers\Admin\AdminElectionController::class, 'activate'])->name('elections.activate');
     Route::post('elections/{election}/candidates', [\App\Http\Controllers\Admin\AdminElectionController::class, 'addCandidate'])->name('elections.candidates.add');
 
@@ -92,4 +168,8 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+    // Profile Routes
+    Route::get('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
+    Route::post('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
 });

@@ -68,12 +68,14 @@
 <div class="news-ticker">
     <div class="container d-flex">
         <div class="fw-bold pe-3" style="background: var(--uk-green); z-index: 2; position: relative;">LATEST NEWS:</div>
-        <div class="ticker-content flex-grow-1">
-            @forelse($news as $item)
-                <span class="me-5">🚩 {{ $item->title }}</span>
-            @empty
-                <span class="me-5">🚩 Welcome to the Educational Ministerial Officers Portal, Uttarakhand.</span>
-            @endforelse
+        <div class="ticker-content flex-grow-1 overflow-hidden" style="white-space: nowrap;">
+            <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                @forelse($news as $item)
+                    <span class="me-5 text-white">🚩 {{ $item->title }} ({{ \Carbon\Carbon::parse($item->publish_date)->format('d-m-Y') }})</span>
+                @empty
+                    <span class="me-5 text-white">🚩 Welcome to the Educational Ministerial Officers Portal, Uttarakhand. Stay tuned for latest updates.</span>
+                @endforelse
+            </marquee>
         </div>
     </div>
 </div>
@@ -133,26 +135,30 @@
         <!-- Sidebar Notice Board -->
         <div class="col-md-4">
             <div class="notice-board h-100">
-                <h4 class="fw-bold mb-4 text-center border-bottom pb-2">Notice Board</h4>
-                <div class="notice-item">
-                    <span class="badge bg-danger mb-1">New</span>
-                    <p class="mb-1 small">Submission of data for upcoming state level elections ends on Friday.</p>
-                    <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> Oct 24, 2024</span>
-                </div>
-                <div class="notice-item">
-                    <p class="mb-1 small">Mandatory verification of employee code for all district officers.</p>
-                    <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> Oct 22, 2024</span>
-                </div>
-                <div class="notice-item">
-                    <p class="mb-1 small">Holiday List for 2025 has been uploaded in circulars.</p>
-                    <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> Oct 20, 2024</span>
-                </div>
-                <div class="notice-item">
-                    <p class="mb-1 small">Guidelines for online donation submission through the portal.</p>
-                    <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> Oct 18, 2024</span>
-                </div>
+                <h4 class="fw-bold mb-4 text-center border-bottom pb-2">Latest Updates</h4>
+                @php
+                    $regular_news = \App\Models\News::where('is_published', true)->latest()->take(6)->get();
+                @endphp
+                @forelse($regular_news as $notice)
+                    <div class="notice-item p-2 border-bottom">
+                        @if($notice->created_at->diffInDays() < 3)
+                            <span class="badge bg-danger mb-1">New</span>
+                        @endif
+                        <h6 class="mb-1 fw-bold" style="font-size: 0.9rem;">{{ $notice->title }}</h6>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> {{ $notice->publish_date }}</span>
+                            @if($notice->image)
+                                <a href="{{ asset('storage/' . $notice->image) }}" target="_blank" class="small text-primary text-decoration-none">View Image</a>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-4">
+                        <p class="text-muted small">No active notices at the moment.</p>
+                    </div>
+                @endforelse
                 <div class="mt-4 text-center">
-                    <a href="#" class="btn btn-dark btn-sm px-4">View All Notices</a>
+                    <a href="{{ route('orders') }}" class="btn btn-dark btn-sm px-4">View All Archive</a>
                 </div>
             </div>
         </div>

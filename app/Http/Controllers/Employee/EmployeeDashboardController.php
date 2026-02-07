@@ -30,17 +30,19 @@ class EmployeeDashboardController extends Controller
     {
         $user = auth()->user();
         
-        // Get recent items relevant to the employee
-        $recent_orders = Order::orderBy('updated_at', 'desc')->limit(5)->get();
-        $recent_news = News::orderBy('updated_at', 'desc')->limit(5)->get();
-        
         $stats = [
-            'total_orders' => Order::count(),
-            'total_circulars' => Circular::count(),
-            'total_seniority_lists' => SeniorityList::count(),
-            'total_news' => News::count(),
+            'pending_leaves' => \App\Models\Leave::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'pending_transfers' => \App\Models\Transfer::where('user_id', $user->id)->where('status', 'pending')->count(),
+            'total_circulars' => Circular::where('is_published', true)->count(),
+            'active_duties' => \App\Models\ElectionDuty::where('user_id', $user->id)->where('status', 'assigned')->count(),
         ];
 
-        return view('employee.dashboard', compact('stats', 'recent_orders', 'recent_news'));
+        $recent_circulars = Circular::where('is_published', true)->latest()->take(5)->get();
+        $recent_orders = Order::latest()->take(5)->get();
+        $active_election_duties = \App\Models\ElectionDuty::where('user_id', $user->id)
+            ->where('status', 'assigned')
+            ->get();
+
+        return view('employee.dashboard', compact('stats', 'recent_circulars', 'recent_orders', 'active_election_duties'));
     }
 }

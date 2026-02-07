@@ -147,17 +147,29 @@
                 <li class="{{ request()->is('employee/dashboard') ? 'active' : '' }}">
                     <a href="{{ route('employee.dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-user"></i> My Profile</a>
+                <li class="{{ request()->routeIs('employee.service-book*') ? 'active' : '' }}">
+                    <a href="{{ route('service-book') }}"><i class="fas fa-book"></i> My Service Book</a>
+                </li>
+                <li class="{{ request()->routeIs('employee.profile') ? 'active' : '' }}">
+                    <a href="{{ route('employee.profile') }}"><i class="fas fa-user-cog"></i> Profile Settings</a>
                 </li>
                 <li>
-                    <a href="{{ route('orders') }}"><i class="fas fa-file-alt"></i> Official Orders</a>
+                    <a href="{{ route('orders') }}"><i class="fas fa-file-pdf"></i> Official Orders</a>
                 </li>
                 <li>
-                    <a href="{{ route('seniority') }}"><i class="fas fa-list-ol"></i> Seniority Lists</a>
+                    <a href="{{ route('seniority') }}"><i class="fas fa-list-numbered"></i> Seniority Lists</a>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-bullhorn"></i> Circulars</a>
+                <li class="{{ request()->routeIs('employee.leaves*') ? 'active' : '' }}">
+                    <a href="{{ route('employee.leaves.index') }}"><i class="fas fa-calendar-check"></i> My Leaves</a>
+                </li>
+                <li class="{{ request()->routeIs('employee.transfers*') ? 'active' : '' }}">
+                    <a href="{{ route('employee.transfers.index') }}"><i class="fas fa-exchange-alt"></i> My Transfers</a>
+                </li>
+                <li class="{{ request()->is('school/circulars*') ? 'active' : '' }}">
+                    <a href="{{ route('school.circulars.index') }}"><i class="fas fa-bullhorn"></i> Circulars</a>
+                </li>
+                <li class="{{ request()->routeIs('employee.notifications*') ? 'active' : '' }}">
+                    <a href="#"><i class="fas fa-bell"></i> My Notifications</a>
                 </li>
                 <li class="mt-4">
                     <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -180,6 +192,57 @@
                     </button>
 
                     <div class="ms-auto d-flex align-items-center">
+                        @php
+                            $notifications = \App\Models\Notification::where(function($q) {
+                                $q->where('target_role', auth()->user()->role)
+                                  ->orWhere('user_id', auth()->id())
+                                  ->orWhereNull('target_role');
+                            })->latest()->take(5)->get();
+                            $unreadCount = \App\Models\Notification::where(function($q) {
+                                $q->where('target_role', auth()->user()->role)
+                                  ->orWhere('user_id', auth()->id())
+                                  ->orWhereNull('target_role');
+                            })->where('is_read', false)->count();
+                        @endphp
+
+                        <div class="dropdown me-3">
+                            <a href="#" class="text-dark position-relative" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell fs-5"></i>
+                                @if($unreadCount > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                                        {{ $unreadCount }}
+                                    </span>
+                                @endif
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 p-0" style="width: 300px;">
+                                <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
+                                    <h6 class="mb-0 fw-bold">Recent Updates</h6>
+                                </div>
+                                <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                                    @forelse($notifications as $notif)
+                                        <div class="p-3 border-bottom {{ $notif->is_read ? '' : 'bg-white' }}">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <div class="bg-{{ $notif->type }} bg-opacity-10 p-2 rounded">
+                                                        <i class="fas fa-info-circle text-{{ $notif->type }}"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="fw-bold small">{{ $notif->title }}</div>
+                                                    <div class="text-muted small" style="font-size: 0.8rem;">{{ $notif->message }}</div>
+                                                    <small class="text-muted" style="font-size: 0.7rem;">{{ $notif->created_at->diffForHumans() }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="p-4 text-center text-muted">
+                                            <small>No new notifications</small>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="dropdown profile-dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown">
                                 <span class="me-2 d-none d-sm-inline">{{ auth()->user()->name }}</span>

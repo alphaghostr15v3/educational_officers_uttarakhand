@@ -3,6 +3,41 @@
 @section('page_title', 'Donation Records')
 
 @section('admin_content')
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body">
+                <h6 class="text-uppercase small fw-bold opacity-75">Total Collected</h6>
+                <h3 class="mb-0 fw-bold">₹ {{ number_format($stats['total_amount'], 2) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-success text-white">
+            <div class="card-body">
+                <h6 class="text-uppercase small fw-bold opacity-75">Completed Donors</h6>
+                <h3 class="mb-0 fw-bold">{{ number_format($stats['total_count']) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body">
+                <h6 class="text-uppercase small fw-bold opacity-75">Pending Payouts</h6>
+                <h3 class="mb-0 fw-bold">₹ {{ number_format($stats['pending_amount'], 2) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body">
+                <h6 class="text-uppercase small fw-bold opacity-75">Current Area Total</h6>
+                <h3 class="mb-0 fw-bold">₹ {{ number_format($stats['district_total'], 2) }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card table-card mb-4">
     <div class="card-header bg-white py-3">
         <h6 class="fw-bold mb-0">Donation Filter</h6>
@@ -37,7 +72,7 @@
 <div class="card table-card">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h6 class="fw-bold mb-0">Welfare Contributions</h6>
-        <button class="btn btn-outline-success btn-sm"><i class="fas fa-file-excel me-1"></i> Export Excel</button>
+        <a href="{{ route('admin.donations.export') }}" class="btn btn-outline-success btn-sm"><i class="fas fa-file-csv me-1"></i> Export CSV</a>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
