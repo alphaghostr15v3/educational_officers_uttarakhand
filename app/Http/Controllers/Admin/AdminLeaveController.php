@@ -15,11 +15,11 @@ class AdminLeaveController extends Controller
         $query = Leave::with('user');
 
         if ($user->role === 'district_admin') {
-            $query->whereHas('user', function($q) use ($user) {
+            $query->whereHas('user.staff.school', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
             });
         } elseif ($user->role === 'division_admin') {
-            $query->whereHas('user', function($q) use ($user) {
+            $query->whereHas('user.staff.school', function($q) use ($user) {
                 $q->where('division_id', $user->division_id);
             });
         }
@@ -32,12 +32,16 @@ class AdminLeaveController extends Controller
     {
         // Admins can also record leave for employees manually if needed
         $user = auth()->user();
-        $usersQuery = User::where('role', 'employee');
+        $usersQuery = User::where('role', 'officer')->with('staff.school');
         
         if ($user->role === 'district_admin') {
-            $usersQuery->where('district_id', $user->district_id);
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('district_id', $user->district_id);
+            });
         } elseif ($user->role === 'division_admin') {
-            $usersQuery->where('division_id', $user->division_id);
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('division_id', $user->division_id);
+            });
         }
 
         $users = $usersQuery->get();

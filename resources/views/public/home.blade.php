@@ -173,5 +173,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Photo Gallery Section -->
+    @if(isset($gallery_photos) && $gallery_photos->count() > 0)
+    <div class="row g-4 mt-5">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h3 class="fw-bold border-start border-4 border-danger ps-3 mb-0">Photo Gallery</h3>
+                <a href="{{ route('gallery') }}" class="btn btn-outline-danger btn-sm">View All Photos</a>
+            </div>
+            <div class="row g-3">
+                @foreach($gallery_photos as $photo)
+                    <div class="col-md-3 col-6">
+                        <div class="gallery-item-home position-relative overflow-hidden rounded shadow-sm h-100">
+                            <a href="{{ asset('storage/' . $photo->image_path) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $photo->image_path) }}" class="img-fluid w-100" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
+                            </a>
+                            <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 small text-truncate">
+                                {{ $photo->title }}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <style>
+        .gallery-item-home img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    @endif
 </div>
+
+<!-- News Popup Modal -->
+@if(isset($popup_news) && $popup_news)
+<div class="modal fade" id="newsPopupModal" tabindex="-1" aria-labelledby="newsPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="newsPopupLabel">
+                    <i class="fas fa-bell me-2"></i> Latest Update
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                @if($popup_news->image)
+                    <img src="{{ asset('storage/' . $popup_news->image) }}" class="img-fluid w-100" alt="{{ $popup_news->title }}" style="max-height: 400px; object-fit: cover;">
+                @endif
+                <div class="p-4">
+                    <h4 class="fw-bold mb-3">{{ $popup_news->title }}</h4>
+                    <div class="text-muted mb-3 small">
+                        <i class="far fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($popup_news->publish_date)->format('d M, Y') }}
+                    </div>
+                    <div class="news-content">
+                        {!! Str::limit(strip_tags($popup_news->content), 300) !!}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light justify-content-center">
+                <a href="{{ route('orders') }}" class="btn btn-outline-danger fw-bold rounded-pill px-4">View All Updates</a>
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var newsModal = new bootstrap.Modal(document.getElementById('newsPopupModal'));
+        newsModal.show();
+    });
+</script>
+@endif
+
 @endsection

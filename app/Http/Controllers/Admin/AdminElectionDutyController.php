@@ -14,14 +14,14 @@ class AdminElectionDutyController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $query = ElectionDuty::with(['user.district', 'user.school']);
+        $query = ElectionDuty::with(['user.district', 'user.staff.school']);
 
         if ($user->role === 'district_admin') {
-            $query->whereHas('user', function ($q) use ($user) {
+            $query->whereHas('user.staff.school', function ($q) use ($user) {
                 $q->where('district_id', $user->district_id);
             });
         } elseif ($user->role === 'division_admin') {
-            $query->whereHas('user', function ($q) use ($user) {
+            $query->whereHas('user.staff.school', function ($q) use ($user) {
                 $q->where('division_id', $user->division_id);
             });
         }
@@ -33,10 +33,12 @@ class AdminElectionDutyController extends Controller
     public function create()
     {
         $user = auth()->user();
-        $query = User::where('role', 'employee');
+        $query = User::where('role', 'officer')->with('staff.school');
 
         if ($user->role === 'district_admin') {
-            $query->where('district_id', $user->district_id);
+            $query->whereHas('staff.school', function ($q) use ($user) {
+                $q->where('district_id', $user->district_id);
+            });
         }
 
         $employees = $query->get();
@@ -69,13 +71,15 @@ class AdminElectionDutyController extends Controller
         $user = auth()->user();
         
         // Authorization check
-        if ($user->role === 'district_admin' && $election_duty->user->district_id !== $user->district_id) {
+        if ($user->role === 'district_admin' && $election_duty->user->staff->school->district_id !== $user->district_id) {
             abort(403);
         }
 
-        $query = User::where('role', 'employee');
+        $query = User::where('role', 'officer')->with('staff.school');
         if ($user->role === 'district_admin') {
-            $query->where('district_id', $user->district_id);
+            $query->whereHas('staff.school', function ($q) use ($user) {
+                $q->where('district_id', $user->district_id);
+            });
         }
         $employees = $query->get();
 

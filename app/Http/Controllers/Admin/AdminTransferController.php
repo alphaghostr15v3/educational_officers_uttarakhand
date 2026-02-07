@@ -14,39 +14,40 @@ class AdminTransferController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $query = Transfer::with(['user', 'fromSchool', 'toSchool']);
+        
+        $query = Transfer::with(['user', 'fromOffice', 'toOffice']);
 
         if ($user->role === 'district_admin') {
-            // District Admin sees pending requests from their district
             $query->whereHas('user', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
-            })->where('status', Transfer::STATUS_PENDINGDistrict);
+            });
         } elseif ($user->role === 'division_admin') {
-            // Division Admin sees requests forwarded by districts in their division
             $query->whereHas('user', function($q) use ($user) {
                 $q->where('division_id', $user->division_id);
-            })->where('status', Transfer::STATUS_DISTRICT_FORWARDED);
-        } elseif ($user->role === 'state_admin') {
-            // State Admin sees requests recommended by divisions
-            $query->where('status', Transfer::STATUS_DIVISION_RECOMMENDED);
-        }
-        // State Admin or Super Admins might want to see all sometimes, but for workflow we focus on relevant
+            });
+        } 
+        // State Admin sees all
 
         $transfers = $query->latest()->paginate(15);
+
         return view('admin.transfers.index', compact('transfers'));
     }
 
     public function create()
     {
         $user = auth()->user();
-        $usersQuery = User::where('role', 'employee');
+        $usersQuery = User::where('role', 'officer')->with('staff');
         $officesQuery = School::query();
 
         if ($user->role === 'district_admin') {
-            $usersQuery->where('district_id', $user->district_id);
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('district_id', $user->district_id);
+            });
             $officesQuery->where('district_id', $user->district_id);
         } elseif ($user->role === 'division_admin') {
-            $usersQuery->where('division_id', $user->division_id);
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('division_id', $user->division_id);
+            });
             $officesQuery->where('division_id', $user->division_id);
         }
 
@@ -60,15 +61,27 @@ class AdminTransferController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'from_office_id' => 'required|exists:schools,id',
-            'to_office_id' => 'required|exists:schools,id|different:from_office_id',
+            'from_school_id' => 'required|exists:schools,id',
+            'to_school_id' => 'required|exists:schools,id|different:from_school_id',
             'reason' => 'required|string',
             'status' => 'required|in:pending,approved,rejected',
         ]);
 
-        $transfer = Transfer::create($validated);
-        
-        return redirect()->route('admin.transfers.index')->with('success', 'Transfer request created successfully.');
+        try {
+            $transfer = Transfer::create($validated);
+            
+            if ($transfer->status === 'approved') {
+                $staff = \App\Models\Staff::where('user_id', $transfer->user_id)->first();
+                if ($staff) {
+                    $staff->update(['school_id' => $transfer->to_school_id]);
+                }
+            }
+
+            return redirect()->route('admin.transfers.index')->with('success', 'Transfer request created successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Transfer Creation Failed: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to create transfer: ' . $e->getMessage());
+        }
     }
 
     public function updateStatus(Request $request, Transfer $transfer)

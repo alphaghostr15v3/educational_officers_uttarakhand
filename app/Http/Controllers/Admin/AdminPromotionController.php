@@ -34,8 +34,20 @@ class AdminPromotionController extends Controller
 
     public function create()
     {
-        // Get employees to promote
-        $users = User::where('role', 'employee')->get();
+        $user = auth()->user();
+        $usersQuery = User::where('role', 'officer')->with('staff.school');
+
+        if ($user->role === 'district_admin') {
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('district_id', $user->district_id);
+            });
+        } elseif ($user->role === 'division_admin') {
+            $usersQuery->whereHas('staff.school', function($q) use ($user) {
+                $q->where('division_id', $user->division_id);
+            });
+        }
+
+        $users = $usersQuery->get();
         return view('admin.promotions.create', compact('users'));
     }
 
@@ -57,6 +69,8 @@ class AdminPromotionController extends Controller
             $file->move(public_path('uploads/promotions'), $filename);
             $validated['file_path'] = $filename;
         }
+
+        unset($validated['file']); // Remove file object from array to prevent DB column error
 
         $promotion = Promotion::create($validated);
 
@@ -113,7 +127,7 @@ class AdminPromotionController extends Controller
             return redirect()->route('admin.promotions.index')->with('error', 'Only pending promotions can be edited.');
         }
 
-        $users = User::where('role', 'employee')->get();
+        $users = User::where('role', 'officer')->get();
         return view('admin.promotions.edit', compact('promotion', 'users'));
     }
 
@@ -144,6 +158,8 @@ class AdminPromotionController extends Controller
             $file->move(public_path('uploads/promotions'), $filename);
             $validated['file_path'] = $filename;
         }
+
+        unset($validated['file']);
 
         $promotion->update($validated);
 

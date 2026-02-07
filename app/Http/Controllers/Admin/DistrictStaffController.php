@@ -70,7 +70,7 @@ class DistrictStaffController extends Controller
             'email' => $validated['email'],
             'password' => \Illuminate\Support\Facades\Hash::make('password123'), // Default password
             'mobile' => $validated['mobile'],
-            'role' => 'employee',
+            'role' => 'officer',
             'is_active' => true,
         ]);
 

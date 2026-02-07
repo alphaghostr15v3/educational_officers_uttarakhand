@@ -25,11 +25,11 @@
                     @forelse($transfers as $transfer)
                     <tr>
                         <td class="px-4">
-                            <div class="fw-bold">{{ $transfer->user->name ?? 'N/A' }}</div>
+                            <div class="fw-bold">{{ $transfer->user?->name ?? 'N/A' }}</div>
                             <small class="text-muted">ID: {{ $transfer->user_id }}</small>
                         </td>
-                        <td>{{ $transfer->fromOffice->name ?? '-' }}</td>
-                        <td>{{ $transfer->toOffice->name ?? '-' }}</td>
+                        <td>{{ $transfer->fromOffice?->name ?? '-' }}</td>
+                        <td>{{ $transfer->toOffice?->name ?? '-' }}</td>
                         <td>{{ Str::limit($transfer->reason, 30) }}</td>
                         <td>
                             @if($transfer->status === 'approved')

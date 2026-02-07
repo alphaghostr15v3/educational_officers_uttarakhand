@@ -33,7 +33,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="publish_date" class="form-label fw-bold">Publish Date</label>
-                            <input type="date" class="form-control @error('publish_date') is-invalid @enderror" id="publish_date" name="publish_date" value="{{ old('publish_date', $news->publish_date) }}" required>
+                            <input type="date" class="form-control @error('publish_date') is-invalid @enderror" id="publish_date" name="publish_date" value="{{ old('publish_date', \Carbon\Carbon::parse($news->publish_date)->format('Y-m-d')) }}" required>
                             @error('publish_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -53,13 +53,13 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="is_ticker" name="is_ticker" {{ old('is_ticker', $news->is_ticker) ? 'checked' : '' }}>
+                                <input class="form-check-input" type="checkbox" id="is_ticker" name="is_ticker" value="1" {{ old('is_ticker', $news->is_ticker) ? 'checked' : '' }}>
                                 <label class="form-check-label fw-bold" for="is_ticker">Show in News Ticker</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
+                                <input class="form-check-input" type="checkbox" id="is_published" name="is_published" value="1" {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
                                 <label class="form-check-label fw-bold" for="is_published">Published</label>
                             </div>
                         </div>

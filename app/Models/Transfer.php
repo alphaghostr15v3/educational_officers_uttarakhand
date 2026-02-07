@@ -39,20 +39,10 @@ class Transfer extends Model
 
     public function fromOffice()
     {
-        return $this->belongsTo(School::class, 'from_office_id');
-    }
-
-    public function toOffice()
-    {
-        return $this->belongsTo(School::class, 'to_office_id');
-    }
-
-    public function fromSchool()
-    {
         return $this->belongsTo(School::class, 'from_school_id');
     }
 
-    public function toSchool()
+    public function toOffice()
     {
         return $this->belongsTo(School::class, 'to_school_id');
     }

@@ -10,16 +10,30 @@
                 <h5 class="mb-0 fw-bold">Transfer Details</h5>
             </div>
             <div class="card-body p-4">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('admin.transfers.store') }}" method="POST">
                     @csrf
                     
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label fw-bold small text-uppercase text-muted">Select Employee <span class="text-danger">*</span></label>
-                            <select name="user_id" class="form-select" required>
+                            <select name="user_id" id="employee_select" class="form-select" required>
                                 <option value="" disabled selected>Choose Employee</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    <option value="{{ $user->id }}" data-school-id="{{ $user->staff->school_id ?? '' }}">
+                                        {{ $user->name }} ({{ $user->email }}) 
+                                        @if(isset($user->staff->school))
+                                            - {{ $user->staff->school->name }}
+                                        @endif
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -28,7 +42,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Current Office <span class="text-danger">*</span></label>
-                            <select name="from_office_id" class="form-select" required>
+                            <select name="from_school_id" id="from_office_select" class="form-select" required>
                                 <option value="" disabled selected>Select Current Office</option>
                                 @foreach($offices as $office)
                                     <option value="{{ $office->id }}">{{ $office->name }}</option>
@@ -37,8 +51,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Transferred To <span class="text-danger">*</span></label>
-                            <select name="to_office_id" class="form-select" required>
-                                <option value="" disabled selected>Select Logic/Dest Office</option>
+                            <select name="to_school_id" class="form-select" required>
+                                <option value="" disabled selected>Select Target Office</option>
                                 @foreach($offices as $office)
                                     <option value="{{ $office->id }}">{{ $office->name }}</option>
                                 @endforeach
@@ -54,7 +68,7 @@
                     <div class="mb-4">
                          <label class="form-label fw-bold small text-uppercase text-muted">Initial Status</label>
                          <select name="status" class="form-select">
-                             <option value="pending">Pending Approval</option>
+                             <option value="pending">Pending Approval (Start Workflow)</option>
                              <option value="approved">Approved (Issue Immediately)</option>
                          </select>
                     </div>
@@ -68,4 +82,19 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.getElementById('employee_select').addEventListener('change', function() {
+        const schoolId = this.options[this.selectedIndex].getAttribute('data-school-id');
+        const fromOfficeSelect = document.getElementById('from_office_select');
+        
+        if (schoolId) {
+            fromOfficeSelect.value = schoolId;
+        } else {
+            fromOfficeSelect.value = "";
+        }
+    });
+</script>
+@endpush
 @endsection

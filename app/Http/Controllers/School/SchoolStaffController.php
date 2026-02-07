@@ -43,7 +43,7 @@ class SchoolStaffController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make('password123'), // Default
             'mobile' => $validated['mobile'],
-            'role' => 'employee',
+            'role' => 'officer',
             'school_id' => $school->id, // If they are associated with this school
             'employee_code' => $validated['employee_code'],
             'is_active' => true,

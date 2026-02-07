@@ -13,7 +13,7 @@ class EmployeeNotificationController extends Controller
         $user = auth()->user();
         $notifications = Notification::where(function($query) use ($user) {
                 $query->where('target_role', 'all')
-                      ->orWhere('target_role', 'employee')
+                      ->orWhere('target_role', 'officer')
                       ->orWhere('user_id', $user->id);
             })
             ->latest()
@@ -24,7 +24,7 @@ class EmployeeNotificationController extends Controller
 
     public function markAsRead(Notification $notification)
     {
-        if ($notification->user_id === auth()->id() || $notification->target_role === 'all' || $notification->target_role === 'employee') {
+        if ($notification->user_id === auth()->id() || $notification->target_role === 'all' || $notification->target_role === 'officer') {
             // In a real app, you might have a notification_user pivot table for 'all' notifications.
             // For now, let's just mark it if it's a direct notification.
             if ($notification->user_id === auth()->id()) {
