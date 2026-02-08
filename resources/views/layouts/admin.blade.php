@@ -91,6 +91,9 @@
                          <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice"></i> Govt Orders
                         </a>
+                        <a href="{{ route('admin.work-forms.index') }}" class="nav-link {{ request()->routeIs('admin.work-forms.*') ? 'active' : '' }}">
+                            <i class="fas fa-folder-open"></i> Work Forms
+                        </a>
                     </div>
 
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">CMS (Website)</small>

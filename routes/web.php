@@ -13,6 +13,9 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/donation', [HomeController::class, 'donation'])->name('donation');
 Route::post('/donation', [HomeController::class, 'processDonation'])->name('donation.process');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
+Route::get('/work-forms', [\App\Http\Controllers\Public\WorkFormController::class, 'index'])->name('work-forms');
+Route::get('/work-forms/{workType}', [\App\Http\Controllers\Public\WorkFormController::class, 'byType'])->name('work-forms.by-type');
+
 
 // Tools Routes
 Route::prefix('tools')->name('tools.')->group(function () {
@@ -154,6 +157,7 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::post('ticker/{ticker}/toggle', [\App\Http\Controllers\Admin\AdminTickerController::class, 'toggleStatus'])->name('ticker.toggle');
     
     Route::resource('seniority', \App\Http\Controllers\Admin\AdminSeniorityController::class);
+    Route::resource('work-forms', \App\Http\Controllers\Admin\AdminWorkFormController::class);
     Route::resource('portal-forms', \App\Http\Controllers\Admin\AdminPortalFormController::class);
     Route::resource('elections', \App\Http\Controllers\Admin\AdminElectionController::class);
     Route::resource('election-duties', \App\Http\Controllers\Admin\AdminElectionDutyController::class);

@@ -93,27 +93,46 @@
 <!-- Main Content -->
 <div class="container my-5">
     <div class="row g-4">
-        <!-- Portal Forms Grid -->
-        <div class="col-md-12">
-            <h3 class="mb-4 fw-bold border-start border-4 border-warning ps-3">Important Downloads & Links</h3>
+
+        <!-- Work Forms Grid -->
+        <div class="col-md-12 mt-4">
+            <h3 class="mb-4 fw-bold border-start border-4 border-primary ps-3">Work Forms</h3>
             <div class="portal-grid mb-5">
-                @forelse($portal_forms as $form)
-                <a href="{{ $form->file_path ? asset('uploads/portal/forms/' . $form->file_path) : ($form->external_url ?? '#') }}" class="portal-grid-item" {{ $form->external_url ? 'target="_blank"' : '' }}>
+                @forelse($work_forms as $workType => $forms)
+                <a href="{{ route('work-forms.by-type', urlencode($workType)) }}" class="portal-grid-item">
                     <div class="icon-wrapper">
-                        @if($form->icon)
-                            <img src="{{ asset('uploads/portal/icons/' . $form->icon) }}" alt="{{ $form->title }}">
-                        @else
-                            <i class="fas fa-file-alt fa-2x text-muted"></i>
-                        @endif
+                        @php
+                            $icons = [
+                                'Forms' => 'fa-file-alt',
+                                'Pannat' => 'fa-clipboard-list',
+                                'Income Tax' => 'fa-calculator',
+                                'Pension Data' => 'fa-user-clock',
+                                'Government Orders' => 'fa-file-contract',
+                                'Promotion Orders' => 'fa-award',
+                                'House Rent Allowance' => 'fa-home',
+                                'Dearness Allowance Rent' => 'fa-money-bill-wave',
+                                'General Provident Fund' => 'fa-piggy-bank',
+                                'Transfer Orders' => 'fa-exchange-alt',
+                                'Seniority' => 'fa-list-ol',
+                                'Bulk List' => 'fa-list',
+                                'Tutorials' => 'fa-graduation-cap',
+                                'Ministerial Class' => 'fa-user-tie',
+                                'GIS Rate' => 'fa-chart-line',
+                                'Notification' => 'fa-bell',
+                                'Appointment Orders' => 'fa-user-plus',
+                                'Statutory Orders' => 'fa-gavel',
+                                'Upgrade Letter Orders' => 'fa-level-up-alt'
+                            ];
+                            $icon = $icons[$workType] ?? 'fa-file';
+                        @endphp
+                        <i class="fas {{ $icon }} fa-2x text-primary"></i>
                     </div>
-                    <div class="title-en">{{ $form->title }}</div>
-                    @if($form->hindi_title)
-                        <div class="title-hi">{{ $form->hindi_title }}</div>
-                    @endif
+                    <div class="title-en">{{ $workType }}</div>
+                    <div class="title-hi text-muted small">{{ $forms->count() }} {{ $forms->count() == 1 ? 'Document' : 'Documents' }}</div>
                 </a>
                 @empty
                 <div class="col-12 text-center py-5">
-                    <p class="text-muted">Portal content is being updated. Please check back later.</p>
+                    <p class="text-muted">Work forms are being updated. Please check back later.</p>
                 </div>
                 @endforelse
             </div>

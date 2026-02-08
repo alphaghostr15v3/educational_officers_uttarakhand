@@ -94,6 +94,9 @@
                             <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}" href="{{ route('gallery') }}">Gallery</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->is('seniority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
                         </li>
 
