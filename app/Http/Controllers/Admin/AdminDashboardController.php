@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Donation;
 use App\Models\User;
 use App\Models\Election;
+use App\Models\EmployeeBirthday;
 
 class AdminDashboardController extends Controller
 {
@@ -42,8 +43,16 @@ class AdminDashboardController extends Controller
             'donations_total' => $donationQuery->where('payment_status', 'completed')->sum('amount'),
             'users_count' => $userQuery->count(),
             'active_elections' => Election::where('status', 'active')->count(),
+            'total_birthdays' => EmployeeBirthday::count(),
+            'today_birthdays_count' => EmployeeBirthday::whereMonth('dob', now()->month)
+                                        ->whereDay('dob', now()->day)
+                                        ->count()
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        $today_birthdays = EmployeeBirthday::whereMonth('dob', now()->month)
+                                          ->whereDay('dob', now()->day)
+                                          ->get();
+
+        return view('admin.dashboard', compact('stats', 'today_birthdays'));
     }
 }

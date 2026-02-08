@@ -110,6 +110,9 @@
                         <a href="{{ route('admin.hero-slides.index') }}" class="nav-link {{ request()->routeIs('admin.hero-slides.*') ? 'active' : '' }}">
                             <i class="fas fa-camera"></i> Hero Sliders
                         </a>
+                        <a href="{{ route('admin.birthdays.index') }}" class="nav-link {{ request()->routeIs('admin.birthdays.*') ? 'active' : '' }}">
+                            <i class="fas fa-gift"></i> Birthday Slider
+                        </a>
                          <a href="{{ route('admin.portal-forms.index') }}" class="nav-link {{ request()->routeIs('admin.portal-forms.*') ? 'active' : '' }}">
                             <i class="fas fa-th"></i> Grid/Downloads
                         </a>

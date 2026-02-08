@@ -61,19 +61,46 @@
         <div class="card stat-card shadow-sm h-100 p-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="text-muted small text-uppercase fw-bold mb-1">Active Elections</h6>
-                    <h3 class="fw-bold mb-0">{{ number_format($stats['active_elections']) }}</h3>
+                    <h6 class="text-muted small text-uppercase fw-bold mb-1">Birthdays Today</h6>
+                    <h3 class="fw-bold mb-0 text-primary">{{ number_format($stats['today_birthdays_count']) }}</h3>
                 </div>
-                <div class="icon-box bg-danger-subtle text-danger">
-                    <i class="fas fa-vote-yea fa-lg"></i>
+                <div class="icon-box bg-purple-subtle text-purple" style="background-color: #f3e8ff; color: #7e22ce;">
+                    <i class="fas fa-gift fa-lg"></i>
                 </div>
             </div>
             <div class="mt-3 small">
-                <span class="text-danger fw-bold">Live Portal</span>
+                <span class="text-muted">Total: {{ $stats['total_birthdays'] }} entries</span>
             </div>
         </div>
     </div>
 </div>
+
+@if($today_birthdays->count() > 0)
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 bg-primary text-white p-4 overflow-hidden position-relative">
+            <div class="position-absolute end-0 top-0 p-4 opacity-25">
+                <i class="fas fa-birthday-cake fa-5x"></i>
+            </div>
+            <div class="position-relative z-index-2">
+                <h4 class="fw-bold mb-1">🎉 Today's Celebrations!</h4>
+                <p class="mb-3 opacity-75">Wishing a very Happy Birthday to our dedicated colleagues:</p>
+                <div class="d-flex flex-wrap gap-4">
+                    @foreach($today_birthdays as $birthday)
+                        <div class="d-flex align-items-center bg-white bg-opacity-10 rounded-pill px-3 py-2 border border-white border-opacity-25 animate__animated animate__fadeInLeft" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                            <img src="{{ $birthday->image_url }}" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover; border: 2px solid white;">
+                            <div>
+                                <div class="fw-bold small">{{ $birthday->name }}</div>
+                                <div class="opacity-75" style="font-size: 0.7rem;">{{ $birthday->designation }}</div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 <div class="row g-4">
     <!-- Quick Actions -->

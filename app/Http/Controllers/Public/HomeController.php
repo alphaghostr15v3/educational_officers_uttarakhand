@@ -22,7 +22,12 @@ class HomeController extends Controller
                                       })
                                       ->latest()
                                       ->first();
-        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms'));
+        $today_birthdays = \App\Models\EmployeeBirthday::where('is_active', true)
+                                      ->whereMonth('dob', now()->month)
+                                      ->whereDay('dob', now()->day)
+                                      ->get();
+
+        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'today_birthdays'));
     }
     public function officers()
     {
@@ -111,5 +116,14 @@ class HomeController extends Controller
     {
         $photos = \App\Models\Gallery::where('is_active', true)->latest()->paginate(16);
         return view('public.gallery', compact('photos'));
+    }
+
+    public function birthdays()
+    {
+        $today_birthdays = \App\Models\EmployeeBirthday::where('is_active', true)
+                                      ->whereMonth('dob', now()->month)
+                                      ->orderByRaw('DAY(dob) ASC')
+                                      ->get();
+        return view('public.birthdays', compact('today_birthdays'));
     }
 }
