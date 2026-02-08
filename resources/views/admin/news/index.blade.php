@@ -3,12 +3,13 @@
 @section('page_title', 'News & Notices Management')
 
 @section('admin_content')
-<div class="row mb-4">
+<div class="row mb-4 align-items-center">
     <div class="col-md-6">
         <h4 class="fw-bold"><i class="fas fa-newspaper me-2 text-primary"></i> News & Notices</h4>
+        <small class="text-muted">Manage news articles and announcements</small>
     </div>
     <div class="col-md-6 text-md-end">
-        <a href="{{ route('admin.news.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('admin.news.create') }}" class="btn btn-primary btn-sm shadow-sm">
             <i class="fas fa-plus me-1"></i> Publish News
         </a>
     </div>
@@ -21,7 +22,6 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="px-4">Title</th>
-                        <th>Type</th>
                         <th>Publish Date</th>
                         <th>Status</th>
                         <th class="text-end px-4">Actions</th>
@@ -45,13 +45,6 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            @if($item->is_ticker)
-                                <span class="badge bg-info text-dark">Ticker</span>
-                            @else
-                                <span class="badge bg-secondary">Regular</span>
-                            @endif
-                        </td>
                         <td>{{ \Carbon\Carbon::parse($item->publish_date)->format('d M, Y') }}</td>
                         <td>
                             <span class="badge {{ $item->is_published ? 'bg-success' : 'bg-warning text-dark' }}">
@@ -73,7 +66,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
+                        <td colspan="4" class="text-center py-5 text-muted">
                             <i class="fas fa-newspaper fa-3x mb-3"></i>
                             <h5>No news items found.</h5>
                         </td>

@@ -147,7 +147,14 @@
             <div class="notice-board h-100">
                 <h4 class="fw-bold mb-4 text-center border-bottom pb-2">Latest Updates</h4>
                 @php
-                    $regular_news = \App\Models\News::where('is_published', true)->latest()->take(6)->get();
+                    $regular_news = \App\Models\News::where('is_published', true)
+                                                    ->where(function($q) {
+                                                        $q->where('is_ticker', false)
+                                                          ->orWhereNull('is_ticker');
+                                                    })
+                                                    ->latest()
+                                                    ->take(6)
+                                                    ->get();
                 @endphp
                 @forelse($regular_news as $notice)
                     <div class="notice-item p-2 border-bottom">

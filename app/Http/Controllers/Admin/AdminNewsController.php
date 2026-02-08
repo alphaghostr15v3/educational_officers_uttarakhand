@@ -12,7 +12,11 @@ class AdminNewsController extends Controller
 {
     public function index()
     {
-        $news = News::latest()->paginate(10);
+        // Only show non-ticker news items
+        $news = News::where('is_ticker', false)
+                    ->orWhereNull('is_ticker')
+                    ->latest()
+                    ->paginate(10);
         return view('admin.news.index', compact('news'));
     }
 
@@ -27,7 +31,6 @@ class AdminNewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_ticker' => 'boolean',
             'publish_date' => 'required|date',
         ]);
 
@@ -37,9 +40,7 @@ class AdminNewsController extends Controller
 
         $validated['created_by'] = auth()->id();
         $validated['is_published'] = true;
-        
-        // Handle boolean fields from checkboxes
-        $validated['is_ticker'] = $request->has('is_ticker');
+        $validated['is_ticker'] = false; // News items are never tickers
 
         $news = News::create($validated);
 
@@ -59,7 +60,6 @@ class AdminNewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_ticker' => 'boolean',
             'publish_date' => 'required|date',
             'is_published' => 'boolean',
         ]);
@@ -71,8 +71,8 @@ class AdminNewsController extends Controller
             $validated['image'] = $request->file('image')->store('news', 'public');
         }
 
-        $validated['is_ticker'] = $request->has('is_ticker');
         $validated['is_published'] = $request->has('is_published');
+        $validated['is_ticker'] = false; // Ensure news items remain non-ticker
 
         $news->update($validated);
 

@@ -148,6 +148,11 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::resource('gallery', \App\Http\Controllers\Admin\AdminGalleryController::class)->except(['show', 'edit', 'update']);
     Route::post('gallery/{gallery}/toggle', [\App\Http\Controllers\Admin\AdminGalleryController::class, 'toggleStatus'])->name('gallery.toggle');
     Route::resource('news', \App\Http\Controllers\Admin\AdminNewsController::class);
+    
+    // News Ticker Management (Separate from News & Notices)
+    Route::resource('ticker', \App\Http\Controllers\Admin\AdminTickerController::class);
+    Route::post('ticker/{ticker}/toggle', [\App\Http\Controllers\Admin\AdminTickerController::class, 'toggleStatus'])->name('ticker.toggle');
+    
     Route::resource('seniority', \App\Http\Controllers\Admin\AdminSeniorityController::class);
     Route::resource('portal-forms', \App\Http\Controllers\Admin\AdminPortalFormController::class);
     Route::resource('elections', \App\Http\Controllers\Admin\AdminElectionController::class);

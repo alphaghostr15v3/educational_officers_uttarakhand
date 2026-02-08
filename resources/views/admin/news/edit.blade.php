@@ -50,19 +50,12 @@
                         </div>
                     </div>
 
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="is_ticker" name="is_ticker" value="1" {{ old('is_ticker', $news->is_ticker) ? 'checked' : '' }}>
-                                <label class="form-check-label fw-bold" for="is_ticker">Show in News Ticker</label>
-                            </div>
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_published" name="is_published" value="1" {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="is_published">Published</label>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="is_published" name="is_published" value="1" {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
-                                <label class="form-check-label fw-bold" for="is_published">Published</label>
-                            </div>
-                        </div>
+                        <div class="form-text mt-1">Uncheck to save as draft.</div>
                     </div>
 
                     <div class="d-grid gap-2">

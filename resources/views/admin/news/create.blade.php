@@ -46,14 +46,6 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="is_ticker" name="is_ticker" value="1" {{ old('is_ticker') ? 'checked' : '' }}>
-                            <label class="form-check-label fw-bold" for="is_ticker">Show in News Ticker (Homepage)</label>
-                        </div>
-                        <div class="form-text mt-1">Check this to display the news title in the scrolling bar on the main website.</div>
-                    </div>
-
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary py-2">
                             <i class="fas fa-paper-plane me-2"></i> Publish News

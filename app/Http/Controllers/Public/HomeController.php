@@ -9,12 +9,18 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $news = \App\Models\News::where('is_published', true)->where('is_ticker', true)->latest()->get();
+        $news = \App\Models\News::tickerOrdered()->get();
         $recent_orders = \App\Models\Order::where('is_published', true)->latest()->take(5)->get();
         $portal_forms = \App\Models\PortalForm::where('is_active', true)->orderBy('sort_order')->get();
         $hero_slides = \App\Models\HeroSlide::where('is_active', true)->orderBy('sort_order')->get();
         $gallery_photos = \App\Models\Gallery::where('is_active', true)->latest()->take(8)->get();
-        $popup_news = \App\Models\News::where('is_published', true)->latest()->first();
+        $popup_news = \App\Models\News::where('is_published', true)
+                                      ->where(function($q) {
+                                          $q->where('is_ticker', false)
+                                            ->orWhereNull('is_ticker');
+                                      })
+                                      ->latest()
+                                      ->first();
         return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news'));
     }
     public function officers()

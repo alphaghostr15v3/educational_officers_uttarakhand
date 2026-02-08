@@ -98,6 +98,9 @@
                          <a href="{{ route('admin.news.index') }}" class="nav-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}">
                             <i class="fas fa-newspaper"></i> News & Notices
                         </a>
+                        <a href="{{ route('admin.ticker.index') }}" class="nav-link {{ request()->routeIs('admin.ticker.*') ? 'active' : '' }}">
+                            <i class="fas fa-rss"></i> News Ticker
+                        </a>
                         <a href="{{ route('admin.gallery.index') }}" class="nav-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                             <i class="fas fa-images"></i> Photo Gallery
                         </a>
