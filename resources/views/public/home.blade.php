@@ -93,7 +93,7 @@
 <!-- Birthday Slider -->
 @if($today_birthdays && $today_birthdays->count() > 0)
 <div class="birthday-section full-width-slider">
-    <div id="birthdayCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="birthdayCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             @foreach($today_birthdays as $index => $birthday)
                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">

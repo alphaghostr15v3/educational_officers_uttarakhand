@@ -232,14 +232,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var myCarousel = document.querySelector('#heroCarousel');
-            if(myCarousel) {
-                var carousel = new bootstrap.Carousel(myCarousel, {
-                    interval: 5000,
+            // Initialize all carousels on the page
+            var carousels = document.querySelectorAll('.carousel');
+            carousels.forEach(function(carouselElement) {
+                var interval = carouselElement.getAttribute('data-bs-interval') || 5000;
+                new bootstrap.Carousel(carouselElement, {
+                    interval: parseInt(interval),
                     ride: 'carousel',
                     pause: 'hover'
                 });
-            }
+            });
         });
     </script>
     @stack('scripts')

@@ -115,12 +115,12 @@ Route::prefix('school')->name('school.')->group(function () {
         
         // Placeholders for now for other services
         // Transfer Application
-        Route::get('/transfers', [\App\Http\Controllers\School\SchoolTransferController::class, 'create'])->name('transfers.index');
+        Route::get('/transfers', [\App\Http\Controllers\School\SchoolTransferController::class, 'index'])->name('transfers.index');
         Route::get('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'create'])->name('transfers.create');
         Route::post('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'store'])->name('transfers.store');
 
         // Leave Application
-        Route::get('/leaves', [\App\Http\Controllers\School\SchoolLeaveController::class, 'create'])->name('leaves.index');
+        Route::get('/leaves', [\App\Http\Controllers\School\SchoolLeaveController::class, 'index'])->name('leaves.index');
         Route::get('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'create'])->name('leaves.create');
         Route::post('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'store'])->name('leaves.store');
 

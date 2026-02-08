@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class SchoolLeaveController extends Controller
 {
+    public function index()
+    {
+        $leaves = Leave::where('user_id', auth()->id())
+                        ->latest()
+                        ->paginate(10);
+        return view('school.leaves.index', compact('leaves'));
+    }
+
     public function create()
     {
         return view('school.leaves.create');

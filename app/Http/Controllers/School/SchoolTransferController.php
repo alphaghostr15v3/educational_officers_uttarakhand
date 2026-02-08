@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class SchoolTransferController extends Controller
 {
+    public function index()
+    {
+        $currentSchoolId = auth()->user()->school_id;
+        $transfers = Transfer::where('from_school_id', $currentSchoolId)
+                            ->with(['toSchool', 'user'])
+                            ->latest()
+                            ->paginate(10);
+        return view('school.transfers.index', compact('transfers'));
+    }
+
     public function create()
     {
         $currentSchoolId = auth()->user()->school_id;
