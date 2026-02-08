@@ -110,7 +110,7 @@ class AdminTransferController extends Controller
 
         $transfer->update([
             'status' => $status,
-            'admin_remarks' => $validated['admin_remarks'],
+            'admin_remarks' => $validated['admin_remarks'] ?? null,
         ]);
 
         if ($status === Transfer::STATUS_APPROVED) {
