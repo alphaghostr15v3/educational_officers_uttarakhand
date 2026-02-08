@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Officer;
 use App\Models\District;
 use App\Models\Division;
+use App\Models\Designation;
 use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
@@ -40,7 +41,8 @@ class AdminOfficerController extends Controller
         }
 
         $districts = $districts->get();
-        return view('admin.officers.create', compact('divisions', 'districts'));
+        $designations = Designation::where('is_active', true)->orderBy('level')->orderBy('order')->get();
+        return view('admin.officers.create', compact('divisions', 'districts', 'designations'));
     }
 
     public function store(Request $request)
@@ -85,7 +87,8 @@ class AdminOfficerController extends Controller
         }
 
         $districts = $districts->get();
-        return view('admin.officers.edit', compact('officer', 'divisions', 'districts'));
+        $designations = Designation::where('is_active', true)->orderBy('level')->orderBy('order')->get();
+        return view('admin.officers.edit', compact('officer', 'divisions', 'districts', 'designations'));
     }
 
     public function update(Request $request, Officer $officer)

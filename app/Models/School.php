@@ -38,4 +38,9 @@ class School extends Model
     {
         return $this->hasMany(Staff::class);
     }
+
+    public function sanctionedPosts(): HasMany
+    {
+        return $this->hasMany(SanctionedPost::class);
+    }
 }

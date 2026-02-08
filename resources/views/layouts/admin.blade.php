@@ -48,6 +48,19 @@
                         </a>
                     </div>
 
+                    <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Organizational Structure</small>
+                    <div class="mt-2 mb-4">
+                        <a href="{{ route('admin.designations.index') }}" class="nav-link {{ request()->routeIs('admin.designations.*') ? 'active' : '' }}">
+                            <i class="fas fa-sitemap"></i> Designations
+                        </a>
+                        <a href="{{ route('admin.pay-grades.index') }}" class="nav-link {{ request()->routeIs('admin.pay-grades.*') ? 'active' : '' }}">
+                            <i class="fas fa-money-bill-wave"></i> Pay Grades
+                        </a>
+                        <a href="{{ route('admin.posts.index') }}" class="nav-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                            <i class="fas fa-briefcase"></i> Sanctioned Posts
+                        </a>
+                    </div>
+
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Approvals & Services</small>
                     <div class="mt-2 mb-4">
                         <a href="{{ route('admin.transfers.index') }}" class="nav-link {{ request()->routeIs('admin.transfers.*') ? 'active' : '' }}">

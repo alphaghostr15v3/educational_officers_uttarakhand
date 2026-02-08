@@ -20,7 +20,14 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">Designation</label>
-                            <input type="text" name="designation" class="form-control @error('designation') is-invalid @enderror" value="{{ old('designation') }}" required>
+                            <select name="designation" class="form-select @error('designation') is-invalid @enderror" required>
+                                <option value="">Select Designation</option>
+                                @foreach($designations as $designation)
+                                    <option value="{{ $designation->name }}" {{ old('designation') == $designation->name ? 'selected' : '' }}>
+                                        {{ $designation->name }} ({{ ucfirst($designation->level) }})
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('designation') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-md-6">

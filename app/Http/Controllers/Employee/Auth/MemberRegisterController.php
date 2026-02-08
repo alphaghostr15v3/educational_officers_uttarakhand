@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\School;
 use App\Models\Staff;
+use App\Models\Designation;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +31,8 @@ class MemberRegisterController extends Controller
         $divisions = Division::where('is_active', true)->get();
         $districts = District::where('is_active', true)->get();
         $schools = School::where('is_active', true)->orderBy('name')->get();
-        return view('employee.auth.register', compact('divisions', 'districts', 'schools'));
+        $designations = Designation::where('is_active', true)->orderBy('level')->orderBy('order')->get();
+        return view('employee.auth.register', compact('divisions', 'districts', 'schools', 'designations'));
     }
 
     protected function validator(array $data)

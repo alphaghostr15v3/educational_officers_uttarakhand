@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Staff;
 use App\Models\School;
 use App\Models\User;
+use App\Models\Designation;
 use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
 
@@ -50,7 +51,8 @@ class DistrictStaffController extends Controller
              $schools = School::all(); 
          }
 
-         return view('admin.staff.create', compact('schools'));
+         $designations = Designation::where('is_active', true)->orderBy('level')->orderBy('order')->get();
+         return view('admin.staff.create', compact('schools', 'designations'));
     }
 
     public function store(Request $request)
@@ -167,7 +169,8 @@ class DistrictStaffController extends Controller
             $schools = School::all();
         }
 
-        return view('admin.staff.create', compact('staff', 'schools')); // Reusing create view as its fields are mostly the same
+        $designations = Designation::where('is_active', true)->orderBy('level')->orderBy('order')->get();
+        return view('admin.staff.create', compact('staff', 'schools', 'designations')); // Reusing create view as its fields are mostly the same
     }
 
     public function update(Request $request, Staff $staff)

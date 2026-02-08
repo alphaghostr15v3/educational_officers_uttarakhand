@@ -310,8 +310,14 @@
                     <!-- Designation -->
                     <div class="col-md-6 mb-2">
                         <label class="form-label fw-bold small text-muted text-uppercase">Current Designation</label>
-                        <input id="designation" type="text" class="form-control-custom w-100 @error('designation') is-invalid @enderror" 
-                               name="designation" value="{{ old('designation') }}" required placeholder="e.g. Senior Assistant">
+                        <select id="designation" class="form-select-custom w-100 @error('designation') is-invalid @enderror" name="designation" required>
+                            <option value="">Select Designation</option>
+                            @foreach($designations as $designation)
+                                <option value="{{ $designation->name }}" {{ old('designation') == $designation->name ? 'selected' : '' }}>
+                                    {{ $designation->name }} ({{ ucfirst($designation->level) }})
+                                </option>
+                            @endforeach
+                        </select>
                         @error('designation')
                             <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
                         @enderror

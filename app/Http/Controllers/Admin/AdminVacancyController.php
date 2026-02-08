@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
+use App\Models\SanctionedPost;
 use Illuminate\Http\Request;
 
 class AdminVacancyController extends Controller
@@ -23,10 +24,13 @@ class AdminVacancyController extends Controller
         // Eager load staff count
         $schools = $query->withCount('staffs')->paginate(20);
 
-        // Simulate sanctioned posts for now (e.g. 10 per school)
-        // In real app, this would be a column in schools table or a related table
+        // Calculate sanctioned posts and vacancies from SanctionedPost model
         $schools->getCollection()->transform(function ($school) {
-            $school->sanctioned_posts = 10; // Placeholder
+            // Sum all active sanctioned posts for this school
+            $school->sanctioned_posts = SanctionedPost::where('school_id', $school->id)
+                ->where('is_active', true)
+                ->sum('sanctioned_count');
+            
             $school->vacancy = $school->sanctioned_posts - $school->staffs_count;
             return $school;
         });

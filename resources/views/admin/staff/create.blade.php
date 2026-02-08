@@ -61,7 +61,14 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Designation <span class="text-danger">*</span></label>
-                            <input type="text" name="designation" class="form-control" value="{{ old('designation', isset($staff) ? $staff->designation : '') }}" required placeholder="e.g. Assistant Teacher">
+                            <select name="designation" class="form-select" required>
+                                <option value="">Select Designation</option>
+                                @foreach($designations as $designation)
+                                    <option value="{{ $designation->name }}" {{ old('designation', isset($staff) ? $staff->designation : '') == $designation->name ? 'selected' : '' }}>
+                                        {{ $designation->name }} ({{ ucfirst($designation->level) }})
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
