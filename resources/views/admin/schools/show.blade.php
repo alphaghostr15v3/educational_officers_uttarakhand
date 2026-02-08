@@ -22,6 +22,29 @@
                     <p class="mb-2 small"><strong><i class="fas fa-map-marker-alt me-2 text-muted"></i>Block:</strong> {{ $school->block }}</p>
                     <p class="mb-0 small"><strong><i class="fas fa-phone me-2 text-muted"></i>Phone:</strong> {{ $school->phone ?? 'N/A' }}</p>
                 </div>
+                <hr>
+                <div class="px-3">
+                    <h6 class="small fw-bold text-muted text-uppercase mb-3">Portal Login Account</h6>
+                    @php
+                        $schoolLogin = \App\Models\User::where('school_id', $school->id)->where('role', 'school')->first();
+                    @endphp
+                    
+                    @if($schoolLogin)
+                        <div class="alert alert-info py-2 px-3 small border-0 mb-3">
+                            <i class="fas fa-user-circle me-1"></i> {{ $schoolLogin->email }}
+                        </div>
+                        <a href="{{ route('admin.schools.login.create', $school) }}" class="btn btn-sm btn-outline-primary w-100">
+                            <i class="fas fa-edit me-1"></i> Edit Login Account
+                        </a>
+                    @else
+                        <div class="alert alert-warning py-2 px-3 small border-0 mb-3">
+                            <i class="fas fa-exclamation-triangle me-1"></i> No login account created
+                        </div>
+                        <a href="{{ route('admin.schools.login.create', $school) }}" class="btn btn-sm btn-primary w-100">
+                            <i class="fas fa-plus-circle me-1"></i> Create Login
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

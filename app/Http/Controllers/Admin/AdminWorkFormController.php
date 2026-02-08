@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WorkForm;
 use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminWorkFormController extends Controller
 {
@@ -33,7 +33,10 @@ class AdminWorkFormController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $validated['file_path'] = $request->file('file')->store('work_forms', 'public');
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/work_forms'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $validated['uploaded_by'] = auth()->id();
@@ -67,9 +70,15 @@ class AdminWorkFormController extends Controller
         if ($request->hasFile('file')) {
             // Delete old file
             if ($workForm->file_path) {
-                Storage::disk('public')->delete($workForm->file_path);
+                $oldPath = public_path('uploads/work_forms/' . $workForm->file_path);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
-            $validated['file_path'] = $request->file('file')->store('work_forms', 'public');
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/work_forms'), $filename);
+            $validated['file_path'] = $filename;
         }
 
         $validated['is_active'] = $request->has('is_active');
@@ -87,7 +96,10 @@ class AdminWorkFormController extends Controller
     {
         // Delete file
         if ($workForm->file_path) {
-            Storage::disk('public')->delete($workForm->file_path);
+            $filePath = public_path('uploads/work_forms/' . $workForm->file_path);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
         }
 
         $title = $workForm->title;

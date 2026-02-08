@@ -20,7 +20,7 @@
             @forelse($photos as $photo)
             <div class="col-xl-3 col-lg-4 col-md-6">
                 <div class="gallery-item card h-100 border shadow-sm">
-                    <img src="{{ asset('storage/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
+                    <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
                     <div class="card-body p-3">
                         <h6 class="fw-bold mb-1 text-truncate" title="{{ $photo->title }}">{{ $photo->title }}</h6>
                         <p class="small text-muted mb-2">Category: {{ $photo->category ?? 'General' }}</p>

@@ -178,8 +178,8 @@
                 @foreach($gallery_photos as $photo)
                     <div class="col-md-3 col-6">
                         <div class="gallery-item-home position-relative overflow-hidden rounded shadow-sm h-100">
-                            <a href="{{ asset('storage/' . $photo->image_path) }}" target="_blank">
-                                <img src="{{ asset('storage/' . $photo->image_path) }}" class="img-fluid w-100" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
+                            <a href="{{ asset('uploads/gallery/' . $photo->image_path) }}" target="_blank">
+                                <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="img-fluid w-100" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
                             </a>
                             <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 small text-truncate">
                                 {{ $photo->title }}
@@ -211,7 +211,7 @@
             </div>
             <div class="modal-body p-0">
                 @if($popup_news->image)
-                    <img src="{{ asset('storage/' . $popup_news->image) }}" class="img-fluid w-100" alt="{{ $popup_news->title }}" style="max-height: 400px; object-fit: cover;">
+                    <img src="{{ asset('uploads/news/' . $popup_news->image) }}" class="img-fluid w-100" alt="{{ $popup_news->title }}" style="max-height: 400px; object-fit: cover;">
                 @endif
                 <div class="p-4">
                     <h4 class="fw-bold mb-3">{{ $popup_news->title }}</h4>

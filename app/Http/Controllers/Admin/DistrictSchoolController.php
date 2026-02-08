@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\School;
 use App\Models\District;
 use App\Models\Division;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DistrictSchoolController extends Controller
 {
@@ -160,5 +163,60 @@ class DistrictSchoolController extends Controller
         $school->delete();
 
         return redirect()->route('admin.schools.index')->with('success', "School '{$name}' removed successfully.");
+    }
+
+    public function createLogin(School $school)
+    {
+        $user = auth()->user();
+        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+
+        $login = User::where('school_id', $school->id)->where('role', 'school')->first();
+        return view('admin.schools.login', compact('school', 'login'));
+    }
+
+    public function storeLogin(Request $request, School $school)
+    {
+        $user = auth()->user();
+        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+
+        $login = User::where('school_id', $school->id)->where('role', 'school')->first();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . ($login ? $login->id : 'NULL'),
+            'password' => $login ? 'nullable|min:8|confirmed' : 'required|min:8|confirmed',
+        ]);
+
+        try {
+            DB::transaction(function () use ($validated, $school, $login) {
+                if ($login) {
+                    $login->name = $validated['name'];
+                    $login->email = $validated['email'];
+                    if (!empty($validated['password'])) {
+                        $login->password = Hash::make($validated['password']);
+                    }
+                    $login->save();
+                } else {
+                    User::create([
+                        'name' => $validated['name'],
+                        'email' => $validated['email'],
+                        'password' => Hash::make($validated['password']),
+                        'role' => 'school',
+                        'school_id' => $school->id,
+                        'division_id' => $school->division_id,
+                        'district_id' => $school->district_id,
+                        'is_active' => true,
+                    ]);
+                }
+            });
+
+            return redirect()->route('admin.schools.show', $school)->with('success', 'School login account updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error managing school login: ' . $e->getMessage());
+        }
     }
 }

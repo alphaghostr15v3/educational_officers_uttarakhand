@@ -46,7 +46,7 @@
                                 </span>
                             </td>
                             <td class="text-end px-4">
-                                <a href="{{ Storage::url($circular->file_path) }}" target="_blank" class="btn btn-sm btn-primary">
+                                <a href="{{ asset('uploads/circulars/' . $circular->file_path) }}" target="_blank" class="btn btn-sm btn-primary">
                                     <i class="fas fa-download me-1"></i> View
                                 </a>
                             </td>

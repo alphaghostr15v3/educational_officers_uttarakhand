@@ -47,7 +47,7 @@
                                         <small class="text-muted">{{ $workForm->created_at->format('d M, Y') }}</small>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="{{ asset('storage/' . $workForm->file_path) }}" target="_blank" class="btn btn-sm btn-primary">
+                                        <a href="{{ asset('uploads/work_forms/' . $workForm->file_path) }}" target="_blank" class="btn btn-sm btn-primary">
                                             <i class="fas fa-download me-1"></i> Download
                                         </a>
                                     </td>

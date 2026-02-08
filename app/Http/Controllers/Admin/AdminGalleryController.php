@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Services\ActivityLogService;
 
 class AdminGalleryController extends Controller
@@ -30,8 +30,10 @@ class AdminGalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('gallery', 'public');
-            $validated['image_path'] = $path;
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/gallery'), $filename);
+            $validated['image_path'] = $filename;
         }
 
         $photo = Gallery::create([
@@ -58,7 +60,10 @@ class AdminGalleryController extends Controller
         $id = $gallery->id;
 
         if ($gallery->image_path) {
-            Storage::disk('public')->delete($gallery->image_path);
+            $filePath = public_path('uploads/gallery/' . $gallery->image_path);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
         }
 
         $gallery->delete();

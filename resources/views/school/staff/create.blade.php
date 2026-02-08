@@ -2,7 +2,7 @@
 
 @section('title', 'Add New Staff')
 
-@section('content')
+@section('school_content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Add New Staff</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -70,10 +70,27 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="joining_date" class="form-label">Joining Date (at this school) <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control @error('joining_date') is-invalid @enderror" id="joining_date" name="joining_date" value="{{ old('joining_date') }}" required>
-                        @error('joining_date')
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="joining_date" class="form-label">Joining Date (at this school) <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control @error('joining_date') is-invalid @enderror" id="joining_date" name="joining_date" value="{{ old('joining_date') }}" required>
+                            @error('joining_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="retirement_date" class="form-label">Retirement Date (Optional)</label>
+                            <input type="date" class="form-control @error('retirement_date') is-invalid @enderror" id="retirement_date" name="retirement_date" value="{{ old('retirement_date') }}">
+                            @error('retirement_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="subject" class="form-label">Subject / Working Section (Optional)</label>
+                        <input type="text" class="form-control @error('subject') is-invalid @enderror" id="subject" name="subject" value="{{ old('subject') }}" placeholder="e.g. Hindi, Office Administration, Account">
+                        @error('subject')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

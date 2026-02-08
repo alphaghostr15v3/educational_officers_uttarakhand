@@ -111,7 +111,7 @@
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($circular->circular_date)->format('d M, Y') }}</td>
                                     <td class="text-end px-4">
-                                        <a href="{{ Storage::url($circular->file_path) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <a href="{{ asset('uploads/circulars/' . $circular->file_path) }}" class="btn btn-sm btn-outline-primary" target="_blank">
                                             <i class="fas fa-download"></i>
                                         </a>
                                     </td>

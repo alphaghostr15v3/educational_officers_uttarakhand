@@ -15,6 +15,11 @@ class Circular extends Model
         'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published'
     ];
 
+    protected $casts = [
+        'circular_date' => 'date',
+        'is_published' => 'boolean',
+    ];
+
     public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');

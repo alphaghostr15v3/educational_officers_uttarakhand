@@ -43,4 +43,29 @@ class School extends Model
     {
         return $this->hasMany(SanctionedPost::class);
     }
+
+    public function studentStrengths(): HasMany
+    {
+        return $this->hasMany(StudentStrength::class);
+    }
+
+    public function infrastructure(): HasMany
+    {
+        return $this->hasMany(SchoolInfrastructure::class);
+    }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(SchoolDocument::class);
+    }
+
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(Leave::class);
+    }
+
+    public function transfers(): HasMany
+    {
+        return $this->hasMany(Transfer::class);
+    }
 }

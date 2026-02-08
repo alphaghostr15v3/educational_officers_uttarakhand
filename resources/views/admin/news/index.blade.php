@@ -33,7 +33,7 @@
                         <td class="px-4">
                             <div class="d-flex align-items-center">
                                 @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" class="rounded me-3" style="width: 50px; height: 40px; object-fit: cover;">
+                                    <img src="{{ asset('uploads/news/' . $item->image) }}" class="rounded me-3" style="width: 50px; height: 40px; object-fit: cover;">
                                 @else
                                     <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 40px;">
                                         <i class="fas fa-image text-muted"></i>

@@ -26,7 +26,7 @@
                             <label class="form-label small fw-bold">Icon Image</label>
                             @if($portal_form->icon)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $portal_form->icon) }}" class="rounded border" style="width: 50px;">
+                                    <img src="{{ asset('uploads/portal/icons/' . $portal_form->icon) }}" class="rounded border" style="width: 50px;">
                                 </div>
                             @endif
                             <input type="file" name="icon" class="form-control" accept="image/*">

@@ -74,7 +74,7 @@
                         <label for="file" class="form-label fw-bold">Replace File (Optional)</label>
                         <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip">
                         <div class="form-text">
-                            Current file: <a href="{{ asset('storage/' . $workForm->file_path) }}" target="_blank" class="text-primary">{{ basename($workForm->file_path) }}</a>
+                            Current file: <a href="{{ asset('uploads/work_forms/' . $workForm->file_path) }}" target="_blank" class="text-primary">{{ basename($workForm->file_path) }}</a>
                             <br>Leave empty to keep current file. Allowed formats: PDF, DOC, DOCX, XLS, XLSX, ZIP (Max: 10MB)
                         </div>
                         @error('file')

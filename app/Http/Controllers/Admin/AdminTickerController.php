@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Services\ActivityLogService;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminTickerController extends Controller
 {
@@ -88,7 +88,10 @@ class AdminTickerController extends Controller
         $id = $ticker->id;
         
         if ($ticker->image) {
-            Storage::disk('public')->delete($ticker->image);
+            $filePath = public_path('uploads/news/' . $ticker->image);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
         }
         
         $ticker->delete();

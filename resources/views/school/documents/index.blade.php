@@ -2,7 +2,7 @@
 
 @section('title', 'Upload Documents')
 
-@section('content')
+@section('school_content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">School Documents</h1>
 </div>
@@ -78,7 +78,7 @@
                                     </td>
                                     <td>{{ $doc->created_at->format('d M Y') }}</td>
                                     <td>
-                                        <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-info" title="View">
+                                        <a href="{{ asset('uploads/school_documents/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-info" title="View">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <form action="{{ route('school.documents.destroy', $doc->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?');">

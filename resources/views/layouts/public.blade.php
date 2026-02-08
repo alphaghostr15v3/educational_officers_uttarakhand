@@ -125,6 +125,17 @@
                                 </ul>
                             </li>
                         @else
+                            <!-- Registration Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-plus"></i> Register
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="registerDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('employee.register') }}"><i class="fas fa-user-shield me-2"></i> Employee Register</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('school.register') }}"><i class="fas fa-school me-2"></i> School Register</a></li>
+                                </ul>
+                            </li>
+
                             <!-- Login Dropdown -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -132,6 +143,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="loginDropdown">
                                     <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-users me-2"></i> Employee Login</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('school.login') }}"><i class="fas fa-school me-2"></i> School Login</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.login') }}"><i class="fas fa-user-shield me-2"></i> Admin Login</a></li>
                                 </ul>

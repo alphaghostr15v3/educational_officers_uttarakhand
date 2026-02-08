@@ -18,8 +18,8 @@
             @forelse($photos as $photo)
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden gallery-card">
-                        <a href="{{ asset('storage/' . $photo->image_path) }}" target="_blank" class="gallery-item">
-                            <img src="{{ asset('storage/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
+                        <a href="{{ asset('uploads/gallery/' . $photo->image_path) }}" target="_blank" class="gallery-item">
+                            <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
                             <div class="gallery-overlay">
                                 <i class="fas fa-search-plus text-white fa-2x"></i>
                             </div>

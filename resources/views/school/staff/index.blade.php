@@ -2,7 +2,7 @@
 
 @section('title', 'Staff Details')
 
-@section('content')
+@section('school_content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Staff Details</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -49,10 +49,19 @@
                                     {{ ucfirst($staff->current_status) }}
                                 </span>
                             </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-secondary" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <a href="{{ route('school.staff.edit', $staff->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('school.staff.destroy', $staff->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this staff record?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

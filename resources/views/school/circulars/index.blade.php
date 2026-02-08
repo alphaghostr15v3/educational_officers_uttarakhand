@@ -2,7 +2,7 @@
 
 @section('title', 'Notices & Circulars')
 
-@section('content')
+@section('school_content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Notices & Circulars</h1>
 </div>
@@ -35,7 +35,7 @@
                                 <span class="badge bg-info text-dark">{{ ucfirst($circular->level) }}</span>
                             </td>
                             <td>
-                                <a href="{{ Storage::url($circular->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ asset('uploads/circulars/' . $circular->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-download"></i> View/Download
                                 </a>
                             </td>

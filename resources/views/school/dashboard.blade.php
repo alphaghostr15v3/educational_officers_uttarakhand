@@ -155,7 +155,7 @@
             <div class="card-body pt-0">
                 <div class="list-group list-group-flush">
                     @forelse($recentDocuments as $doc)
-                        <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="list-group-item list-group-item-action border-0 px-0">
+                        <a href="{{ asset('uploads/school_documents/' . $doc->file_path) }}" target="_blank" class="list-group-item list-group-item-action border-0 px-0">
                             <div class="fw-bold">{{ Str::limit($doc->title, 40) }}</div>
                             <div class="small text-muted">{{ $doc->created_at->format('d M Y') }}</div>
                         </a>

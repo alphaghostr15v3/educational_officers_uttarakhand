@@ -12,6 +12,10 @@ class News extends Model
 
     protected $fillable = ['title', 'content', 'image', 'is_ticker', 'ticker_order', 'is_published', 'publish_date', 'created_by'];
 
+    protected $casts = [
+        'publish_date' => 'date',
+    ];
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');

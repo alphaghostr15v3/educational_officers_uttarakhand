@@ -57,7 +57,7 @@
                         </td>
                         <td class="text-end pe-4">
                             <div class="btn-group btn-group-sm" role="group">
-                                <a href="{{ asset('storage/' . $workForm->file_path) }}" target="_blank" class="btn btn-light text-info" title="Download">
+                                <a href="{{ asset('uploads/work_forms/' . $workForm->file_path) }}" target="_blank" class="btn btn-light text-info" title="Download">
                                     <i class="fas fa-download"></i>
                                 </a>
                                 <a href="{{ route('admin.work-forms.edit', $workForm) }}" class="btn btn-light text-primary" title="Edit">

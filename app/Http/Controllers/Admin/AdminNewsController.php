@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Services\ActivityLogService;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminNewsController extends Controller
 {
@@ -35,7 +35,10 @@ class AdminNewsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('news', 'public');
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/news'), $filename);
+            $validated['image'] = $filename;
         }
 
         $validated['created_by'] = auth()->id();
@@ -66,9 +69,15 @@ class AdminNewsController extends Controller
 
         if ($request->hasFile('image')) {
             if ($news->image) {
-                Storage::disk('public')->delete($news->image);
+                $oldPath = public_path('uploads/news/' . $news->image);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
-            $validated['image'] = $request->file('image')->store('news', 'public');
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/news'), $filename);
+            $validated['image'] = $filename;
         }
 
         $validated['is_published'] = $request->has('is_published');
@@ -87,7 +96,10 @@ class AdminNewsController extends Controller
         $id = $news->id;
         
         if ($news->image) {
-            Storage::disk('public')->delete($news->image);
+            $filePath = public_path('uploads/news/' . $news->image);
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
         }
         
         $news->delete();

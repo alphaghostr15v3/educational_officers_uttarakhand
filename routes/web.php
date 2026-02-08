@@ -91,6 +91,11 @@ Route::prefix('school')->name('school.')->group(function () {
     // Auth Routes
     Route::get('/login', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'login']);
+    Route::post('/logout', [\App\Http\Controllers\School\Auth\SchoolLoginController::class, 'logout'])->name('logout');
+
+    // Registration Routes
+    Route::get('/register', [\App\Http\Controllers\School\Auth\SchoolRegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\School\Auth\SchoolRegisterController::class, 'register']);
 
     // Dashboard (Protected)
     Route::middleware(['auth', 'school'])->group(function () {
@@ -109,10 +114,12 @@ Route::prefix('school')->name('school.')->group(function () {
         
         // Placeholders for now for other services
         // Transfer Application
+        Route::get('/transfers', [\App\Http\Controllers\School\SchoolTransferController::class, 'create'])->name('transfers.index');
         Route::get('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'create'])->name('transfers.create');
         Route::post('/transfers/apply', [\App\Http\Controllers\School\SchoolTransferController::class, 'store'])->name('transfers.store');
 
         // Leave Application
+        Route::get('/leaves', [\App\Http\Controllers\School\SchoolLeaveController::class, 'create'])->name('leaves.index');
         Route::get('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'create'])->name('leaves.create');
         Route::post('/leaves/apply', [\App\Http\Controllers\School\SchoolLeaveController::class, 'store'])->name('leaves.store');
 
@@ -135,6 +142,8 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     // School Management (District Admin)
     Route::get('staff/export', [\App\Http\Controllers\Admin\DistrictStaffController::class, 'export'])->name('staff.export');
     Route::resource('schools', \App\Http\Controllers\Admin\DistrictSchoolController::class);
+    Route::get('schools/{school}/login', [\App\Http\Controllers\Admin\DistrictSchoolController::class, 'createLogin'])->name('schools.login.create');
+    Route::post('schools/{school}/login', [\App\Http\Controllers\Admin\DistrictSchoolController::class, 'storeLogin'])->name('schools.login.store');
     Route::resource('staff', \App\Http\Controllers\Admin\DistrictStaffController::class);
     Route::resource('transfers', \App\Http\Controllers\Admin\AdminTransferController::class);
     Route::post('transfers/{transfer}/status', [\App\Http\Controllers\Admin\AdminTransferController::class, 'updateStatus'])->name('transfers.status.update');

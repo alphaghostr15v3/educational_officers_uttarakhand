@@ -54,10 +54,24 @@ class AdminCircularController extends Controller
         }
 
         $validated['uploaded_by'] = auth()->id();
-        $circular = Circular::create($validated);
-
-        ActivityLogService::log('create', "Uploaded new circular: {$circular->circular_number} - {$circular->title}", Circular::class, $circular->id);
-
         return redirect()->route('admin.circulars.index')->with('success', 'Circular uploaded successfully.');
+    }
+
+    public function destroy(Circular $circular)
+    {
+        if ($circular->file_path) {
+            $path = public_path('uploads/circulars/' . $circular->file_path);
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
+        
+        $circularNo = $circular->circular_number;
+        $id = $circular->id;
+        $circular->delete();
+
+        ActivityLogService::log('delete', "Removed circular: {$circularNo}", Circular::class, $id);
+
+        return redirect()->route('admin.circulars.index')->with('success', 'Circular removed successfully.');
     }
 }
