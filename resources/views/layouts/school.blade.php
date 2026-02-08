@@ -97,9 +97,7 @@
                 <i class="fas fa-user-graduate"></i> Student Strength
             </a>
 
-            <a href="{{ route('school.infrastructure.index') }}" class="nav-link {{ request()->routeIs('school.infrastructure.*') ? 'active' : '' }}">
-                <i class="fas fa-building"></i> Infrastructure
-            </a>
+
 
             <div class="section-header">Services</div>
 

@@ -77,18 +77,7 @@
                             <a class="nav-link {{ request()->routeIs('officers') ? 'active' : '' }}" href="{{ route('officers') }}">Officers</a>
                         </li>
                         
-                        <!-- Learning & Infrastructure Dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="learningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Infrastructure
-                            </a>
-                            <ul class="dropdown-menu shadow border-0" aria-labelledby="learningDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-award me-2 text-primary"></i> Centre of Excellence</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-building me-2 text-primary"></i> Infrastructure Details</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-tools me-2 text-primary"></i> Classroom & Workshop</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-school me-2 text-primary"></i> Facilities</a></li>
-                            </ul>
-                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>

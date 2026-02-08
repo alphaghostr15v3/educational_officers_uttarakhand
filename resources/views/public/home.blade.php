@@ -94,6 +94,7 @@
 <div class="container my-5">
     <div class="row g-4">
 
+        @auth
         <!-- Work Forms Grid -->
         <div class="col-md-12 mt-4">
             <h3 class="mb-4 fw-bold border-start border-4 border-primary ps-3">Work Forms</h3>
@@ -137,11 +138,12 @@
                 @endforelse
             </div>
         </div>
+        @endauth
     </div>
 
     <div class="row g-4 mt-2">
         <!-- About Brief -->
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="p-4 bg-white rounded shadow-sm h-100 border-top border-4 border-primary">
                 <h4 class="fw-bold mb-3 text-primary">एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड</h4>
                 <p class="mb-4">एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड राज्य के शिक्षा विभाग के मिनिस्ट्रीयल कर्मचारियों के हितों और कल्याण के लिए समर्पित एक संगठन है। इसका उद्देश्य कर्मचारियों को एक मंच प्रदान करना और आधुनिक तकनीकी सुविधाओं से जोड़ना है।</p>
@@ -161,43 +163,7 @@
             </div>
         </div>
 
-        <!-- Sidebar Notice Board -->
-        <div class="col-md-4">
-            <div class="notice-board h-100">
-                <h4 class="fw-bold mb-4 text-center border-bottom pb-2">Latest Updates</h4>
-                @php
-                    $regular_news = \App\Models\News::where('is_published', true)
-                                                    ->where(function($q) {
-                                                        $q->where('is_ticker', false)
-                                                          ->orWhereNull('is_ticker');
-                                                    })
-                                                    ->latest()
-                                                    ->take(6)
-                                                    ->get();
-                @endphp
-                @forelse($regular_news as $notice)
-                    <div class="notice-item p-2 border-bottom">
-                        @if($notice->created_at->diffInDays() < 3)
-                            <span class="badge bg-danger mb-1">New</span>
-                        @endif
-                        <h6 class="mb-1 fw-bold" style="font-size: 0.9rem;">{{ $notice->title }}</h6>
-                        <div class="d-flex justify-content-between align-items-center mt-2">
-                            <span class="text-muted" style="font-size: 0.75rem;"><i class="fas fa-calendar-alt me-1"></i> {{ $notice->publish_date }}</span>
-                            @if($notice->image)
-                                <a href="{{ asset('storage/' . $notice->image) }}" target="_blank" class="small text-primary text-decoration-none">View Image</a>
-                            @endif
-                        </div>
-                    </div>
-                @empty
-                    <div class="text-center py-4">
-                        <p class="text-muted small">No active notices at the moment.</p>
-                    </div>
-                @endforelse
-                <div class="mt-4 text-center">
-                    <a href="{{ route('orders') }}" class="btn btn-dark btn-sm px-4">View All Archive</a>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <!-- Photo Gallery Section -->
