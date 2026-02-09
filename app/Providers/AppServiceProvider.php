@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrapFive();
+
         // Share system settings with all views
         if (!app()->runningInConsole() && \Illuminate\Support\Facades\Schema::hasTable('settings')) {
             $settings = \App\Models\Setting::all()->pluck('value', 'key');

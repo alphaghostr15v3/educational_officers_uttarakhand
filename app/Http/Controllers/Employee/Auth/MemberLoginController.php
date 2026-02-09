@@ -25,6 +25,12 @@ class MemberLoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        // Check if the user is a school role attempting to login via member portal
+        if ($user->role === 'school') {
+            auth()->logout();
+            return redirect()->route('school.login')->with('error', 'Access denied. Please use the School Login portal.');
+        }
+
         if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
             return redirect()->route('admin.dashboard');
         }

@@ -27,7 +27,7 @@ class SchoolLoginController extends Controller
     {
         if ($user->role !== 'school') {
             auth()->logout();
-            return back()->with('error', 'Access denied. This portal is for School logins only.');
+            return back()->with('error', 'Access denied. This portal is for School logins only. Employees should use the Employee Login portal.');
         }
         
         return redirect()->intended($this->redirectPath());
