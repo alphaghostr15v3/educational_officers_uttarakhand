@@ -144,7 +144,7 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" alt="UK Emblem">
+                <img src="{{ asset('images/association_logo.png') }}" alt="Logo">
                 <h4 class="mb-0 fw-bold">Admin Portal</h4>
                 <p class="small opacity-75 mb-0">Uttarakhand Educational Officers</p>
             </div>
@@ -191,7 +191,7 @@
             </div>
 
             <div class="login-footer">
-                <p class="mb-0">&copy; {{ date('Y') }} Govt of Uttarakhand. <br> Protected Administrative Access.</p>
+                <p class="mb-0">&copy; {{ date('Y') }} Association Uttarakhand. <br> Protected Administrative Access.</p>
                 <div class="mt-2">
                     <a href="{{ url('/') }}"><i class="fas fa-home me-1"></i> Public Portal</a>
                 </div>

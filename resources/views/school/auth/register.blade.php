@@ -7,8 +7,8 @@
             <div class="card shadow border-0 overflow-hidden">
                 <div class="row g-0">
                     <div class="col-12 bg-primary text-white p-4 text-center">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" 
-                             alt="UK Emblem" style="height: 60px;" class="mb-3">
+                        <img src="{{ asset('images/association_logo.png') }}" 
+                             alt="Logo" style="height: 60px;" class="mb-3">
                         <h3 class="fw-bold mb-0">SCHOOL REGISTRATION</h3>
                         <p class="mb-0 opacity-75">UK Educational Ministerial Officers Portal</p>
                     </div>

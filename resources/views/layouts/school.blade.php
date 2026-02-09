@@ -78,8 +78,9 @@
 <body>
     <!-- Sidebar -->
     <aside class="sidebar d-flex flex-column">
-        <div class="p-4 border-bottom">
-            <h4 class="fw-bold text-primary m-0"><i class="fas fa-school me-2"></i>School<span class="text-dark">Panel</span></h4>
+        <div class="p-3 border-bottom d-flex align-items-center">
+            <img src="{{ asset('images/association_logo.png') }}" style="height: 40px;" class="me-2">
+            <h5 class="fw-bold text-primary m-0">School <span class="text-dark">Panel</span></h5>
         </div>
         
         <nav class="flex-grow-1 overflow-auto py-3">

@@ -192,8 +192,8 @@
         <!-- Sidebar with message/branding -->
         <div class="login-sidebar">
             <div class="login-sidebar-content">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" 
-                     alt="UK Logo" style="height: 80px; margin-bottom: 2rem;">
+                <img src="{{ asset('images/association_logo.png') }}" 
+                     alt="Logo" style="height: 80px; margin-bottom: 2rem;">
                 <h2>Employee Portal</h2>
                 <p>Educational Ministerial Officers Association Uttarakhand. Access your professional employee resources, updates, and more.</p>
                 <div class="mt-5">

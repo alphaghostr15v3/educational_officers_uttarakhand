@@ -177,8 +177,8 @@
         <!-- Sidebar -->
         <div class="register-sidebar">
             <div class="register-sidebar-content">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" 
-                     alt="UK Logo" style="height: 70px; margin-bottom: 2rem;">
+                <img src="{{ asset('images/association_logo.png') }}" 
+                     alt="Logo" style="height: 70px; margin-bottom: 2rem;">
                 <h2>Join Our Member Community</h2>
                 <p>Register to access exclusive departmental resources, track your seniority, and stay updated with the latest notifications from the Educational Ministerial Officers Association Uttarakhand.</p>
                 

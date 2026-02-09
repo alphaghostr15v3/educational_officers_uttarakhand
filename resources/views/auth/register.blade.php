@@ -5,7 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header text-center py-3">
+                    <img src="{{ asset('images/association_logo.png') }}" alt="Logo" style="height: 50px;" class="mb-2">
+                    <h5 class="mb-0">{{ __('Register') }}</h5>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">

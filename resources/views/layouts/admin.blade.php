@@ -18,8 +18,8 @@
         <nav id="sidebar">
             <div class="logo">
                 <div class="d-flex align-items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" style="height: 40px;" class="me-2">
-                    <span class="fw-bold text-white small text-uppercase">UK-EDU Portal</span>
+                    <img src="{{ asset('images/association_logo.png') }}" style="height: 40px;" class="me-2">
+                    <span class="fw-bold text-white small text-uppercase">EMOU Portal</span>
                 </div>
             </div>
             <div class="p-3">

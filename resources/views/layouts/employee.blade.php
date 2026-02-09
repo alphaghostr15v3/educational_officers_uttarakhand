@@ -138,7 +138,7 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <div class="d-flex align-items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" alt="UK Logo" width="40" class="me-2">
+                    <img src="{{ asset('images/association_logo.png') }}" alt="Logo" width="40" class="me-2">
                     <h3>Employee Portal</h3>
                 </div>
             </div>

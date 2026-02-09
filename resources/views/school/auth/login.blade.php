@@ -6,7 +6,10 @@
         <div class="col-md-5">
             <div class="card shadow-lg border-0 rounded-lg">
                 <div class="card-header bg-primary text-white text-center py-4">
-                    <h4 class="mb-0"><i class="fas fa-school me-2"></i> School Login</h4>
+                    <div class="mb-3">
+                        <img src="{{ asset('images/association_logo.png') }}" alt="Logo" style="height: 70px;">
+                    </div>
+                    <h4 class="mb-0">School Login</h4>
                     <p class="mb-0 small opacity-75">Access School Administration Panel</p>
                 </div>
                 <div class="card-body p-4">
