@@ -3,27 +3,27 @@
 @section('page_title', 'Photo Gallery - EMOU Uttarakhand')
 
 @section('content')
-<div class="py-5 bg-light">
+<div class="py-5 bg-white">
     <div class="container">
-        <div class="row mb-5 text-center">
-            <div class="col-lg-8 mx-auto">
-                <h6 class="text-uppercase fw-bold text-primary mb-2" style="letter-spacing: 2px;">Visual Memories</h6>
-                <h2 class="display-5 fw-bold mb-3">Photo Gallery</h2>
-                <div class="uk-saffron-line mx-auto mb-4" style="width: 80px; height: 4px; background: var(--uk-saffron);"></div>
-                <p class="text-muted lead">Capturing moments and events of Educational Ministerial Officers Association, Uttarakhand.</p>
-            </div>
+        <div class="media-page-header text-center mb-5">
+            <span class="media-page-label">Gallery</span>
+            <h1 class="media-page-title">Gallery</h1>
+            <p class="media-page-description">Explore moments from the events held by the Educational Ministerial Officers Association, Uttarakhand.</p>
         </div>
 
         <div class="row g-4" id="galleryGrid">
-            @forelse($photos as $photo)
+            @forelse($photos as $index => $photo)
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card border-0 shadow-sm h-100 overflow-hidden gallery-card">
-                        <a href="{{ asset('uploads/gallery/' . $photo->image_path) }}" target="_blank" class="gallery-item">
+                    <div class="card border-0 shadow-sm h-100 overflow-hidden gallery-card cursor-pointer" 
+                        onclick="openLightbox({{ $index }})"
+                        data-src="{{ asset('uploads/gallery/' . $photo->image_path) }}" 
+                        data-title="{{ $photo->title }}">
+                        <div class="gallery-item">
                             <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
                             <div class="gallery-overlay">
                                 <i class="fas fa-search-plus text-white fa-2x"></i>
                             </div>
-                        </a>
+                        </div>
                         <div class="card-body p-3 text-center">
                             <h6 class="fw-bold mb-1 text-truncate">{{ $photo->title }}</h6>
                             <span class="badge bg-light text-primary border border-primary-subtle rounded-pill small">{{ $photo->category }}</span>
@@ -48,12 +48,42 @@
     </div>
 </div>
 
+<!-- Lightbox Modal -->
+<div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body p-0 position-relative">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+                <div class="text-center">
+                    <img id="lightboxImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;">
+                    <div class="mt-3 text-white">
+                        <h5 id="lightboxTitle" class="fw-bold"></h5>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button class="btn btn-link text-white position-absolute top-50 start-0 translate-middle-y fs-1 text-decoration-none" onclick="prevImage()" style="left: -50px !important;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="btn btn-link text-white position-absolute top-50 end-0 translate-middle-y fs-1 text-decoration-none" onclick="nextImage()" style="right: -50px !important;">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .gallery-card {
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .gallery-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .cursor-pointer {
+        cursor: pointer;
     }
     .gallery-item {
         position: relative;
@@ -65,7 +95,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0,0,0,0.4);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -75,5 +105,58 @@
     .gallery-item:hover .gallery-overlay {
         opacity: 1;
     }
+    #lightboxModal .modal-xl {
+        max-width: 90%;
+    }
 </style>
+
+@push('scripts')
+<script>
+    let currentIndex = 0;
+    const galleryItems = [];
+    let lightboxModal;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        lightboxModal = new bootstrap.Modal(document.getElementById('lightboxModal'));
+        
+        // Populate gallery items array
+        document.querySelectorAll('.gallery-card').forEach((card, index) => {
+            galleryItems.push({
+                src: card.getAttribute('data-src'),
+                title: card.getAttribute('data-title')
+            });
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            if (!document.getElementById('lightboxModal').classList.contains('show')) return;
+            
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+        });
+    });
+
+    function openLightbox(index) {
+        currentIndex = index;
+        updateLightbox();
+        lightboxModal.show();
+    }
+
+    function updateLightbox() {
+        const item = galleryItems[currentIndex];
+        document.getElementById('lightboxImage').src = item.src;
+        document.getElementById('lightboxTitle').textContent = item.title;
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        updateLightbox();
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        updateLightbox();
+    }
+</script>
+@endpush
 @endsection

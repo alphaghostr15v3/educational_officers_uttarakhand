@@ -126,4 +126,17 @@ class HomeController extends Controller
                                       ->get();
         return view('public.birthdays', compact('today_birthdays'));
     }
+
+    public function videos()
+    {
+        $videos = \App\Models\Video::active()->ordered()->paginate(12);
+        return view('public.videos', compact('videos'));
+    }
+
+    public function events()
+    {
+        $upcoming_events = \App\Models\Event::active()->upcoming()->get();
+        $past_events = \App\Models\Event::active()->past()->paginate(12);
+        return view('public.events', compact('upcoming_events', 'past_events'));
+    }
 }

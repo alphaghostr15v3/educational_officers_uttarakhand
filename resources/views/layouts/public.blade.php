@@ -14,6 +14,77 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/public.css') }}">
     
+    <style>
+        :root {
+            --uk-blue: #2c3e50;
+            --uk-orange: #f39c12;
+            --uk-saffron: #f39c12;
+            --uk-green: #27ae60;
+        }
+
+        .media-page-header {
+            margin-bottom: 3rem;
+        }
+
+        .media-page-label {
+            color: #34495e;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .media-page-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 3rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .media-page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--uk-orange);
+            border-radius: 2px;
+        }
+
+        .media-page-description {
+            font-size: 1.25rem;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .view-all-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-all-btn:hover {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+    </style>
     @stack('styles')
 </head>
 <body>
@@ -82,9 +153,20 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}" href="{{ route('gallery') }}">Gallery</a>
+                        
+                        <!-- Media Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['gallery', 'videos', 'birthdays', 'events']) ? 'active' : '' }}" href="#" id="mediaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-photo-video"></i> Media
+                            </a>
+                            <ul class="dropdown-menu shadow border-0" aria-labelledby="mediaDropdown">
+                                <li><a class="dropdown-item" href="{{ route('gallery') }}"><i class="fas fa-images me-2"></i> Gallery</a></li>
+                                <li><a class="dropdown-item" href="{{ route('videos') }}"><i class="fas fa-video me-2"></i> Video</a></li>
+                                <li><a class="dropdown-item" href="{{ route('birthdays') }}"><i class="fas fa-birthday-cake me-2"></i> Birthday</a></li>
+                                <li><a class="dropdown-item" href="{{ route('events') }}"><i class="fas fa-calendar-alt me-2"></i> Event</a></li>
+                            </ul>
                         </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('seniority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
                         </li>
