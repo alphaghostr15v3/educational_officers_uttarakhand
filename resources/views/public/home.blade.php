@@ -230,13 +230,16 @@
                 <a href="{{ route('gallery') }}" class="btn btn-outline-danger btn-sm">View All Photos</a>
             </div>
             <div class="row g-3">
-                @foreach($gallery_photos as $photo)
+                @foreach($gallery_photos as $index => $photo)
                     <div class="col-md-3 col-6">
-                        <div class="gallery-item-home position-relative overflow-hidden rounded shadow-sm h-100">
-                            <a href="{{ asset('uploads/gallery/' . $photo->image_path) }}" target="_blank">
+                        <div class="gallery-item-home position-relative overflow-hidden rounded shadow-sm h-100 cursor-pointer" onclick="openHomeLightbox({{ $index }})" data-src="{{ asset('uploads/gallery/' . $photo->image_path) }}" data-title="{{ $photo->title }}">
+                            <div class="position-relative">
                                 <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="img-fluid w-100" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
-                            </a>
-                            <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 small text-truncate">
+                                <div class="gallery-home-overlay">
+                                    <i class="fas fa-search-plus text-white fa-2x"></i>
+                                </div>
+                            </div>
+                            <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 small text-truncate z-1">
                                 {{ $photo->title }}
                             </div>
                         </div>
@@ -245,11 +248,116 @@
             </div>
         </div>
     </div>
+
+    <!-- Home Lightbox Modal -->
+    <div class="modal fade" id="homeLightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                    <div class="text-center">
+                        <img id="homeLightboxImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;">
+                        <div class="mt-3 text-white">
+                            <h5 id="homeLightboxTitle" class="fw-bold"></h5>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <button class="btn btn-link text-white position-absolute top-50 start-0 translate-middle-y fs-1 text-decoration-none" onclick="prevHomeImage()" style="left: -50px !important;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="btn btn-link text-white position-absolute top-50 end-0 translate-middle-y fs-1 text-decoration-none" onclick="nextHomeImage()" style="right: -50px !important;">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
-        .gallery-item-home img:hover {
+        .gallery-item-home {
+            cursor: pointer;
+        }
+        .gallery-item-home img {
+            transition: transform 0.3s ease;
+        }
+        .gallery-item-home:hover img {
             transform: scale(1.05);
         }
+        .gallery-home-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        .gallery-item-home:hover .gallery-home-overlay {
+            opacity: 1;
+        }
+        #homeLightboxModal .modal-xl {
+            max-width: 90%;
+        }
     </style>
+
+    @push('scripts')
+    <script>
+        let homeCurrentIndex = 0;
+        const homeGalleryItems = [];
+        let homeLightboxModal;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('homeLightboxModal');
+            if (modalElement) {
+                homeLightboxModal = new bootstrap.Modal(modalElement);
+                
+                // Populate gallery items array
+                document.querySelectorAll('.gallery-item-home').forEach((item, index) => {
+                    homeGalleryItems.push({
+                        src: item.getAttribute('data-src'),
+                        title: item.getAttribute('data-title')
+                    });
+                });
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', function(e) {
+                    if (!modalElement.classList.contains('show')) return;
+                    if (e.key === 'ArrowLeft') prevHomeImage();
+                    if (e.key === 'ArrowRight') nextHomeImage();
+                });
+            }
+        });
+
+        function openHomeLightbox(index) {
+            homeCurrentIndex = index;
+            updateHomeLightbox();
+            homeLightboxModal.show();
+        }
+
+        function updateHomeLightbox() {
+            const item = homeGalleryItems[homeCurrentIndex];
+            document.getElementById('homeLightboxImage').src = item.src;
+            document.getElementById('homeLightboxTitle').textContent = item.title;
+        }
+
+        function nextHomeImage() {
+            homeCurrentIndex = (homeCurrentIndex + 1) % homeGalleryItems.length;
+            updateHomeLightbox();
+        }
+
+        function prevHomeImage() {
+            homeCurrentIndex = (homeCurrentIndex - 1 + homeGalleryItems.length) % homeGalleryItems.length;
+            updateHomeLightbox();
+        }
+    </script>
+    @endpush
     @endif
 </div>
 
