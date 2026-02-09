@@ -14,11 +14,6 @@
                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                     <div class="hero-split-slide">
                         <div class="hero-split-text animate__animated animate__fadeIn">
-                            <div class="breadcrumb-slider">
-                                <a href="{{ url('/') }}">Forside</a>
-                                <span class="separator">></span>
-                                <span>International</span>
-                            </div>
                             
                             <h1 class="animate__animated animate__fadeInDown">{{ $slide->title }}</h1>
                             <p class="animate__animated animate__fadeInUp">{{ $slide->subtitle }}</p>
@@ -52,11 +47,6 @@
         <!-- Fallback Static Hero if no slides exist -->
         <div class="hero-split-slide">
             <div class="hero-split-text animate__animated animate__fadeIn">
-                <div class="breadcrumb-slider">
-                    <a href="{{ url('/') }}">Home</a>
-                    <span class="separator">></span>
-                    <span>Welcome</span>
-                </div>
                 <h1 class="animate__animated animate__fadeInDown">Welcome to Ministerial Officers Portal</h1>
                 <p class="animate__animated animate__fadeInUp">Department of Education, Government of Uttarakhand</p>
                 <div class="d-flex gap-3">
