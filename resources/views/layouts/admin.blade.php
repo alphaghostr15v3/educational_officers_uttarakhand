@@ -127,6 +127,9 @@
                         <a href="{{ route('admin.notifications.index') }}" class="nav-link {{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}">
                             <i class="fas fa-bell"></i> Send Notifications
                         </a>
+                        <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                            <i class="fas fa-envelope-open-text"></i> Contact Inquiries
+                        </a>
                         <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-history"></i> System Reports
                         </a>
@@ -263,6 +266,7 @@
                             <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=1e3a8a&color=fff" class="rounded-circle" style="width: 35px;">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                            <li><a class="dropdown-item" href="{{ url('/') }}" target="_blank"><i class="fas fa-external-link-alt me-2 text-muted"></i> Visit Website</a></li>
                             <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user me-2 text-muted"></i> Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

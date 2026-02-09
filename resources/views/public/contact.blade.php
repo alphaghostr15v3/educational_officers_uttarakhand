@@ -54,28 +54,53 @@
         <div class="col-md-7">
             <div class="bg-white p-4 p-md-5 rounded shadow-sm border">
                 <h3 class="fw-bold mb-4">Send us a Message</h3>
-                <form action="#" method="POST">
+
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <form action="{{ route('contact.store') }}" method="POST">
+                    @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">Full Name</label>
-                            <input type="text" class="form-control" placeholder="John Doe" required>
+                            <input type="text" name="full_name" class="form-control" placeholder="John Doe" value="{{ old('full_name') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">Email Address</label>
-                            <input type="email" class="form-control" placeholder="john@example.com" required>
+                            <input type="email" name="email" class="form-control" placeholder="john@example.com" value="{{ old('email') }}" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted">Mobile Number</label>
+                            <input type="text" name="mobile_number" class="form-control" placeholder="+91 XXXXX XXXXX" value="{{ old('mobile_number') }}">
                         </div>
                         <div class="col-md-12">
                             <label class="form-label small fw-bold text-muted">Subject</label>
-                            <select class="form-select">
-                                <option>Data Correction</option>
-                                <option>Promotion Inquiry</option>
-                                <option>Transfer Request Query</option>
-                                <option>Other General Enquiry</option>
+                            <select name="subject" class="form-select" required>
+                                <option value="" disabled {{ !old('subject') ? 'selected' : '' }}>Select a subject</option>
+                                <option value="Data Correction" {{ old('subject') == 'Data Correction' ? 'selected' : '' }}>Data Correction</option>
+                                <option value="Promotion Inquiry" {{ old('subject') == 'Promotion Inquiry' ? 'selected' : '' }}>Promotion Inquiry</option>
+                                <option value="Transfer Request Query" {{ old('subject') == 'Transfer Request Query' ? 'selected' : '' }}>Transfer Request Query</option>
+                                <option value="Other General Enquiry" {{ old('subject') == 'Other General Enquiry' ? 'selected' : '' }}>Other General Enquiry</option>
                             </select>
                         </div>
                         <div class="col-md-12">
                             <label class="form-label small fw-bold text-muted">Message</label>
-                            <textarea class="form-control" rows="5" placeholder="How can we help you?"></textarea>
+                            <textarea name="message" class="form-control" rows="5" placeholder="How can we help you?" required>{{ old('message') }}</textarea>
                         </div>
                         <div class="col-md-12 pt-3">
                             <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold">Send Message <i class="fas fa-paper-plane ms-2"></i></button>

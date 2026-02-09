@@ -10,6 +10,7 @@ Route::get('/orders', [HomeController::class, 'orders'])->name('orders');
 Route::get('/seniority', [HomeController::class, 'seniority'])->name('seniority');
 Route::get('/officers', [HomeController::class, 'officers'])->name('officers');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [\App\Http\Controllers\Public\ContactController::class, 'store'])->name('contact.store');
 Route::get('/donation', [HomeController::class, 'donation'])->name('donation');
 Route::post('/donation', [HomeController::class, 'processDonation'])->name('donation.process');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
@@ -181,6 +182,9 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     // Event Management
     Route::resource('events', \App\Http\Controllers\Admin\AdminEventController::class);
     Route::post('events/{event}/toggle', [\App\Http\Controllers\Admin\AdminEventController::class, 'toggleStatus'])->name('events.toggle');
+    
+    // Contact Management
+    Route::resource('contacts', \App\Http\Controllers\Admin\AdminContactController::class)->only(['index', 'show', 'destroy']);
     
     Route::resource('seniority', \App\Http\Controllers\Admin\AdminSeniorityController::class);
     Route::resource('work-forms', \App\Http\Controllers\Admin\AdminWorkFormController::class);
