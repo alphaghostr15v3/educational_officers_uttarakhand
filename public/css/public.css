@@ -35,8 +35,10 @@ body {
     font-weight: 600;
     color: var(--gov-dark) !important;
     text-transform: uppercase;
-    font-size: 0.85rem; /* Slightly smaller for better fit */
-    padding: 0.8rem 1rem !important; /* More compact padding */
+    font-size: 0.85rem;
+    /* Slightly smaller for better fit */
+    padding: 0.8rem 1rem !important;
+    /* More compact padding */
     transition: all 0.3s;
     display: flex !important;
     align-items: center;
@@ -46,7 +48,8 @@ body {
 
 .nav-link i {
     font-size: 1rem;
-    margin-top: -2px; /* Visual centering */
+    margin-top: -2px;
+    /* Visual centering */
 }
 
 .nav-link:hover,
@@ -322,21 +325,31 @@ body {
     color: white;
     padding: 10px 0;
     overflow: hidden;
-    white-space: nowrap;
+    position: relative;
+    z-index: 10;
+}
+
+.ticker-wrapper {
+    overflow: hidden;
 }
 
 .ticker-content {
     display: inline-block;
-    animation: ticker 25s linear infinite;
+    padding-left: 100%;
+    animation: ticker 40s linear infinite;
+}
+
+.ticker-content:hover {
+    animation-play-state: paused;
 }
 
 @keyframes ticker {
     0% {
-        transform: translateX(100%);
+        transform: translate3d(0, 0, 0);
     }
 
     100% {
-        transform: translateX(-100%);
+        transform: translate3d(-100%, 0, 0);
     }
 }
 

@@ -56,7 +56,7 @@
         <nav class="navbar navbar-expand-lg py-0">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <img src="https://emou.co.in/images/logo.png" alt="UK Logo" class="me-2" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Emblem_of_Uttarakhand.svg/1024px-Emblem_of_Uttarakhand.svg.png" alt="UK Logo" class="me-2" style="width: 60px; height: auto;">
                     <div>
                         <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'Educational Ministerial Officers' }}</div>
                         <div class="small fw-bold text-muted">Government of Uttarakhand</div>
@@ -230,20 +230,6 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all carousels on the page
-            var carousels = document.querySelectorAll('.carousel');
-            carousels.forEach(function(carouselElement) {
-                var interval = carouselElement.getAttribute('data-bs-interval') || 5000;
-                new bootstrap.Carousel(carouselElement, {
-                    interval: parseInt(interval),
-                    ride: 'carousel',
-                    pause: 'hover'
-                });
-            });
-        });
-    </script>
     @stack('scripts')
 </body>
 </html>

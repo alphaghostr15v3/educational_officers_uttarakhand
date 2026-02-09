@@ -78,14 +78,14 @@
 <div class="news-ticker">
     <div class="container d-flex">
         <div class="fw-bold pe-3" style="background: var(--uk-green); z-index: 2; position: relative;">LATEST NEWS:</div>
-        <div class="ticker-content flex-grow-1 overflow-hidden" style="white-space: nowrap;">
-            <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+        <div class="ticker-wrapper flex-grow-1 overflow-hidden">
+            <div class="ticker-content" style="white-space: nowrap;">
                 @forelse($news as $item)
                     <span class="me-5 text-white">🚩 {{ $item->title }} ({{ \Carbon\Carbon::parse($item->publish_date)->format('d-m-Y') }})</span>
                 @empty
                     <span class="me-5 text-white">🚩 Welcome to the Educational Ministerial Officers Portal, Uttarakhand. Stay tuned for latest updates.</span>
                 @endforelse
-            </marquee>
+            </div>
         </div>
     </div>
 </div>
