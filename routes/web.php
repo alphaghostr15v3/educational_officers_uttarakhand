@@ -36,6 +36,11 @@ Route::prefix('tools')->name('tools.')->group(function () {
 
 Auth::routes();
 
+// Fix for MethodNotAllowedHttpException if user hits password/email via GET
+Route::get('password/email', function() {
+    return redirect()->route('password.request');
+});
+
 // Redirect admin to dashboard if they go to /admin
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
