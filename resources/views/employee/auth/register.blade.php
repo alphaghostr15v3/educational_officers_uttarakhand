@@ -221,7 +221,7 @@
                 <p class="text-muted">Fill in your professional details to get started.</p>
             </div>
 
-            <form method="POST" action="{{ route('employee.register') }}">
+            <form method="POST" action="{{ route('employee.register') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row g-3">
@@ -241,6 +241,16 @@
                         <input id="email" type="email" class="form-control-custom w-100 @error('email') is-invalid @enderror" 
                                name="email" value="{{ old('email') }}" required placeholder="name@email.com">
                         @error('email')
+                            <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <!-- Profile Picture -->
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Profile Picture</label>
+                        <input id="profile_picture" type="file" class="form-control-custom w-100 @error('profile_picture') is-invalid @enderror" 
+                               name="profile_picture" accept="image/*">
+                        @error('profile_picture')
                             <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>
@@ -319,6 +329,16 @@
                             @endforeach
                         </select>
                         @error('designation')
+                            <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Date of Birth</label>
+                        <input id="dob" type="date" class="form-control-custom w-100 @error('dob') is-invalid @enderror" 
+                               name="dob" value="{{ old('dob') }}" required>
+                        @error('dob')
                             <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>

@@ -81,6 +81,210 @@
 </div>
 
 
+
+<!-- Birthday Slider Section -->
+@if(isset($today_birthdays) && $today_birthdays->count() > 0)
+<div class="birthday-section position-relative overflow-hidden py-4">
+    <div class="container">
+        <div class="birthday-card-wrapper mx-auto position-relative">
+            <!-- Decorative Background Elements -->
+            <div class="confetti-bg"></div>
+            
+            <!-- Carousel -->
+            <div id="birthdayCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach($today_birthdays as $index => $birthday)
+                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                        <div class="row g-0 align-items-center justify-content-center p-md-4 p-3">
+                            <!-- Photo Section -->
+                            <div class="col-md-5 text-center mb-4 mb-md-0 position-relative z-2">
+                                <div class="birthday-photo-frame mx-auto">
+                                    <div class="photo-bg"></div>
+                                    <img src="{{ $birthday->image_url }}" alt="{{ $birthday->name }}" class="birthday-img">
+                                    <div class="birthday-date-badge">
+                                        {{ $birthday->dob->format('d F') }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Content Section -->
+                            <div class="col-md-7 position-relative z-2">
+                                <div class="birthday-message-box bg-white p-4 rounded-4 shadow-sm position-relative">
+                                    <!-- Speech Bubble Arrow -->
+                                    <div class="speech-arrow d-none d-md-block"></div>
+                                    
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="fs-4 me-2">🎉</span>
+                                        <h5 class="fw-bold text-secondary mb-0">Today We Celebrate!</h5>
+                                        <span class="fs-4 ms-2">🎂</span>
+                                    </div>
+                                    
+                                    <h2 class="birthday-name-title mb-3">
+                                        Happy Birthday <span class="text-primary">{{ $birthday->name }}</span>! 🎈
+                                    </h2>
+                                    
+                                    <p class="birthday-text text-muted mb-3">
+                                        The Educational Ministerial Officers Association, Uttarakhand extends best wishes to you on your special day. May your birthday be filled with love, happiness, and success. Enjoy your wonderful day to the fullest! 🥳
+                                    </p>
+                                    
+                                    <div class="d-flex align-items-center justify-content-between mt-4 border-top pt-3">
+                                        <div>
+                                            <h4 class="text-primary fw-bold mb-0" style="font-family: 'Playfair Display', serif;">Wish You a Wonderful Day!</h4>
+                                            <small class="text-muted fw-bold">{{ $birthday->designation }}</small>
+                                        </div>
+                                        <i class="fas fa-gift fa-3x text-warning opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                
+                @if($today_birthdays->count() > 1)
+                <button class="carousel-control-prev birthday-nav-btn" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-white rounded-circle shadow-sm p-3 text-dark" style="background-image: none; display: flex; align-items: center; justify-content: center;" aria-hidden="true">
+                        <i class="fas fa-chevron-left text-primary"></i>
+                    </span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next birthday-nav-btn" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-white rounded-circle shadow-sm p-3 text-dark" style="background-image: none; display: flex; align-items: center; justify-content: center;" aria-hidden="true">
+                        <i class="fas fa-chevron-right text-primary"></i>
+                    </span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Birthday Section Styles */
+.birthday-section {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.birthday-card-wrapper {
+    max-width: 900px;
+    background-color: #f8f9fa; /* Fallback */
+    background-image: radial-gradient(#FFD700 15%, transparent 16%),
+                      radial-gradient(#FF69B4 15%, transparent 16%),
+                      radial-gradient(#00CED1 15%, transparent 16%),
+                      radial-gradient(#32CD32 15%, transparent 16%);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px, 15px 45px, 45px 15px; /* Confetti effect */
+    border-radius: 20px;
+    border: 2px solid #28a745; /* Green border as in image */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
+}
+
+/* Overlay to soften the confetti background */
+.birthday-card-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.birthday-photo-frame {
+    width: 250px;
+    height: 280px;
+    position: relative;
+    padding: 10px;
+    border-radius: 20px;
+    background: #d4edda; /* Light green background */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.birthday-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 4px solid #fff;
+}
+
+.birthday-date-badge {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff9800; /* Orange badge */
+    color: white;
+    padding: 8px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    border: 2px solid #fff;
+}
+
+.birthday-message-box {
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.speech-arrow {
+    position: absolute;
+    left: -15px;
+    top: 50px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+.birthday-name-title {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    color: #1a237e;
+}
+
+.birthday-text {
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.birthday-nav-btn {
+    width: 5%;
+}
+
+.birthday-nav-btn .carousel-control-prev-icon,
+.birthday-nav-btn .carousel-control-next-icon {
+    width: 40px;
+    height: 40px;
+}
+
+@media (max-width: 768px) {
+    .birthday-photo-frame {
+        width: 200px;
+        height: 220px;
+        margin-bottom: 2rem;
+    }
+    .speech-arrow {
+        display: none;
+    }
+    .birthday-message-box {
+        text-align: center;
+    }
+    .birthday-content .d-flex {
+        justify-content: center !important;
+    }
+    .birthday-nav-btn {
+        width: 10%;
+    }
+}
+</style>
+@endif
+
 <!-- Main Content -->
 <div class="container my-5">
     <div class="row g-4">

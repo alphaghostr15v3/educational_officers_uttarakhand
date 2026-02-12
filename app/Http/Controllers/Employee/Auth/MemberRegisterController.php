@@ -47,13 +47,23 @@ class MemberRegisterController extends Controller
             'district_id' => ['required', 'exists:districts,id'],
             'designation' => ['required', 'string', 'max:255'],
             'school_id' => ['required', 'exists:schools,id'],
+            'dob' => ['required', 'date', 'before:today'],
             'joining_date' => ['required', 'date'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
     }
 
     protected function create(array $data)
     {
         return DB::transaction(function () use ($data) {
+            $profilePicturePath = null;
+            if (request()->hasFile('profile_picture')) {
+                $file = request()->file('profile_picture');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/profile_pictures'), $filename);
+                $profilePicturePath = 'uploads/profile_pictures/' . $filename;
+            }
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -64,6 +74,8 @@ class MemberRegisterController extends Controller
                 'division_id' => $data['division_id'],
                 'district_id' => $data['district_id'],
                 'school_id' => $data['school_id'],
+                'dob' => $data['dob'],
+                'profile_picture' => $profilePicturePath,
                 'is_active' => true,
             ]);
 

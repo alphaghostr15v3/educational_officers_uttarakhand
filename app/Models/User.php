@@ -32,6 +32,7 @@ class User extends Authenticatable
         'profile_picture',
         'is_active',
         'last_login_at',
+        'dob',
     ];
 
     /**
@@ -56,6 +57,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
+            'dob' => 'date',
         ];
     }
 
