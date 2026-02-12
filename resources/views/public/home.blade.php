@@ -514,7 +514,7 @@
             </div>
             <div class="modal-body p-0">
                 @if($popup_news->image)
-                    <img src="{{ asset('uploads/news/' . $popup_news->image) }}" class="img-fluid w-100" alt="{{ $popup_news->title }}" style="max-height: 400px; object-fit: cover;">
+                    <img src="{{ asset('uploads/news/' . $popup_news->image) }}" class="img-fluid w-100" alt="{{ $popup_news->title }}" style="object-fit: contain;">
                 @endif
                 <div class="p-4">
                     <h4 class="fw-bold mb-3">{{ $popup_news->title }}</h4>
