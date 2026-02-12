@@ -80,60 +80,6 @@
     </div>
 </div>
 
-<!-- Birthday Slider -->
-@if($today_birthdays && $today_birthdays->count() > 0)
-<div class="birthday-section full-width-slider">
-    <div id="birthdayCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-inner">
-            @foreach($today_birthdays as $index => $birthday)
-                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                    <div class="birthday-banner-slide" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('{{ $birthday->image_url }}'); background-size: cover; background-position: center 20%; height: 400px; position: relative; overflow: hidden;">
-                        <div class="container h-100">
-                            <div class="d-flex flex-column justify-content-center h-100 text-white animate__animated animate__fadeIn">
-                                <div class="mb-2">
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold shadow-sm">
-                                        🎂 TODAY'S BIRTHDAY
-                                    </span>
-                                </div>
-                                <h1 class="display-3 fw-bold mb-1" style="text-shadow: 2px 2px 15px rgba(0,0,0,0.5);">{{ $birthday->name }}</h1>
-                                <p class="fs-4 mb-4 text-white-50 fw-light">{{ $birthday->designation }}</p>
-                                <div>
-                                    <a href="{{ route('birthdays') }}" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow">
-                                        <i class="fas fa-gift me-2"></i> View All Celebrations
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        @if($today_birthdays->count() > 1)
-            <button class="carousel-control-prev" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="prev" style="z-index: 20;">
-                <span class="carousel-control-prev-icon bg-primary rounded-circle p-2"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="next" style="z-index: 20;">
-                <span class="carousel-control-next-icon bg-primary rounded-circle p-2"></span>
-            </button>
-        @endif
-    </div>
-</div>
-
-<style>
-    .birthday-section.full-width-slider {
-        margin-top: 0;
-        border-bottom: 5px solid var(--uk-saffron);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    .birthday-banner-slide {
-        transition: background-position 10s ease-out;
-    }
-    .carousel-item.active .birthday-banner-slide {
-        background-position: center 30%;
-    }
-</style>
-@endif
 
 <!-- Main Content -->
 <div class="container my-5">
