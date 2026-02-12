@@ -22,12 +22,17 @@ class EmployeeProfileController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'mobile' => 'required|string|max:15',
+            'dob' => 'nullable|date|before:today',
             'password' => 'nullable|string|min:8|confirmed',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user->name = $validated['name'];
         $user->mobile = $validated['mobile'];
+        
+        if ($request->filled('dob')) {
+            $user->dob = $validated['dob'];
+        }
 
         if ($request->hasFile('profile_picture')) {
             // Delete old picture if exists

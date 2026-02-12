@@ -249,7 +249,7 @@
                     <div class="col-md-6 mb-2">
                         <label class="form-label fw-bold small text-muted text-uppercase">Profile Picture</label>
                         <input id="profile_picture" type="file" class="form-control-custom w-100 @error('profile_picture') is-invalid @enderror" 
-                               name="profile_picture" accept="image/*">
+                               name="profile_picture" accept="image/*" required>
                         @error('profile_picture')
                             <span class="invalid-feedback d-block mt-1"><strong>{{ $message }}</strong></span>
                         @enderror

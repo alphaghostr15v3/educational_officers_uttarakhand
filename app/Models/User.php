@@ -105,4 +105,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(ElectionDuty::class);
     }
+
+    // Accessor for birthday slider compatibility
+    public function getImageUrlAttribute()
+    {
+        return $this->profile_picture ? asset($this->profile_picture) : asset('images/default-avatar.png');
+    }
+
+    // Accessor to get designation from staff relationship
+    public function getDesignationAttribute()
+    {
+        return $this->staff ? $this->staff->designation : 'Employee';
+    }
 }

@@ -269,6 +269,13 @@
                                         <i class="fas fa-envelope-open-text mt-3 opacity-25 float-end fs-1"></i>
                                     </div>
                                 </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="info-card p-4 h-100">
+                                        <span class="label-premium">Date of Birth</span>
+                                        <div class="value-premium">{{ $user->dob ? $user->dob->format('d M, Y') : 'Not Set' }}</div>
+                                        <i class="fas fa-birthday-cake mt-3 opacity-25 float-end fs-1"></i>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="alert alert-info mt-4 border-0 rounded-4 p-4">
@@ -315,6 +322,13 @@
                                 <div class="col-md-6">
                                     <label class="form-label label-premium text-muted">Employee Code (Locked)</label>
                                     <input type="text" class="form-control form-control-premium bg-light" value="{{ $user->employee_code }}" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label label-premium">Date of Birth</label>
+                                    <input type="date" name="dob" class="form-control form-control-premium @error('dob') is-invalid @enderror" value="{{ old('dob', $user->dob ? $user->dob->format('Y-m-d') : '') }}">
+                                    @error('dob')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12 mt-4">
                                     <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm fw-bold">

@@ -22,9 +22,12 @@ class HomeController extends Controller
                                       })
                                       ->latest()
                                       ->first();
-        $today_birthdays = \App\Models\EmployeeBirthday::where('is_active', true)
+        // Get all birthdays in current month
+        $today_birthdays = \App\Models\User::with('staff')
+                                      ->whereNotNull('dob')
                                       ->whereMonth('dob', now()->month)
-                                      ->whereDay('dob', now()->day)
+                                      ->where('is_active', true)
+                                      ->orderByRaw('DAY(dob) ASC')
                                       ->get();
 
         return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'today_birthdays'));

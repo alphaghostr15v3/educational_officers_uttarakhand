@@ -49,7 +49,7 @@ class MemberRegisterController extends Controller
             'school_id' => ['required', 'exists:schools,id'],
             'dob' => ['required', 'date', 'before:today'],
             'joining_date' => ['required', 'date'],
-            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'profile_picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
     }
 

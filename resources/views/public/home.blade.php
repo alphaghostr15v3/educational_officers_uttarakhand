@@ -91,7 +91,7 @@
             <div class="confetti-bg"></div>
             
             <!-- Carousel -->
-            <div id="birthdayCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="birthdayCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-inner">
                     @foreach($today_birthdays as $index => $birthday)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
@@ -115,7 +115,7 @@
                                     
                                     <div class="d-flex align-items-center mb-2">
                                         <span class="fs-4 me-2">🎉</span>
-                                        <h5 class="fw-bold text-secondary mb-0">Today We Celebrate!</h5>
+                                        <h5 class="fw-bold text-secondary mb-0">This Month's Celebrations!</h5>
                                         <span class="fs-4 ms-2">🎂</span>
                                     </div>
                                     
