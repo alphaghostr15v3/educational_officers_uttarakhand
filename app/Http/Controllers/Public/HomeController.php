@@ -121,14 +121,7 @@ class HomeController extends Controller
         return view('public.gallery', compact('photos'));
     }
 
-    public function birthdays()
-    {
-        $today_birthdays = \App\Models\EmployeeBirthday::where('is_active', true)
-                                      ->whereMonth('dob', now()->month)
-                                      ->orderByRaw('DAY(dob) ASC')
-                                      ->get();
-        return view('public.birthdays', compact('today_birthdays'));
-    }
+
 
     public function videos()
     {

@@ -162,7 +162,7 @@
                             <ul class="dropdown-menu shadow border-0" aria-labelledby="mediaDropdown">
                                 <li><a class="dropdown-item" href="{{ route('gallery') }}"><i class="fas fa-images me-2"></i> Gallery</a></li>
                                 <li><a class="dropdown-item" href="{{ route('videos') }}"><i class="fas fa-video me-2"></i> Video</a></li>
-                                <li><a class="dropdown-item" href="{{ route('birthdays') }}"><i class="fas fa-birthday-cake me-2"></i> Birthday</a></li>
+
                                 <li><a class="dropdown-item" href="{{ route('events') }}"><i class="fas fa-calendar-alt me-2"></i> Event</a></li>
                             </ul>
                         </li>
