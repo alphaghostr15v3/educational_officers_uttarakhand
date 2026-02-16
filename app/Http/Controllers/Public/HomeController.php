@@ -13,7 +13,7 @@ class HomeController extends Controller
         $recent_orders = \App\Models\Order::where('is_published', true)->latest()->take(5)->get();
         $portal_forms = \App\Models\PortalForm::where('is_active', true)->orderBy('sort_order')->get();
         $hero_slides = \App\Models\HeroSlide::where('is_active', true)->orderBy('sort_order')->get();
-        $gallery_photos = \App\Models\Gallery::where('is_active', true)->latest()->take(8)->get();
+        $gallery_photos = \App\Models\Gallery::with('photos')->where('is_active', true)->latest()->take(8)->get();
         $work_forms = \App\Models\WorkForm::where('is_active', true)->ordered()->get()->groupBy('work_type');
         $popup_news = \App\Models\News::where('is_published', true)
                                       ->where(function($q) {

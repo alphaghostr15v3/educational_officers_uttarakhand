@@ -278,6 +278,18 @@
         document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('active');
         });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarCollapse');
+            if (window.innerWidth < 768 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !toggleBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
     </script>
     @stack('scripts')
 </body>

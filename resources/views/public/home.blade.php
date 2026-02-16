@@ -247,17 +247,23 @@
                 <a href="{{ route('gallery') }}" class="btn btn-outline-danger btn-sm">View All Photos</a>
             </div>
             <div class="row g-3">
-                @foreach($gallery_photos as $index => $photo)
-                    <div class="col-md-3 col-6">
-                        <div class="gallery-item-home position-relative overflow-hidden rounded shadow-sm h-100 cursor-pointer" onclick="openHomeLightbox({{ $index }})" data-src="{{ asset('uploads/gallery/' . $photo->image_path) }}" data-title="{{ $photo->title }}">
-                            <div class="position-relative">
-                                <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="img-fluid w-100" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
+                @foreach($gallery_photos as $photo)
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="card border-0 shadow-sm h-100 overflow-hidden gallery-card cursor-pointer" 
+                            onclick="openHomeLightbox({{ $photo->id }})"
+                            data-id="{{ $photo->id }}"
+                            data-src="{{ asset('uploads/gallery/' . $photo->image_path) }}" 
+                            data-title="{{ $photo->title }}"
+                            data-photos="{{ json_encode($photo->photos) }}">
+                            <div class="gallery-item-home">
+                                <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
                                 <div class="gallery-home-overlay">
                                     <i class="fas fa-search-plus text-white fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white p-2 small text-truncate z-1">
-                                {{ $photo->title }}
+                            <div class="card-body p-2 text-center">
+                                <h6 class="fw-bold mb-1 text-truncate" style="font-size: 0.9rem;">{{ $photo->title }}</h6>
+                                <span class="badge bg-light text-primary border border-primary-subtle rounded-pill" style="font-size: 0.7rem;">{{ $photo->category }}</span>
                             </div>
                         </div>
                     </div>
@@ -293,13 +299,22 @@
     </div>
 
     <style>
+        .gallery-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
         .gallery-item-home {
+            position: relative;
             cursor: pointer;
+            overflow: hidden;
         }
         .gallery-item-home img {
             transition: transform 0.3s ease;
         }
-        .gallery-item-home:hover img {
+        .gallery-card:hover .gallery-item-home img {
             transform: scale(1.05);
         }
         .gallery-home-overlay {
@@ -316,7 +331,7 @@
             transition: opacity 0.3s ease;
             z-index: 2;
         }
-        .gallery-item-home:hover .gallery-home-overlay {
+        .gallery-card:hover .gallery-home-overlay {
             opacity: 1;
         }
         #homeLightboxModal .modal-xl {
@@ -326,22 +341,14 @@
 
     @push('scripts')
     <script>
-        let homeCurrentIndex = 0;
-        const homeGalleryItems = [];
+        let homeCurrentAlbum = [];
+        let homeCurrentPhotoIndex = 0;
         let homeLightboxModal;
 
         document.addEventListener('DOMContentLoaded', function() {
             const modalElement = document.getElementById('homeLightboxModal');
             if (modalElement) {
                 homeLightboxModal = new bootstrap.Modal(modalElement);
-                
-                // Populate gallery items array
-                document.querySelectorAll('.gallery-item-home').forEach((item, index) => {
-                    homeGalleryItems.push({
-                        src: item.getAttribute('data-src'),
-                        title: item.getAttribute('data-title')
-                    });
-                });
 
                 // Keyboard Navigation
                 document.addEventListener('keydown', function(e) {
@@ -352,25 +359,54 @@
             }
         });
 
-        function openHomeLightbox(index) {
-            homeCurrentIndex = index;
+        function openHomeLightbox(galleryId) {
+            const card = document.querySelector(`.gallery-card[data-id="${galleryId}"]`);
+            const title = card.getAttribute('data-title');
+            const mainSrc = card.getAttribute('data-src');
+            
+            // Get inner photos from the data attribute
+            const innerPhotos = JSON.parse(card.getAttribute('data-photos'));
+            
+            // Build the album: Main photo + Inner photos
+            homeCurrentAlbum = [
+                { src: mainSrc, title: title }
+            ];
+            
+            innerPhotos.forEach(photo => {
+                homeCurrentAlbum.push({
+                    src: "{{ asset('uploads/gallery') }}/" + photo.photo_path,
+                    title: title
+                });
+            });
+
+            homeCurrentPhotoIndex = 0;
             updateHomeLightbox();
             homeLightboxModal.show();
+
+            // Show/Hide navigation based on album size
+            const navBtns = document.querySelectorAll('#homeLightboxModal .btn-link');
+            if (homeCurrentAlbum.length > 1) {
+                navBtns.forEach(btn => btn.style.display = 'block');
+            } else {
+                navBtns.forEach(btn => btn.style.display = 'none');
+            }
         }
 
         function updateHomeLightbox() {
-            const item = homeGalleryItems[homeCurrentIndex];
+            const item = homeCurrentAlbum[homeCurrentPhotoIndex];
             document.getElementById('homeLightboxImage').src = item.src;
-            document.getElementById('homeLightboxTitle').textContent = item.title;
+            document.getElementById('homeLightboxTitle').textContent = item.title + (homeCurrentAlbum.length > 1 ? ` (${homeCurrentPhotoIndex + 1}/${homeCurrentAlbum.length})` : '');
         }
 
         function nextHomeImage() {
-            homeCurrentIndex = (homeCurrentIndex + 1) % homeGalleryItems.length;
+            if (homeCurrentAlbum.length <= 1) return;
+            homeCurrentPhotoIndex = (homeCurrentPhotoIndex + 1) % homeCurrentAlbum.length;
             updateHomeLightbox();
         }
 
         function prevHomeImage() {
-            homeCurrentIndex = (homeCurrentIndex - 1 + homeGalleryItems.length) % homeGalleryItems.length;
+            if (homeCurrentAlbum.length <= 1) return;
+            homeCurrentPhotoIndex = (homeCurrentPhotoIndex - 1 + homeCurrentAlbum.length) % homeCurrentAlbum.length;
             updateHomeLightbox();
         }
     </script>

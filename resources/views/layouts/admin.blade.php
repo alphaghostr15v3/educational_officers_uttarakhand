@@ -201,7 +201,12 @@
         <!-- Main Content -->
         <div id="content">
             <header class="admin-header d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold mb-0">@yield('page_title', 'Dashboard')</h5>
+                <div class="d-flex align-items-center">
+                    <button type="button" id="sidebarCollapse" class="btn btn-link text-dark p-0 me-3 d-lg-none">
+                        <i class="fas fa-bars fs-4"></i>
+                    </button>
+                    <h5 class="fw-bold mb-0">@yield('page_title', 'Dashboard')</h5>
+                </div>
                 <div class="d-flex align-items-center">
                     @php
                         $notifications = \App\Models\Notification::where(function($q) {
@@ -310,6 +315,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarCollapse')?.addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarCollapse');
+            if (window.innerWidth < 992 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !toggleBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

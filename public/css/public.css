@@ -29,6 +29,21 @@ body {
 
 .navbar-brand img {
     height: 70px;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 50px;
+    }
+
+    .navbar-brand .fs-5 {
+        font-size: 0.9rem !important;
+    }
+
+    .navbar-brand .small {
+        font-size: 0.7rem !important;
+    }
 }
 
 .nav-link {
@@ -517,7 +532,9 @@ body {
     font-size: 0.75rem;
     color: #6c757d;
     font-weight: 500;
-}/* Hero Section Responsive Refinements */
+}
+
+/* Hero Section Responsive Refinements */
 @media (max-width: 992px) {
     .hero-split-slide {
         height: auto;
@@ -582,7 +599,12 @@ body {
     .hero-split-text .btn {
         width: 100%;
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        padding: 10px 20px !important;
+    }
+
+    .hero-split-text .gap-3 {
+        gap: 10px !important;
     }
 }
 

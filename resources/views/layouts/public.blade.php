@@ -46,6 +46,15 @@
             margin-bottom: 1.5rem;
         }
 
+        @media (max-width: 768px) {
+            .media-page-title {
+                font-size: 2rem;
+            }
+            .media-page-description {
+                font-size: 1rem;
+            }
+        }
+
         .media-page-title::after {
             content: '';
             position: absolute;
