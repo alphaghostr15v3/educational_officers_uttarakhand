@@ -290,15 +290,15 @@ body {
     .hero-split-text {
         flex: 0 0 100%;
         width: 100%;
-        padding: 80px 5%;
+        padding: 60px 5%;
         z-index: 10;
-        background: linear-gradient(90deg, #003057 40%, rgba(0, 48, 87, 0.7) 100%);
+        background: linear-gradient(90deg, #003057 40%, rgba(0, 48, 87, 0.9) 100%);
     }
 
     .hero-split-image {
         width: 100%;
         clip-path: none;
-        opacity: 0.4;
+        opacity: 0.3;
     }
 
     .hero-split-text h1 {
@@ -307,16 +307,60 @@ body {
 }
 
 @media (max-width: 768px) {
+    .navbar-brand img {
+        height: 50px;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
     .carousel-item {
         height: 400px !important;
     }
 
     .carousel-caption h1 {
-        font-size: 2rem !important;
+        font-size: 1.8rem !important;
     }
 
     .carousel-caption {
-        bottom: 15% !important;
+        bottom: 10% !important;
+    }
+
+    .hero-split-text h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-split-text p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .top-bar {
+        font-size: 0.75rem;
+        padding: 8px 0;
+    }
+
+    .hero-split-text {
+        padding: 40px 5%;
+    }
+
+    .hero-split-text h1 {
+        font-size: 1.8rem;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-split-text .btn-warning,
+    .hero-split-text .btn-light {
+        width: 100%;
+        margin-bottom: 10px;
+        display: block;
+        padding: 12px 20px !important;
+    }
+
+    .news-ticker {
+        font-size: 0.8rem;
     }
 }
 
@@ -473,4 +517,227 @@ body {
     font-size: 0.75rem;
     color: #6c757d;
     font-weight: 500;
+}/* Hero Section Responsive Refinements */
+@media (max-width: 992px) {
+    .hero-split-slide {
+        height: auto;
+        min-height: 500px;
+        flex-direction: column;
+    }
+
+    .hero-split-text {
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 60px 5%;
+        z-index: 10;
+        background: linear-gradient(to bottom, rgba(0, 48, 87, 0.95) 0%, rgba(0, 48, 87, 0.8) 100%);
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-split-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        clip-path: none;
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    .hero-split-text h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero-split-text p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-split-slide {
+        min-height: 450px;
+    }
+
+    .hero-split-text {
+        padding: 40px 20px;
+    }
+
+    .hero-split-text h1 {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+
+    .hero-split-text p {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    .hero-split-text .d-flex {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px !important;
+    }
+
+    .hero-split-text .btn {
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+    }
+}
+
+/* Birthday Section Styles */
+.birthday-section {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.birthday-card-wrapper {
+    max-width: 900px;
+    background-color: #f8f9fa;
+    /* Fallback */
+    background-image: radial-gradient(#FFD700 15%, transparent 16%),
+        radial-gradient(#FF69B4 15%, transparent 16%),
+        radial-gradient(#00CED1 15%, transparent 16%),
+        radial-gradient(#32CD32 15%, transparent 16%);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px, 15px 45px, 45px 15px;
+    /* Confetti effect */
+    border-radius: 20px;
+    border: 2px solid #28a745;
+    /* Green border as in image */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+    padding: 10px;
+}
+
+/* Overlay to soften the confetti background */
+.birthday-card-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+}
+
+.birthday-photo-frame {
+    width: 250px;
+    height: 280px;
+    position: relative;
+    padding: 10px;
+    border-radius: 20px;
+    background: #d4edda;
+    /* Light green background */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.birthday-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 4px solid #fff;
+}
+
+.birthday-date-badge {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff9800;
+    /* Orange badge */
+    color: white;
+    padding: 8px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 2px solid #fff;
+    z-index: 5;
+}
+
+.birthday-message-box {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.speech-arrow {
+    position: absolute;
+    left: -15px;
+    top: 50px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+.birthday-name-title {
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    color: #1a237e;
+}
+
+.birthday-text {
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.birthday-nav-btn {
+    width: 5%;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.birthday-nav-btn:hover {
+    opacity: 1;
+}
+
+.birthday-nav-btn .carousel-control-prev-icon,
+.birthday-nav-btn .carousel-control-next-icon {
+    width: 40px;
+    height: 40px;
+}
+
+/* Birthday Section Responsive */
+@media (max-width: 768px) {
+    .birthday-card-wrapper {
+        padding: 5px;
+    }
+
+    .birthday-photo-frame {
+        width: 180px;
+        height: 200px;
+        margin-bottom: 2rem;
+    }
+
+    .speech-arrow {
+        display: none;
+    }
+
+    .birthday-message-box {
+        text-align: center;
+        padding: 1.5rem !important;
+    }
+
+    .birthday-message-box .d-flex {
+        justify-content: center !important;
+    }
+
+    .birthday-nav-btn {
+        width: 10%;
+    }
+
+    .birthday-name-title {
+        font-size: 1.5rem;
+    }
+
+    .birthday-date-badge {
+        padding: 5px 15px;
+        font-size: 1rem;
+    }
 }

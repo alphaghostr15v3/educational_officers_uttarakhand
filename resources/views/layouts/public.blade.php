@@ -106,10 +106,10 @@
 
     <!-- Top Bar -->
     <div class="top-bar">
-        <div class="container d-flex justify-content-between">
-            <div>
-                <span class="me-3"><i class="fas fa-phone-alt me-1"></i> {{ $site_settings['contact_phone'] ?? '+91-135-271XXXX' }}</span>
-                <span><i class="fas fa-envelope me-1"></i> {{ $site_settings['contact_email'] ?? 'education-uk@gov.in' }}</span>
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start">
+            <div class="mb-2 mb-md-0">
+                <span class="d-block d-md-inline me-md-3"><i class="fas fa-phone-alt me-1"></i> {{ $site_settings['contact_phone'] ?? '+91-135-271XXXX' }}</span>
+                <span class="d-block d-md-inline"><i class="fas fa-envelope me-1"></i> {{ $site_settings['contact_email'] ?? 'education-uk@gov.in' }}</span>
             </div>
             <div>
                 @auth
