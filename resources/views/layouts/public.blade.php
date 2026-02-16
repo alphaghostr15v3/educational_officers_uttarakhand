@@ -129,7 +129,7 @@
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
                     <img src="{{ asset('images/association_logo.png') }}" alt="Logo" class="me-2" style="width: 55px; height: auto;">
                     <div>
-                        <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'Educational Ministerial Officers' }}</div>
+                        <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'EMOU' }}</div>
                         <div class="small fw-bold text-muted">Association Uttarakhand</div>
                     </div>
                 </a>
