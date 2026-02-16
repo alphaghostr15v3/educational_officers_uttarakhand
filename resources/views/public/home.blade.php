@@ -84,7 +84,7 @@
 
 <!-- Birthday Slider Section -->
 @if(isset($today_birthdays) && $today_birthdays->count() > 0)
-<div class="birthday-section position-relative overflow-hidden py-4">
+<div class="birthday-section position-relative py-5">
     <div class="container">
         <div class="birthday-card-wrapper mx-auto position-relative">
             <!-- Decorative Background Elements -->

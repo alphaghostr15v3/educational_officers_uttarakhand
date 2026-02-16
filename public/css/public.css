@@ -728,13 +728,14 @@ body {
 /* Birthday Section Responsive */
 @media (max-width: 768px) {
     .birthday-card-wrapper {
-        padding: 5px;
+        padding: 20px 10px;
+        overflow: visible;
     }
 
     .birthday-photo-frame {
-        width: 180px;
-        height: 200px;
-        margin-bottom: 2rem;
+        width: 200px;
+        height: 220px;
+        margin-bottom: 2.5rem;
     }
 
     .speech-arrow {
@@ -755,11 +756,22 @@ body {
     }
 
     .birthday-name-title {
-        font-size: 1.5rem;
+        font-size: 1.85rem;
+        line-height: 1.2;
+    }
+
+    .birthday-text {
+        font-size: 1.15rem;
     }
 
     .birthday-date-badge {
-        padding: 5px 15px;
-        font-size: 1rem;
+        padding: 6px 18px;
+        font-size: 1.1rem;
+    }
+
+    /* Recover visibility: allow carousel to grow with content */
+    #birthdayCarousel .carousel-item {
+        height: auto !important;
+        min-height: 0;
     }
 }
