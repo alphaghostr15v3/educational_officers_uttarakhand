@@ -15,9 +15,11 @@
             @forelse($photos as $index => $photo)
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="card border-0 shadow-sm h-100 overflow-hidden gallery-card cursor-pointer" 
-                        onclick="openLightbox({{ $index }})"
+                        onclick="openLightbox({{ $photo->id }})"
+                        data-id="{{ $photo->id }}"
                         data-src="{{ asset('uploads/gallery/' . $photo->image_path) }}" 
-                        data-title="{{ $photo->title }}">
+                        data-title="{{ $photo->title }}"
+                        data-photos="{{ json_encode($photo->photos) }}">
                         <div class="gallery-item">
                             <img src="{{ asset('uploads/gallery/' . $photo->image_path) }}" class="card-img-top" alt="{{ $photo->title }}" style="height: 200px; object-fit: cover;">
                             <div class="gallery-overlay">
@@ -112,20 +114,12 @@
 
 @push('scripts')
 <script>
-    let currentIndex = 0;
-    const galleryItems = [];
+    let currentAlbum = [];
+    let currentPhotoIndex = 0;
     let lightboxModal;
 
     document.addEventListener('DOMContentLoaded', function() {
         lightboxModal = new bootstrap.Modal(document.getElementById('lightboxModal'));
-        
-        // Populate gallery items array
-        document.querySelectorAll('.gallery-card').forEach((card, index) => {
-            galleryItems.push({
-                src: card.getAttribute('data-src'),
-                title: card.getAttribute('data-title')
-            });
-        });
 
         // Keyboard Navigation
         document.addEventListener('keydown', function(e) {
@@ -136,25 +130,54 @@
         });
     });
 
-    function openLightbox(index) {
-        currentIndex = index;
+    function openLightbox(galleryId) {
+        const card = document.querySelector(`.gallery-card[data-id="${galleryId}"]`);
+        const title = card.getAttribute('data-title');
+        const mainSrc = card.getAttribute('data-src');
+        
+        // Get inner photos from the data attribute
+        const innerPhotos = JSON.parse(card.getAttribute('data-photos'));
+        
+        // Build the album: Main photo + Inner photos
+        currentAlbum = [
+            { src: mainSrc, title: title }
+        ];
+        
+        innerPhotos.forEach(photo => {
+            currentAlbum.push({
+                src: "{{ asset('uploads/gallery') }}/" + photo.photo_path,
+                title: title
+            });
+        });
+
+        currentPhotoIndex = 0;
         updateLightbox();
         lightboxModal.show();
+
+        // Show/Hide navigation based on album size
+        const navBtns = document.querySelectorAll('#lightboxModal .btn-link');
+        if (currentAlbum.length > 1) {
+            navBtns.forEach(btn => btn.style.display = 'block');
+        } else {
+            navBtns.forEach(btn => btn.style.display = 'none');
+        }
     }
 
     function updateLightbox() {
-        const item = galleryItems[currentIndex];
+        const item = currentAlbum[currentPhotoIndex];
         document.getElementById('lightboxImage').src = item.src;
-        document.getElementById('lightboxTitle').textContent = item.title;
+        document.getElementById('lightboxTitle').textContent = item.title + (currentAlbum.length > 1 ? ` (${currentPhotoIndex + 1}/${currentAlbum.length})` : '');
     }
 
     function nextImage() {
-        currentIndex = (currentIndex + 1) % galleryItems.length;
+        if (currentAlbum.length <= 1) return;
+        currentPhotoIndex = (currentPhotoIndex + 1) % currentAlbum.length;
         updateLightbox();
     }
 
     function prevImage() {
-        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        if (currentAlbum.length <= 1) return;
+        currentPhotoIndex = (currentPhotoIndex - 1 + currentAlbum.length) % currentAlbum.length;
         updateLightbox();
     }
 </script>

@@ -31,14 +31,24 @@
                                     {{ $photo->is_active ? 'Active' : 'Inactive' }}
                                 </button>
                             </form>
-                            <form action="{{ route('admin.gallery.destroy', $photo->id) }}" method="POST" onsubmit="return confirm('Remove this photo permanently?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('admin.gallery.edit', $photo->id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('admin.gallery.destroy', $photo->id) }}" method="POST" onsubmit="return confirm('Remove this album and all its photos permanently?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+                        @if($photo->photos->count() > 0)
+                            <div class="mt-2">
+                                <span class="badge bg-info text-dark small"><i class="fas fa-images me-1"></i> {{ $photo->photos->count() }} photos</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

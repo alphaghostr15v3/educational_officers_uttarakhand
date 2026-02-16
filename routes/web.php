@@ -168,8 +168,9 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::resource('designations', \App\Http\Controllers\Admin\AdminDesignationController::class);
     Route::resource('pay-grades', \App\Http\Controllers\Admin\AdminPayGradeController::class);
     Route::resource('posts', \App\Http\Controllers\Admin\AdminPostController::class);
-    Route::resource('gallery', \App\Http\Controllers\Admin\AdminGalleryController::class)->except(['show', 'edit', 'update']);
+    Route::resource('gallery', \App\Http\Controllers\Admin\AdminGalleryController::class);
     Route::post('gallery/{gallery}/toggle', [\App\Http\Controllers\Admin\AdminGalleryController::class, 'toggleStatus'])->name('gallery.toggle');
+    Route::delete('gallery/photo/{photo}', [\App\Http\Controllers\Admin\AdminGalleryController::class, 'deletePhoto'])->name('gallery.photo.destroy');
     Route::resource('news', \App\Http\Controllers\Admin\AdminNewsController::class);
     
     // News Ticker Management (Separate from News & Notices)

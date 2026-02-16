@@ -30,10 +30,19 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="image" class="form-label fw-bold">Select Image</label>
+                        <label for="image" class="form-label fw-bold">Select Cover Photo</label>
                         <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*" required>
                         <div class="form-text mt-2"><i class="fas fa-info-circle me-1"></i> Recommended size: 800x600px. Max size: 2MB.</div>
                         @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="inner_photos" class="form-label fw-bold">Select Inner Photos (Album)</label>
+                        <input type="file" class="form-control @error('inner_photos.*') is-invalid @enderror" id="inner_photos" name="inner_photos[]" accept="image/*" multiple>
+                        <div class="form-text mt-2"><i class="fas fa-images me-1"></i> You can select multiple photos to create an album.</div>
+                        @error('inner_photos.*')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
