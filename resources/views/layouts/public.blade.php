@@ -108,16 +108,10 @@
     <div class="top-bar">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start">
             <div class="mb-2 mb-md-0">
-                <span class="d-block d-md-inline me-md-3"><i class="fas fa-phone-alt me-1"></i> {{ $site_settings['contact_phone'] ?? '+91-135-271XXXX' }}</span>
-                <span class="d-block d-md-inline"><i class="fas fa-envelope me-1"></i> {{ $site_settings['contact_email'] ?? 'education-uk@gov.in' }}</span>
+                <span class="d-block d-md-inline me-md-3"><i class="fas fa-phone-alt me-1"></i> {{ $site_settings['contact_phone'] ?? '+91 9411550251' }}</span>
+                <span class="d-block d-md-inline"><i class="fas fa-envelope me-1"></i> {{ $site_settings['contact_email'] ?? 'websitehelp@emou.co.in' }}</span>
             </div>
             <div>
-                @auth
-                    <a href="{{ route('admin.dashboard') }}" class="text-white text-decoration-none me-3"><i class="fas fa-th-large me-1"></i> Admin Panel</a>
-                @else
-                    <a href="{{ route('admin.login') }}" class="text-white text-decoration-none me-3"><i class="fas fa-lock me-1"></i> Admin Login</a>
-                @endauth
-                <a href="#" class="text-white text-decoration-none">Hindi</a>
             </div>
         </div>
     </div>
@@ -129,7 +123,7 @@
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
                     <img src="{{ asset('images/association_logo.png') }}" alt="Logo" class="me-2" style="width: 55px; height: auto;">
                     <div>
-                        <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'EMOU' }}</div>
+                        <div class="fw-bold fs-5 text-uppercase" style="color: var(--gov-blue); line-height: 1.2;">{{ $site_settings['site_title'] ?? 'EDUCATIONAL MINISTERIAL OFFICERS' }}</div>
                         <div class="small fw-bold text-muted">Association Uttarakhand</div>
                     </div>
                 </a>
@@ -207,16 +201,7 @@
                                 </ul>
                             </li>
                         @else
-                            <!-- Registration Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-plus"></i> Register
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="registerDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('employee.register') }}"><i class="fas fa-user-shield me-2"></i> Employee Register</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('school.register') }}"><i class="fas fa-school me-2"></i> School Register</a></li>
-                                </ul>
-                            </li>
+
 
                             <!-- Login Dropdown -->
                             <li class="nav-item dropdown">
@@ -224,10 +209,8 @@
                                     <i class="fas fa-sign-in-alt"></i> Login
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="loginDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-users me-2"></i> Employee Login</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('school.login') }}"><i class="fas fa-school me-2"></i> School Login</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="{{ route('admin.login') }}"><i class="fas fa-user-shield me-2"></i> Admin Login</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-sign-in-alt me-2"></i> Employee Login</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('employee.register') }}"><i class="fas fa-user-plus me-2"></i> Employee Register</a></li>
                                 </ul>
                             </li>
                         @endauth
@@ -250,7 +233,6 @@
                 <div class="col-lg-3 col-md-6">
                     <h3 class="fw-bold mb-3">EMOU</h3>
                     <div class="small text-white-50 mb-3 text-uppercase fw-bold" style="letter-spacing: 0.5px; line-height: 1.4;">
-                        एजुकेशनल मिनिस्ट्रीयल ऑफिसर्स एसोसिएशन उत्तराखण्ड<br>
                         <span class="text-white small opacity-75">EDUCATIONAL MINISTERIAL OFFICERS ASSOCIATION UTTRAKHAND</span>
                     </div>
                     <div class="small mb-2">
