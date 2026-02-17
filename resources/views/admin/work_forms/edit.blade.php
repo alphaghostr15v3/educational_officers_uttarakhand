@@ -61,35 +61,35 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     <div class="row" id="promotion_fields" style="display: none;">
-                        <div class="col-md-6 mb-4">
-                            <label for="promotion_order_number" class="form-label fw-bold">Promotion Order Number</label>
+                        <div class="col-md-6 mb-4" id="order_number_field">
+                            <label for="promotion_order_number" id="label_order_number" class="form-label fw-bold">Promotion Order Number</label>
                             <input type="text" class="form-control @error('promotion_order_number') is-invalid @enderror" id="promotion_order_number" name="promotion_order_number" value="{{ old('promotion_order_number', $workForm->promotion_order_number) }}" placeholder="Enter order number">
                             @error('promotion_order_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6 mb-4">
-                            <label for="promotion_order_date" class="form-label fw-bold">Promotion Order Date</label>
+                        <div class="col-md-6 mb-4" id="order_date_field">
+                            <label for="promotion_order_date" id="label_order_date" class="form-label fw-bold">Promotion Order Date</label>
                             <input type="date" class="form-control @error('promotion_order_date') is-invalid @enderror" id="promotion_order_date" name="promotion_order_date" value="{{ old('promotion_order_date', $workForm->promotion_order_date) }}">
                             @error('promotion_order_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 mb-4" id="dearness_field">
                             <label for="dearness_percentage" class="form-label fw-bold">Dearness Percentage (%)</label>
                             <input type="number" step="0.01" class="form-control @error('dearness_percentage') is-invalid @enderror" id="dearness_percentage" name="dearness_percentage" value="{{ old('dearness_percentage', $workForm->dearness_percentage) }}" placeholder="e.g. 50.00">
                             @error('dearness_percentage')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 mb-4" id="from_date_field">
                             <label for="from_date" class="form-label fw-bold">From Date</label>
                             <input type="date" class="form-control @error('from_date') is-invalid @enderror" id="from_date" name="from_date" value="{{ old('from_date', $workForm->from_date) }}">
                             @error('from_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 mb-4" id="go_year_field">
                             <label for="go_year" class="form-label fw-bold">GO Year</label>
                             <input type="text" maxlength="4" class="form-control @error('go_year') is-invalid @enderror" id="go_year" name="go_year" value="{{ old('go_year', $workForm->go_year) }}" placeholder="e.g. 2024">
                             @error('go_year')
@@ -168,11 +168,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function togglePromotionFields() {
-        const specialCategories = ['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन', "ACR GO's"];
-        if (specialCategories.includes(subCategorySelect.value) || workTypeSelect.value === 'Promotion Orders') {
+        const subCat = subCategorySelect.value;
+        const workType = workTypeSelect.value;
+        
+        const orderNumberField = document.getElementById('order_number_field');
+        const orderDateField = document.getElementById('order_date_field');
+        const dearnessField = document.getElementById('dearness_field');
+        const fromDateField = document.getElementById('from_date_field');
+        const goYearField = document.getElementById('go_year_field');
+        
+        const labelOrderNumber = document.getElementById('label_order_number');
+        const labelOrderDate = document.getElementById('label_order_date');
+
+        // Reset display
+        promotionFields.style.display = 'none';
+        orderNumberField.style.display = 'none';
+        orderDateField.style.display = 'none';
+        dearnessField.style.display = 'none';
+        fromDateField.style.display = 'none';
+        goYearField.style.display = 'none';
+
+        if (workType === 'Promotion Orders') {
             promotionFields.style.display = 'flex';
-        } else {
-            promotionFields.style.display = 'none';
+            orderNumberField.style.display = 'block';
+            orderDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'Promotion Order Number';
+            labelOrderDate.textContent = 'Promotion Order Date';
+        } else if (workType === 'Transfer Orders') {
+            promotionFields.style.display = 'flex';
+            orderNumberField.style.display = 'block';
+            orderDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'Transfer Order Number';
+            labelOrderDate.textContent = 'Transfer Order Date';
+        } else if (workType === 'General Provident Fund') {
+            promotionFields.style.display = 'flex';
+            dearnessField.style.display = 'block';
+            goYearField.style.display = 'block';
+        } else if (workType === 'Government Orders') {
+            if (['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन'].includes(subCat)) {
+                promotionFields.style.display = 'flex';
+                orderNumberField.style.display = 'block';
+                orderDateField.style.display = 'block';
+                dearnessField.style.display = 'block';
+                fromDateField.style.display = 'block';
+                labelOrderNumber.textContent = 'Order Number';
+                labelOrderDate.textContent = 'Order Date';
+            } else if (subCat === "ACR GO's") {
+                promotionFields.style.display = 'flex';
+                dearnessField.style.display = 'block';
+                goYearField.style.display = 'block';
+            } else if (subCat === 'महंगाई वेतन/मानदेय') {
+                promotionFields.style.display = 'flex';
+                dearnessField.style.display = 'block';
+                fromDateField.style.display = 'block';
+            }
         }
     }
     

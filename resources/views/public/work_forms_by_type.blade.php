@@ -25,6 +25,10 @@
                                         <th>Revision Details</th>
                                     @elseif($workType == 'Promotion Orders')
                                         <th>Promotion Details</th>
+                                    @elseif($workType == 'General Provident Fund')
+                                        <th>Revision Details</th>
+                                    @elseif($workType == 'Transfer Orders')
+                                        <th>Transfer Details</th>
                                     @endif
                                     <th>Title / Description</th>
                                     <th style="width: 120px;">Upload Date</th>
@@ -45,8 +49,8 @@
                                         </td>
                                         <td>
                                             @if($workForm->promotion_order_number || $workForm->promotion_order_date)
-                                                <div class="small fw-bold text-dark">No: {{ $workForm->promotion_order_number ?? '-' }}</div>
-                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>{{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
+                                                <div class="small fw-bold text-dark">Order No: {{ $workForm->promotion_order_number ?? '-' }}</div>
+                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>Order Date: {{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
                                             @else
                                                 <span class="text-muted small">-</span>
                                             @endif
@@ -69,8 +73,33 @@
                                     @elseif($workType == 'Promotion Orders')
                                         <td>
                                             @if($workForm->promotion_order_number || $workForm->promotion_order_date)
-                                                <div class="small fw-bold text-dark">No: {{ $workForm->promotion_order_number ?? '-' }}</div>
-                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>{{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
+                                                <div class="small fw-bold text-dark">Order No: {{ $workForm->promotion_order_number ?? '-' }}</div>
+                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>Order Date: {{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
+                                            @else
+                                                <span class="text-muted small">-</span>
+                                            @endif
+                                        </td>
+                                    @elseif($workType == 'General Provident Fund')
+                                        <td>
+                                            @if($workForm->dearness_percentage || $workForm->from_date || $workForm->go_year)
+                                                @if($workForm->dearness_percentage)
+                                                    <div class="small fw-bold text-success">Dearness: {{ $workForm->dearness_percentage }}%</div>
+                                                @endif
+                                                @if($workForm->from_date)
+                                                    <div class="small text-muted text-nowrap"><i class="fas fa-clock me-1"></i>From: {{ \Carbon\Carbon::parse($workForm->from_date)->format('d M, Y') }}</div>
+                                                @endif
+                                                @if($workForm->go_year)
+                                                    <div class="small fw-bold text-primary"><i class="fas fa-calendar-check me-1"></i>GO Year: {{ $workForm->go_year }}</div>
+                                                @endif
+                                            @else
+                                                <span class="text-muted small">-</span>
+                                            @endif
+                                        </td>
+                                    @elseif($workType == 'Transfer Orders')
+                                        <td>
+                                            @if($workForm->promotion_order_number || $workForm->promotion_order_date)
+                                                <div class="small fw-bold text-dark">Transfer No: {{ $workForm->promotion_order_number ?? '-' }}</div>
+                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>Transfer Date: {{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
                                             @else
                                                 <span class="text-muted small">-</span>
                                             @endif
@@ -90,7 +119,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : ($workType == 'Promotion Orders' ? '5' : '4') }}" class="text-center py-5 text-muted">
+                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : (in_array($workType, ['Promotion Orders', 'General Provident Fund', 'Transfer Orders']) ? '5' : '4') }}" class="text-center py-5 text-muted">
                                         <div class="py-4">
                                             <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
                                             <h6 class="fw-bold">No documents available</h6>
