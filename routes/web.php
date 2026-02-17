@@ -32,6 +32,7 @@ Route::prefix('tools')->name('tools.')->group(function () {
     Route::get('/add-page-numbers', [\App\Http\Controllers\Public\ToolsController::class, 'addPageNumbers'])->name('add-page-numbers');
     Route::get('/word-to-pdf', [\App\Http\Controllers\Public\ToolsController::class, 'wordToPdf'])->name('word-to-pdf');
     Route::get('/jpg-to-pdf', [\App\Http\Controllers\Public\ToolsController::class, 'jpgToPdf'])->name('jpg-to-pdf');
+    Route::get('/gpf-calculator', [\App\Http\Controllers\Public\ToolsController::class, 'gpfCalculator'])->name('gpf-calculator')->middleware('auth');
 });
 
 Auth::routes();

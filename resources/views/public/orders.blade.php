@@ -35,6 +35,9 @@
             
             <h5 class="fw-bold mb-3">Quick Tools</h5>
             <div class="list-group shadow-sm">
+                @auth
+                    <a href="{{ route('tools.gpf-calculator') }}" class="list-group-item list-group-item-action fw-bold text-primary"><i class="fas fa-calculator me-2"></i> GPF Calculator</a>
+                @endauth
                 <a href="{{ route('tools.hindi-converter') }}" class="list-group-item list-group-item-action">Hindi Converter</a>
                 <a href="{{ route('tools.compress-pdf') }}" class="list-group-item list-group-item-action">PDF Compressor</a>
             </div>

@@ -87,9 +87,31 @@
                     </div>
                 </div>
             </div>
+
+            <!-- GPF Calculator -->
+            @auth
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 py-5 tool-card bg-primary-subtle border-primary border-opacity-25">
+                    <div class="mb-4 d-flex justify-content-center">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1011/1011850.png" alt="Calculator Icon" style="width: 48px;">
+                    </div>
+                    <h4 class="fw-bold mb-3 text-primary">GPF Calculator</h4>
+                    <p class="text-muted small mb-4">Quickly calculate GPF interest and yearly closing balance with monthly breakdowns.</p>
+                    <div class="mt-auto">
+                        <a href="{{ route('tools.gpf-calculator') }}" class="btn btn-primary shadow-sm px-4">Open Calculator</a>
+                    </div>
+                </div>
+            </div>
+            @endauth
         </div>
     </div>
 </div>
+
+<style>
+    .bg-primary-subtle { background-color: #f5f7ff !important; }
+    .border-primary { border-color: #6366f1 !important; }
+    .btn-primary { background-color: #6366f1; border-color: #6366f1; color: white; border-radius: 8px; font-weight: 600; padding: 10px 20px; transition: all 0.2s; }
+    .btn-primary:hover { background-color: #4f46e5; border-color: #4f46e5; color: white; transform: scale(1.05); }
 
 <style>
     .rounded-4 { border-radius: 12px !important; }

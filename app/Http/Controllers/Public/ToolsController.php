@@ -19,4 +19,9 @@ class ToolsController extends Controller
     public function addPageNumbers() { return redirect()->away('https://bigpdf.11zon.com/en/add-numbers-pdf/'); }
     public function wordToPdf() { return redirect()->away('https://bigpdf.11zon.com/en/word-to-pdf/'); }
     public function jpgToPdf() { return redirect()->away('https://bigpdf.11zon.com/en/images-to-pdf/combine-jpg-to-pdf.php'); }
+
+    public function gpfCalculator()
+    {
+        return view('public.tools.gpf_calculator');
+    }
 }
