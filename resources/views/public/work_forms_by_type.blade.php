@@ -33,6 +33,8 @@
                                         <th>GIS Details</th>
                                     @elseif($workType == 'Appointment Orders')
                                         <th>Appointment Details</th>
+                                    @elseif($workType == 'Stablize Order')
+                                        <th>Stablize Details</th>
                                     @endif
                                     <th>Title / Description</th>
                                     <th style="width: 120px;">Upload Date</th>
@@ -133,6 +135,15 @@
                                                 <span class="text-muted small">-</span>
                                             @endif
                                         </td>
+                                    @elseif($workType == 'Stablize Order')
+                                        <td>
+                                            @if($workForm->promotion_order_number || $workForm->promotion_order_date)
+                                                <div class="small fw-bold text-dark">GO Number: {{ $workForm->promotion_order_number ?? '-' }}</div>
+                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>GO Date: {{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
+                                            @else
+                                                <span class="text-muted small">-</span>
+                                            @endif
+                                        </td>
                                     @endif
                                     <td>
                                         <div class="fw-bold text-dark">{{ $workForm->title }}</div>
@@ -148,7 +159,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : (in_array($workType, ['Promotion Orders', 'General Provident Fund', 'Transfer Orders', 'GIS Rate', 'Appointment Orders']) ? '5' : '4') }}" class="text-center py-5 text-muted">
+                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : (in_array($workType, ['Promotion Orders', 'General Provident Fund', 'Transfer Orders', 'GIS Rate', 'Appointment Orders', 'Stablize Order']) ? '5' : '4') }}" class="text-center py-5 text-muted">
                                         <div class="py-4">
                                             <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
                                             <h6 class="fw-bold">No documents available</h6>

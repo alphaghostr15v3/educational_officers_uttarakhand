@@ -36,6 +36,7 @@
                             <option value="Appointment Orders" {{ old('work_type') == 'Appointment Orders' ? 'selected' : '' }}>Appointment Orders</option>
                             <option value="Statutory Orders" {{ old('work_type') == 'Statutory Orders' ? 'selected' : '' }}>Statutory Orders</option>
                             <option value="Upgrade Letter Orders" {{ old('work_type') == 'Upgrade Letter Orders' ? 'selected' : '' }}>Upgrade Letter Orders</option>
+                            <option value="Stablize Order" {{ old('work_type') == 'Stablize Order' ? 'selected' : '' }}>Stablize Order</option>
                         </select>
                         @error('work_type')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -206,6 +207,12 @@ document.addEventListener('DOMContentLoaded', function() {
             goYearField.style.display = 'block';
             labelDearness.textContent = 'Dearness Percentage (%)';
         } else if (workType === 'Appointment Orders') {
+            promotionFields.style.display = 'flex';
+            orderNumberField.style.display = 'block';
+            orderDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'GO Number';
+            labelOrderDate.textContent = 'GO Date';
+        } else if (workType === 'Stablize Order') {
             promotionFields.style.display = 'flex';
             orderNumberField.style.display = 'block';
             orderDateField.style.display = 'block';
