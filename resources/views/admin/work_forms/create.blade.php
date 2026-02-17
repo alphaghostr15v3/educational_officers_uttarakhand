@@ -60,6 +60,23 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    
+                    <div class="row" id="promotion_fields" style="display: none;">
+                        <div class="col-md-6 mb-4">
+                            <label for="promotion_order_number" class="form-label fw-bold">Promotion Order Number</label>
+                            <input type="text" class="form-control @error('promotion_order_number') is-invalid @enderror" id="promotion_order_number" name="promotion_order_number" value="{{ old('promotion_order_number') }}" placeholder="Enter order number">
+                            @error('promotion_order_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="promotion_order_date" class="form-label fw-bold">Promotion Order Date</label>
+                            <input type="date" class="form-control @error('promotion_order_date') is-invalid @enderror" id="promotion_order_date" name="promotion_order_date" value="{{ old('promotion_order_date') }}">
+                            @error('promotion_order_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="mb-4">
                         <label for="title" class="form-label fw-bold">Title / Description <span class="text-danger">*</span></label>
@@ -115,12 +132,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const subCategoryWrapper = document.getElementById('sub_category_wrapper');
     const subCategorySelect = document.getElementById('sub_category');
     
+    const promotionFields = document.getElementById('promotion_fields');
+    
     function toggleSubCategory() {
         if (workTypeSelect.value === 'Government Orders') {
             subCategoryWrapper.style.display = 'block';
         } else {
             subCategoryWrapper.style.display = 'none';
             subCategorySelect.value = '';
+        }
+        togglePromotionFields();
+    }
+
+    function togglePromotionFields() {
+        if (subCategorySelect.value === 'वेतन पुनरीक्षण/संशोधन/उच्चीकरण') {
+            promotionFields.style.display = 'flex';
+        } else {
+            promotionFields.style.display = 'none';
         }
     }
     
@@ -129,6 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check on change
     workTypeSelect.addEventListener('change', toggleSubCategory);
+    subCategorySelect.addEventListener('change', togglePromotionFields);
 });
 </script>
 @endpush

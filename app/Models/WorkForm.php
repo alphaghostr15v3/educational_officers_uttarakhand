@@ -14,6 +14,8 @@ class WorkForm extends Model
         'work_type',
         'sub_category',
         'title',
+        'promotion_order_number',
+        'promotion_order_date',
         'file_path',
         'uploaded_by',
         'sort_order',

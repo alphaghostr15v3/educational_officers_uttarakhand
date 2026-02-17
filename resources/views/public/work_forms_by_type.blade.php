@@ -21,6 +21,8 @@
                                     <th class="ps-4">S.No</th>
                                     @if($workType == 'Government Orders')
                                         <th>Sub-Category</th>
+                                        <th>Promotion Order No.</th>
+                                        <th>Promotion Order Date</th>
                                     @endif
                                     <th>Title</th>
                                     <th>Date</th>
@@ -39,6 +41,8 @@
                                                 <span class="text-muted small">-</span>
                                             @endif
                                         </td>
+                                        <td>{{ $workForm->promotion_order_number ?? '-' }}</td>
+                                        <td>{{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</td>
                                     @endif
                                     <td>
                                         <div class="fw-bold">{{ $workForm->title }}</div>
@@ -54,7 +58,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="{{ $workType == 'Government Orders' ? '5' : '4' }}" class="text-center py-5 text-muted">
+                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : '4' }}" class="text-center py-5 text-muted">
                                         <i class="fas fa-folder-open fa-3x mb-3 d-block"></i>
                                         <h6>No documents available</h6>
                                     </td>

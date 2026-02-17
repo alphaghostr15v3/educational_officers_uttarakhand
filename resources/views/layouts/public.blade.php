@@ -171,6 +171,10 @@
                         </li>
                         
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->is('work-forms*') ? 'active' : '' }}" href="{{ route('work-forms') }}"><i class="fas fa-file-invoice"></i> Work Forms</a>
+                        </li>
+                        
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->is('seniority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
                         </li>
 
