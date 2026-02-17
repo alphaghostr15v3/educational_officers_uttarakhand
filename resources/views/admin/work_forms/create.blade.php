@@ -37,6 +37,7 @@
                             <option value="Statutory Orders" {{ old('work_type') == 'Statutory Orders' ? 'selected' : '' }}>Statutory Orders</option>
                             <option value="Upgrade Letter Orders" {{ old('work_type') == 'Upgrade Letter Orders' ? 'selected' : '' }}>Upgrade Letter Orders</option>
                             <option value="Stablize Order" {{ old('work_type') == 'Stablize Order' ? 'selected' : '' }}>Stablize Order</option>
+                            <option value="Unorder Letter" {{ old('work_type') == 'Unorder Letter' ? 'selected' : '' }}>Unorder Letter</option>
                         </select>
                         @error('work_type')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -213,6 +214,12 @@ document.addEventListener('DOMContentLoaded', function() {
             labelOrderNumber.textContent = 'GO Number';
             labelOrderDate.textContent = 'GO Date';
         } else if (workType === 'Stablize Order') {
+            promotionFields.style.display = 'flex';
+            orderNumberField.style.display = 'block';
+            orderDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'GO Number';
+            labelOrderDate.textContent = 'GO Date';
+        } else if (workType === 'Unorder Letter') {
             promotionFields.style.display = 'flex';
             orderNumberField.style.display = 'block';
             orderDateField.style.display = 'block';
