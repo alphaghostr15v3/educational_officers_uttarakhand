@@ -76,6 +76,20 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="dearness_percentage" class="form-label fw-bold">Dearness Percentage (%)</label>
+                            <input type="number" step="0.01" class="form-control @error('dearness_percentage') is-invalid @enderror" id="dearness_percentage" name="dearness_percentage" value="{{ old('dearness_percentage') }}" placeholder="e.g. 50.00">
+                            @error('dearness_percentage')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="from_date" class="form-label fw-bold">From Date</label>
+                            <input type="date" class="form-control @error('from_date') is-invalid @enderror" id="from_date" name="from_date" value="{{ old('from_date') }}">
+                            @error('from_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -145,7 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function togglePromotionFields() {
-        if (subCategorySelect.value === 'वेतन पुनरीक्षण/संशोधन/उच्चीकरण') {
+        const specialCategories = ['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन'];
+        if (specialCategories.includes(subCategorySelect.value)) {
             promotionFields.style.display = 'flex';
         } else {
             promotionFields.style.display = 'none';
