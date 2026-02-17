@@ -76,14 +76,14 @@
                             @enderror
                         </div>
                         <div class="col-md-6 mb-4" id="dearness_field">
-                            <label for="dearness_percentage" class="form-label fw-bold">Dearness Percentage (%)</label>
+                            <label for="dearness_percentage" id="label_dearness" class="form-label fw-bold">Dearness Percentage (%)</label>
                             <input type="number" step="0.01" class="form-control @error('dearness_percentage') is-invalid @enderror" id="dearness_percentage" name="dearness_percentage" value="{{ old('dearness_percentage', $workForm->dearness_percentage) }}" placeholder="e.g. 50.00">
                             @error('dearness_percentage')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-md-6 mb-4" id="from_date_field">
-                            <label for="from_date" class="form-label fw-bold">From Date</label>
+                            <label for="from_date" id="label_from_date" class="form-label fw-bold">From Date</label>
                             <input type="date" class="form-control @error('from_date') is-invalid @enderror" id="from_date" name="from_date" value="{{ old('from_date', $workForm->from_date) }}">
                             @error('from_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -179,6 +179,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const labelOrderNumber = document.getElementById('label_order_number');
         const labelOrderDate = document.getElementById('label_order_date');
+        const labelDearness = document.getElementById('label_dearness');
+        const labelFromDate = document.getElementById('label_from_date');
 
         // Reset display
         promotionFields.style.display = 'none';
@@ -204,6 +206,21 @@ document.addEventListener('DOMContentLoaded', function() {
             promotionFields.style.display = 'flex';
             dearnessField.style.display = 'block';
             goYearField.style.display = 'block';
+            labelDearness.textContent = 'Dearness Percentage (%)';
+        } else if (workType === 'Appointment Orders') {
+            promotionFields.style.display = 'flex';
+            orderNumberField.style.display = 'block';
+            orderDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'GO Number';
+            labelOrderDate.textContent = 'GO Date';
+        } else if (workType === 'GIS Rate') {
+            promotionFields.style.display = 'flex';
+            orderNumberField.style.display = 'block';
+            dearnessField.style.display = 'block';
+            fromDateField.style.display = 'block';
+            labelOrderNumber.textContent = 'GIS Rate Detail';
+            labelDearness.textContent = 'GIS Rate';
+            labelFromDate.textContent = 'GIS Date';
         } else if (workType === 'Government Orders') {
             if (['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन'].includes(subCat)) {
                 promotionFields.style.display = 'flex';
@@ -213,14 +230,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 fromDateField.style.display = 'block';
                 labelOrderNumber.textContent = 'Order Number';
                 labelOrderDate.textContent = 'Order Date';
+                labelDearness.textContent = 'Dearness Percentage (%)';
+                labelFromDate.textContent = 'From Date';
             } else if (subCat === "ACR GO's") {
                 promotionFields.style.display = 'flex';
                 dearnessField.style.display = 'block';
                 goYearField.style.display = 'block';
+                labelDearness.textContent = 'Dearness Percentage (%)';
             } else if (subCat === 'महंगाई वेतन/मानदेय') {
                 promotionFields.style.display = 'flex';
                 dearnessField.style.display = 'block';
                 fromDateField.style.display = 'block';
+                labelDearness.textContent = 'Dearness Percentage (%)';
+                labelFromDate.textContent = 'From Date';
             }
         }
     }
