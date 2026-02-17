@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function togglePromotionFields() {
         const specialCategories = ['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन', "ACR GO's"];
-        if (specialCategories.includes(subCategorySelect.value)) {
+        if (specialCategories.includes(subCategorySelect.value) || workTypeSelect.value === 'Promotion Orders') {
             promotionFields.style.display = 'flex';
         } else {
             promotionFields.style.display = 'none';

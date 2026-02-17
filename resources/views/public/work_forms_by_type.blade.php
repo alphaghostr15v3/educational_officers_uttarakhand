@@ -23,6 +23,8 @@
                                         <th>Sub-Category</th>
                                         <th>Promotion Details</th>
                                         <th>Revision Details</th>
+                                    @elseif($workType == 'Promotion Orders')
+                                        <th>Promotion Details</th>
                                     @endif
                                     <th>Title / Description</th>
                                     <th style="width: 120px;">Upload Date</th>
@@ -64,6 +66,15 @@
                                                 <span class="text-muted small">-</span>
                                             @endif
                                         </td>
+                                    @elseif($workType == 'Promotion Orders')
+                                        <td>
+                                            @if($workForm->promotion_order_number || $workForm->promotion_order_date)
+                                                <div class="small fw-bold text-dark">No: {{ $workForm->promotion_order_number ?? '-' }}</div>
+                                                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>{{ $workForm->promotion_order_date ? \Carbon\Carbon::parse($workForm->promotion_order_date)->format('d M, Y') : '-' }}</div>
+                                            @else
+                                                <span class="text-muted small">-</span>
+                                            @endif
+                                        </td>
                                     @endif
                                     <td>
                                         <div class="fw-bold text-dark">{{ $workForm->title }}</div>
@@ -79,7 +90,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : '4' }}" class="text-center py-5 text-muted">
+                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : ($workType == 'Promotion Orders' ? '5' : '4') }}" class="text-center py-5 text-muted">
                                         <div class="py-4">
                                             <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
                                             <h6 class="fw-bold">No documents available</h6>
