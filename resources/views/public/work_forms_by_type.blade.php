@@ -8,6 +8,18 @@
         </a>
         <h2 class="fw-bold">{{ $workType }}</h2>
         <p class="text-muted">{{ $workForms->count() }} {{ $workForms->count() == 1 ? 'document' : 'documents' }} available</p>
+
+        @if($workType == 'General Provident Fund')
+            <div class="alert alert-primary border-0 shadow-sm d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold mb-1 text-primary"><i class="fas fa-calculator me-2"></i> GPF Interest Calculator</h5>
+                    <p class="mb-0 small">Calculate your General Provident Fund interest and year-wise balances easily.</p>
+                </div>
+                <a href="{{ route('tools.gpf-calculator') }}" class="btn btn-primary fw-bold">
+                    Go to Calculator <i class="fas fa-external-link-alt ms-2"></i>
+                </a>
+            </div>
+        @endif
     </div>
 
     <div class="row">
