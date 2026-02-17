@@ -89,6 +89,13 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="go_year" class="form-label fw-bold">GO Year</label>
+                            <input type="text" maxlength="4" class="form-control @error('go_year') is-invalid @enderror" id="go_year" name="go_year" value="{{ old('go_year', $workForm->go_year) }}" placeholder="e.g. 2024">
+                            @error('go_year')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -161,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function togglePromotionFields() {
-        const specialCategories = ['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन'];
+        const specialCategories = ['वेतन पुनरीक्षण/संशोधन/उच्चीकरण', 'विशेष वेतन', "ACR GO's"];
         if (specialCategories.includes(subCategorySelect.value)) {
             promotionFields.style.display = 'flex';
         } else {

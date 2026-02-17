@@ -153,8 +153,16 @@
                         
 
 
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{ route('orders') }}">Orders</a>
+                        <!-- Orders Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ (request()->routeIs('orders*') || request()->is('work-forms*') || request()->is('seniority*')) ? 'active' : '' }}" href="#" id="ordersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-file-contract"></i> Orders & Forms
+                            </a>
+                            <ul class="dropdown-menu shadow border-0" aria-labelledby="ordersDropdown">
+                                <li><a class="dropdown-item" href="{{ route('orders') }}"><i class="fas fa-file-alt me-2"></i> Management Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('work-forms') }}"><i class="fas fa-file-invoice me-2"></i> Work Forms</a></li>
+                                <li><a class="dropdown-item" href="{{ route('seniority') }}"><i class="fas fa-list-ol me-2"></i> Seniority List</a></li>
+                            </ul>
                         </li>
                         
                         <!-- Media Dropdown -->
@@ -170,13 +178,7 @@
                             </ul>
                         </li>
                         
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('work-forms*') ? 'active' : '' }}" href="{{ route('work-forms') }}"><i class="fas fa-file-invoice"></i> Work Forms</a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('seniority*') ? 'active' : '' }}" href="{{ route('seniority') }}">Seniority</a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('tools*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Tools</a>

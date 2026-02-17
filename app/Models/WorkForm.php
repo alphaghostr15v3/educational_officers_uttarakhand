@@ -18,6 +18,7 @@ class WorkForm extends Model
         'promotion_order_date',
         'dearness_percentage',
         'from_date',
+        'go_year',
         'file_path',
         'uploaded_by',
         'sort_order',
