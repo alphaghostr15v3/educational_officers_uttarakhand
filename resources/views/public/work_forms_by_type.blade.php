@@ -52,6 +52,7 @@
                                     @endif
                                     <th>Title / Description</th>
                                     <th style="width: 120px;">Upload Date</th>
+                                    <th style="width: 100px;">Downloads</th>
                                     <th class="text-end pe-4" style="width: 140px;">Action</th>
                                 </tr>
                             </thead>
@@ -174,15 +175,20 @@
                                     <td>
                                         <div class="text-muted small text-nowrap">{{ $workForm->created_at->format('d M, Y') }}</div>
                                     </td>
+                                    <td>
+                                        <span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded-pill small">
+                                            <i class="fas fa-eye me-1"></i> {{ $workForm->download_count ?? 0 }}
+                                        </span>
+                                    </td>
                                     <td class="text-end pe-4">
-                                        <a href="{{ asset('uploads/work_forms/' . $workForm->file_path) }}" target="_blank" class="btn btn-sm btn-primary px-3 shadow-sm">
+                                        <a href="{{ route('work-forms.download', $workForm->id) }}" class="btn btn-sm btn-primary px-3 shadow-sm">
                                             <i class="fas fa-download me-1"></i> Download
                                         </a>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="{{ $workType == 'Government Orders' ? '7' : (in_array($workType, ['Promotion Orders', 'General Provident Fund', 'Transfer Orders', 'GIS Rate', 'Appointment Orders', 'Stablize Order', 'Unorder Letter']) ? '5' : '4') }}" class="text-center py-5 text-muted">
+                                    <td colspan="{{ $workType == 'Government Orders' ? '8' : (in_array($workType, ['Promotion Orders', 'General Provident Fund', 'Transfer Orders', 'GIS Rate', 'Appointment Orders', 'Stablize Order', 'Unorder Letter']) ? '6' : '5') }}" class="text-center py-5 text-muted">
                                         <div class="py-4">
                                             <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
                                             <h6 class="fw-bold">No documents available</h6>

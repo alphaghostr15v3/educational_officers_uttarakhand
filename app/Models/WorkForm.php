@@ -22,7 +22,8 @@ class WorkForm extends Model
         'file_path',
         'uploaded_by',
         'sort_order',
-        'is_active'
+        'is_active',
+        'download_count'
     ];
 
     protected $casts = [

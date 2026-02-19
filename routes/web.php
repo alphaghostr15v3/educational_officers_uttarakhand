@@ -20,6 +20,7 @@ Route::get('/events', [HomeController::class, 'events'])->name('events');
 Route::middleware(['auth'])->group(function () {
     Route::get('/work-forms', [\App\Http\Controllers\Public\WorkFormController::class, 'index'])->name('work-forms');
     Route::get('/work-forms/{workType}', [\App\Http\Controllers\Public\WorkFormController::class, 'byType'])->name('work-forms.by-type');
+    Route::get('/work-forms/download/{id}', [\App\Http\Controllers\Public\WorkFormController::class, 'download'])->name('work-forms.download');
 });
 
 

@@ -30,4 +30,20 @@ class WorkFormController extends Controller
         
         return view('public.work_forms_by_type', compact('workForms', 'workType'));
     }
+
+    public function download($id)
+    {
+        $workForm = WorkForm::findOrFail($id);
+        
+        // Use increment for atomic update and to avoid race conditions
+        $workForm->increment('download_count');
+        
+        $filePath = public_path('uploads/work_forms/' . $workForm->file_path);
+        
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'File not found on server.');
+        }
+
+        return response()->download($filePath, $workForm->title . '.' . pathinfo($workForm->file_path, PATHINFO_EXTENSION));
+    }
 }
