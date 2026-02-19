@@ -17,6 +17,9 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/videos', [HomeController::class, 'videos'])->name('videos');
 
 Route::get('/events', [HomeController::class, 'events'])->name('events');
+Route::get('/orders/download/{id}', [\App\Http\Controllers\Public\HomeController::class, 'downloadOrder'])->name('orders.download');
+Route::get('/circulars/download/{id}', [\App\Http\Controllers\Public\HomeController::class, 'downloadCircular'])->name('circulars.download');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/work-forms', [\App\Http\Controllers\Public\WorkFormController::class, 'index'])->name('work-forms');
     Route::get('/work-forms/{workType}', [\App\Http\Controllers\Public\WorkFormController::class, 'byType'])->name('work-forms.by-type');

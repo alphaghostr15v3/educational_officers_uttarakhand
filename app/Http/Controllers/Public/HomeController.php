@@ -135,4 +135,34 @@ class HomeController extends Controller
         $past_events = \App\Models\Event::active()->past()->paginate(12);
         return view('public.events', compact('upcoming_events', 'past_events'));
     }
+
+    public function downloadOrder($id)
+    {
+        $order = \App\Models\Order::findOrFail($id);
+        $order->increment('download_count');
+        
+        $filePath = public_path('uploads/orders/' . $order->file_path);
+        
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'File not found on server.');
+        }
+
+        $extension = pathinfo($order->file_path, PATHINFO_EXTENSION);
+        return response()->download($filePath, \Illuminate\Support\Str::slug($order->title) . '.' . $extension);
+    }
+
+    public function downloadCircular($id)
+    {
+        $circular = \App\Models\Circular::findOrFail($id);
+        $circular->increment('download_count');
+        
+        $filePath = public_path('uploads/circulars/' . $circular->file_path);
+        
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'File not found on server.');
+        }
+
+        $extension = pathinfo($circular->file_path, PATHINFO_EXTENSION);
+        return response()->download($filePath, \Illuminate\Support\Str::slug($circular->title) . '.' . $extension);
+    }
 }

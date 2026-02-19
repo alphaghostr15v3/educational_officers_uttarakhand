@@ -12,7 +12,7 @@ class Circular extends Model
 
     protected $fillable = [
         'title', 'description', 'circular_number', 'circular_date', 
-        'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published'
+        'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published', 'download_count'
     ];
 
     protected $casts = [

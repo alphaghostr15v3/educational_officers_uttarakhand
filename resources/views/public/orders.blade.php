@@ -54,7 +54,8 @@
                                     <th class="ps-4">No. / Date</th>
                                     <th>Title & Subject</th>
                                     <th>Category</th>
-                                    <th class="text-center">Download</th>
+                                    <th class="text-center">Downloads</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,14 +79,19 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ asset('uploads/' . ($category === 'circular' ? 'circulars/' : 'orders/') . $item->file_path) }}" target="_blank" class="btn btn-outline-danger btn-sm">
+                                        <span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded-pill small">
+                                            <i class="fas fa-eye me-1"></i> {{ $item->download_count ?? 0 }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route($category === 'circular' ? 'circulars.download' : 'orders.download', $item->id) }}" class="btn btn-outline-danger btn-sm">
                                             <i class="fas fa-file-pdf me-1"></i> PDF
                                         </a>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="text-center py-5">
+                                    <td colspan="5" class="text-center py-5">
                                         <img src="https://cdni.iconscout.com/illustration/premium/thumb/no-data-found-8867280-7265556.png" alt="No data" style="height: 150px;" class="mb-3 d-block mx-auto">
                                         <h6 class="text-muted">No records found for this category.</h6>
                                     </td>

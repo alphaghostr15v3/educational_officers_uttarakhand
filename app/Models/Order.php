@@ -12,7 +12,7 @@ class Order extends Model
 
     protected $fillable = [
         'title', 'description', 'category', 'order_number', 'order_date', 
-        'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published'
+        'file_path', 'uploaded_by', 'level', 'division_id', 'district_id', 'is_published', 'download_count'
     ];
 
     public function uploader(): BelongsTo
