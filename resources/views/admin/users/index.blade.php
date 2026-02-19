@@ -33,7 +33,7 @@
                         </td>
                         <td>
                             <div class="small fw-bold">{{ $user->email }}</div>
-                            <span class="badge {{ $user->role == 'state_admin' ? 'badge-state' : ($user->role == 'division_admin' ? 'badge-division' : 'badge-district') }} small" style="font-size: 0.6rem;">
+                            <span class="badge {{ $user->role == 'state_admin' ? 'badge-state' : ($user->role == 'division_admin' ? 'badge-division' : ($user->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} small" style="font-size: 0.6rem;">
                                 {{ strtoupper(str_replace('_', ' ', $user->role)) }}
                             </span>
                         </td>
@@ -42,9 +42,12 @@
                                 <span class="text-muted small">Uttarakhand (All)</span>
                             @elseif($user->role == 'division_admin')
                                 <span class="small fw-bold text-dark">{{ $user->division->name ?? 'N/A' }}</span>
-                            @else
+                            @elseif($user->role == 'district_admin')
                                 <div class="small fw-bold text-dark">{{ $user->district->name ?? 'N/A' }}</div>
                                 <div class="text-muted small" style="font-size: 0.7rem;">{{ $user->division->name ?? '' }}</div>
+                            @else
+                                <div class="small fw-bold text-dark">{{ $user->block->name ?? 'N/A' }}</div>
+                                <div class="text-muted small" style="font-size: 0.7rem;">{{ $user->district->name ?? '' }}, {{ $user->division->name ?? '' }}</div>
                             @endif
                         </td>
                         <td><span class="badge bg-success-subtle text-success small">Active</span></td>

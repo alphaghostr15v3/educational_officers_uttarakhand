@@ -16,6 +16,7 @@ class School extends Model
         'udise_code',
         'district_id',
         'division_id',
+        'block_id',
         'block',
         'address',
         'email',
@@ -27,6 +28,11 @@ class School extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function block_record(): BelongsTo
+    {
+        return $this->belongsTo(Block::class, 'block_id');
     }
 
     public function division(): BelongsTo

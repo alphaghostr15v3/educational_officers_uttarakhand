@@ -37,6 +37,9 @@
                         <a href="{{ route('admin.divisions.index') }}" class="nav-link {{ request()->routeIs('admin.divisions.*') ? 'active' : '' }}">
                             <i class="fas fa-map-marked-alt"></i> Divisions & Districts
                         </a>
+                        <a href="{{ route('admin.blocks.index') }}" class="nav-link {{ request()->routeIs('admin.blocks.*') ? 'active' : '' }}">
+                            <i class="fas fa-th"></i> Blocks
+                        </a>
                         <a href="{{ route('admin.schools.index') }}" class="nav-link {{ request()->routeIs('admin.schools.*') ? 'active' : '' }}">
                             <i class="fas fa-school"></i> Approve Schools
                         </a>
@@ -159,7 +162,7 @@
                             <i class="fas fa-file-alt"></i> Circulars (Distribute)
                         </a>
                     </div>
-                @else
+                @elseif(auth()->user()->role === 'district_admin')
                     <!-- District Admin Menu -->
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Main Menu</small>
                     <div class="mt-2">
@@ -192,6 +195,26 @@
                         </a>
                          <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-chart-bar"></i> District Reports
+                        </a>
+                    </div>
+                @elseif(auth()->user()->role === 'block_admin')
+                    <!-- Block Admin Menu -->
+                    <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Main Menu</small>
+                    <div class="mt-2">
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <i class="fas fa-th-large"></i> Dashboard
+                        </a>
+                        <a href="{{ route('admin.schools.index') }}" class="nav-link {{ request()->routeIs('admin.schools.*') ? 'active' : '' }}">
+                            <i class="fas fa-school"></i> Schools (My Block)
+                        </a>
+                        <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
+                            <i class="fas fa-chalkboard-teacher"></i> Staff Records
+                        </a>
+                         <a href="{{ route('admin.leaves.index') }}" class="nav-link {{ request()->routeIs('admin.leaves.*') ? 'active' : '' }}">
+                            <i class="fas fa-calendar-check"></i> Leave Requests
+                        </a>
+                         <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
+                            <i class="fas fa-chart-bar"></i> Block Reports
                         </a>
                     </div>
                 @endif
@@ -260,7 +283,7 @@
 
                     <div class="me-4 text-end">
                         <div class="fw-bold small">{{ auth()->user()->name }}</div>
-                        <span class="badge {{ auth()->user()->role == 'state_admin' ? 'badge-state' : (auth()->user()->role == 'division_admin' ? 'badge-division' : 'badge-district') }} small" style="font-size: 0.65rem;">
+                        <span class="badge {{ auth()->user()->role == 'state_admin' ? 'badge-state' : (auth()->user()->role == 'division_admin' ? 'badge-division' : (auth()->user()->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} small" style="font-size: 0.65rem;">
                             {{ strtoupper(str_replace('_', ' ', auth()->user()->role)) }}
                         </span>
                     </div>

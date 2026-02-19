@@ -17,20 +17,23 @@ class DistrictSchoolController extends Controller
     {
         $user = auth()->user();
         
-        // Ensure only district/state/division admins can access
-        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin'])) {
+        // Ensure only authorized admins can access
+        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin', 'block_admin'])) {
             abort(403, 'Unauthorized access');
         }
 
         $query = School::query();
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $query->where('district_id', $user->district_id);
+            if ($user->role === 'block_admin') {
+                $query->where('block_id', $user->block_id);
+            }
         } elseif ($user->role === 'division_admin') {
             $query->where('division_id', $user->division_id);
         }
 
-        $schools = $query->with(['division', 'district'])->latest()->paginate(20);
+        $schools = $query->with(['division', 'district', 'block_record'])->latest()->paginate(20);
 
         return view('admin.schools.index', compact('schools'));
     }
@@ -39,14 +42,20 @@ class DistrictSchoolController extends Controller
     {
         $user = auth()->user();
         $districts = [];
+        $blocks = [];
         
         if ($user->role === 'state_admin') {
             $districts = District::all();
+            $blocks = \App\Models\Block::all();
         } elseif ($user->role === 'division_admin') {
             $districts = District::where('division_id', $user->division_id)->get();
+            $districtIds = $districts->pluck('id');
+            $blocks = \App\Models\Block::whereIn('district_id', $districtIds)->get();
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
+            $blocks = \App\Models\Block::where('district_id', $user->district_id)->get();
         }
         
-        return view('admin.schools.create', compact('districts'));
+        return view('admin.schools.create', compact('districts', 'blocks'));
     }
 
     public function store(Request $request)
@@ -56,7 +65,8 @@ class DistrictSchoolController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'udise_code' => 'nullable|string|max:50|unique:schools',
-            'block' => 'required|string|max:100',
+            'block_id' => 'nullable|exists:blocks,id',
+            'block' => 'nullable|string|max:100', // Keeping for compatibility or manual entry if needed
             'type' => 'required|in:primary,junior_high,secondary,senior_secondary,office',
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:15',
@@ -70,9 +80,12 @@ class DistrictSchoolController extends Controller
 
         $validated = $request->validate($rules);
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $validated['district_id'] = $user->district_id;
             $validated['division_id'] = $user->division_id; 
+            if ($user->role === 'block_admin') {
+                $validated['block_id'] = $user->block_id;
+            }
         } else {
             // For state/division admin, use the selected district's division
             $district = District::find($validated['district_id']);
@@ -87,44 +100,59 @@ class DistrictSchoolController extends Controller
     public function show(School $school)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id) {
+            abort(403);
+        } elseif ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         } elseif ($user->role === 'division_admin' && $school->division_id !== $user->division_id) {
             abort(403);
         }
 
-        $school->load(['division', 'district', 'staffs.user']);
+        $school->load(['division', 'district', 'block_record', 'staffs.user']);
         return view('admin.schools.show', compact('school'));
     }
 
     public function edit(School $school)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         }
 
         $districts = [];
+        $blocks = [];
         if ($user->role === 'state_admin') {
             $districts = District::all();
+            $blocks = \App\Models\Block::all();
         } elseif ($user->role === 'division_admin') {
             $districts = District::where('division_id', $user->division_id)->get();
+            $districtIds = $districts->pluck('id');
+            $blocks = \App\Models\Block::whereIn('district_id', $districtIds)->get();
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
+            $blocks = \App\Models\Block::where('district_id', $user->district_id)->get();
         }
 
-        return view('admin.schools.create', compact('school', 'districts'));
+        return view('admin.schools.create', compact('school', 'districts', 'blocks'));
     }
 
     public function update(Request $request, School $school)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         }
 
         $rules = [
             'name' => 'required|string|max:255',
             'udise_code' => 'nullable|string|max:50|unique:schools,udise_code,' . $school->id,
-            'block' => 'required|string|max:100',
+            'block_id' => 'nullable|exists:blocks,id',
+            'block' => 'nullable|string|max:100',
             'type' => 'required|in:primary,junior_high,secondary,senior_secondary,office',
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:15',
@@ -138,9 +166,12 @@ class DistrictSchoolController extends Controller
 
         $validated = $request->validate($rules);
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $validated['district_id'] = $user->district_id;
             $validated['division_id'] = $user->division_id;
+            if ($user->role === 'block_admin') {
+                $validated['block_id'] = $user->block_id;
+            }
         } else if (isset($validated['district_id'])) {
             $district = District::find($validated['district_id']);
             $validated['division_id'] = $district->division_id;
@@ -155,7 +186,10 @@ class DistrictSchoolController extends Controller
     {
         $user = auth()->user();
         if ($user->role !== 'state_admin' && $user->role !== 'division_admin' && 
-           ($user->role === 'district_admin' && $school->district_id !== $user->district_id)) {
+           (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id)) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         }
 
@@ -168,7 +202,10 @@ class DistrictSchoolController extends Controller
     public function createLogin(School $school)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         }
 
@@ -179,7 +216,10 @@ class DistrictSchoolController extends Controller
     public function storeLogin(Request $request, School $school)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
             abort(403);
         }
 

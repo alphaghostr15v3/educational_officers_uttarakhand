@@ -28,7 +28,7 @@ class AdminLoginController extends Controller
             $user = Auth::user();
             
             // Ensure only users with admin roles can access
-            if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+            if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin', 'block_admin'])) {
                 $request->session()->regenerate();
                 
                 // Add success message

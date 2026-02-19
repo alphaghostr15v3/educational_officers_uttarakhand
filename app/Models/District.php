@@ -32,4 +32,9 @@ class District extends Model
     {
         return $this->hasMany(Donation::class);
     }
+
+    public function blocks(): HasMany
+    {
+        return $this->hasMany(Block::class);
+    }
 }

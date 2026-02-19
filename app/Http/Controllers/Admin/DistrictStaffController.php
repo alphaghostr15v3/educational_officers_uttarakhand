@@ -15,16 +15,19 @@ class DistrictStaffController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin'])) {
+        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin', 'block_admin'])) {
             abort(403);
         }
 
         $query = Staff::query();
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             // Filter staff belonging to schools in this district
             $query->whereHas('school', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
+                if ($user->role === 'block_admin') {
+                    $q->where('block_id', $user->block_id);
+                }
             });
         } elseif ($user->role === 'division_admin') {
             // Filter staff belonging to schools in this division
@@ -43,7 +46,9 @@ class DistrictStaffController extends Controller
          $user = auth()->user();
          $schools = [];
          
-         if ($user->role === 'district_admin') {
+         if ($user->role === 'block_admin') {
+             $schools = School::where('block_id', $user->block_id)->get();
+         } elseif ($user->role === 'district_admin') {
              $schools = School::where('district_id', $user->district_id)->get();
          } elseif ($user->role === 'division_admin') {
              $schools = School::where('division_id', $user->division_id)->get();
@@ -96,9 +101,12 @@ class DistrictStaffController extends Controller
 
         $query = Staff::with(['school', 'user']);
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $query->whereHas('school', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
+                if ($user->role === 'block_admin') {
+                    $q->where('block_id', $user->block_id);
+                }
             });
         } elseif ($user->role === 'division_admin') {
             $query->whereHas('school', function($q) use ($user) {
@@ -143,9 +151,13 @@ class DistrictStaffController extends Controller
         $user = auth()->user();
         
         // Authorization check
-        if ($user->role === 'district_admin' && $staff->school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $staff->school->district_id !== $user->district_id) {
             abort(403);
-        } elseif ($user->role === 'division_admin' && $staff->school->division_id !== $user->division_id) {
+        }
+        if ($user->role === 'block_admin' && $staff->school->block_id !== $user->block_id) {
+            abort(403);
+        }
+        if ($user->role === 'division_admin' && $staff->school->division_id !== $user->division_id) {
             abort(403);
         }
 
@@ -156,12 +168,17 @@ class DistrictStaffController extends Controller
     public function edit(Staff $staff)
     {
         $user = auth()->user();
-        if ($user->role === 'district_admin' && $staff->school->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $staff->school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $staff->school->block_id !== $user->block_id) {
             abort(403);
         }
 
         $schools = [];
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'block_admin') {
+            $schools = School::where('block_id', $user->block_id)->get();
+        } elseif ($user->role === 'district_admin') {
             $schools = School::where('district_id', $user->district_id)->get();
         } elseif ($user->role === 'division_admin') {
             $schools = School::where('division_id', $user->division_id)->get();
@@ -207,7 +224,10 @@ class DistrictStaffController extends Controller
     {
         $user = auth()->user();
         if ($user->role !== 'state_admin' && $user->role !== 'division_admin' && 
-           ($user->role === 'district_admin' && $staff->school->district_id !== $user->district_id)) {
+           (($user->role === 'district_admin' || $user->role === 'block_admin') && $staff->school->district_id !== $user->district_id)) {
+            abort(403);
+        }
+        if ($user->role === 'block_admin' && $staff->school->block_id !== $user->block_id) {
             abort(403);
         }
 

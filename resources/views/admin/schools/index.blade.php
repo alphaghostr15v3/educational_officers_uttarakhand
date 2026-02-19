@@ -29,7 +29,7 @@
                             <small class="text-muted">{{ $school->address }}</small>
                         </td>
                         <td>{{ $school->udise_code ?? 'N/A' }}</td>
-                        <td>{{ $school->block }}</td>
+                        <td>{{ $school->block_record->name ?? $school->block ?? 'N/A' }}</td>
                         <td>
                             <span class="badge bg-info text-dark">{{ ucwords(str_replace('_', ' ', $school->type)) }}</span>
                         </td>

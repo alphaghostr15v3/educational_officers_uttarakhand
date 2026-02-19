@@ -29,6 +29,10 @@ class EmployeeDashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
+
+        if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin', 'block_admin'])) {
+            return redirect()->route('admin.dashboard');
+        }
         
         $stats = [
             'pending_leaves' => \App\Models\Leave::where('user_id', $user->id)->where('status', 'pending')->count(),

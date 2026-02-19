@@ -54,8 +54,17 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold small text-uppercase text-muted">Block <span class="text-danger">*</span></label>
-                            <input type="text" name="block" class="form-control" value="{{ old('block', $school->block ?? '') }}" required placeholder="e.g. Raipur">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Select Block <span class="text-danger">*</span></label>
+                            <select name="block_id" class="form-select" required id="block_select">
+                                <option value="" disabled {{ !isset($school) ? 'selected' : '' }}>Choose Block</option>
+                                @foreach($blocks as $block)
+                                    <option value="{{ $block->id }}" 
+                                            data-district="{{ $block->district_id }}"
+                                            {{ old('block_id', isset($school) ? $school->block_id : '') == $block->id ? 'selected' : '' }}>
+                                        {{ $block->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Contact Phone</label>
@@ -94,3 +103,36 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const districtSelect = document.querySelector('select[name="district_id"]');
+    const blockSelect = document.getElementById('block_select');
+    const blockOptions = Array.from(blockSelect.options);
+
+    function filterBlocks() {
+        if (!districtSelect) return;
+        const selectedDistrict = districtSelect.value;
+        const currentBlock = blockSelect.value;
+
+        // Clear and rebuild
+        blockSelect.innerHTML = '';
+        
+        blockOptions.forEach(option => {
+            if (!option.value || option.dataset.district === selectedDistrict) {
+                blockSelect.appendChild(option.cloneNode(true));
+            }
+        });
+
+        // Try to restore previous value
+        blockSelect.value = currentBlock;
+    }
+
+    if (districtSelect) {
+        districtSelect.addEventListener('change', filterBlocks);
+        filterBlocks(); // Initial run
+    }
+});
+</script>
+@endpush

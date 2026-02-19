@@ -11,7 +11,7 @@ class ActivityLogController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+        if (!in_array($user->role, ['state_admin', 'division_admin', 'district_admin', 'block_admin'])) {
             abort(403);
         }
 
@@ -24,6 +24,10 @@ class ActivityLogController extends Controller
         } elseif ($user->role === 'district_admin') {
             $query->whereHas('user', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
+            });
+        } elseif ($user->role === 'block_admin') {
+            $query->whereHas('user', function($q) use ($user) {
+                $q->where('block_id', $user->block_id);
             });
         }
 

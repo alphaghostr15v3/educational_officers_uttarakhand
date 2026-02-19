@@ -19,7 +19,7 @@
                 <hr>
                 <div class="text-start px-3">
                     <p class="mb-2 small"><strong><i class="fas fa-fingerprint me-2 text-muted"></i>UDISE:</strong> {{ $school->udise_code ?? 'N/A' }}</p>
-                    <p class="mb-2 small"><strong><i class="fas fa-map-marker-alt me-2 text-muted"></i>Block:</strong> {{ $school->block }}</p>
+                    <p class="mb-2 small"><strong><i class="fas fa-map-marker-alt me-2 text-muted"></i>Block:</strong> {{ $school->block_record->name ?? $school->block ?? 'N/A' }}</p>
                     <p class="mb-0 small"><strong><i class="fas fa-phone me-2 text-muted"></i>Phone:</strong> {{ $school->phone ?? 'N/A' }}</p>
                 </div>
                 <hr>

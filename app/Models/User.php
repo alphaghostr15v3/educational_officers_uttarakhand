@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'division_id',
         'district_id',
+        'block_id',
         'school_id',
         'employee_code',
         'mobile',
@@ -71,6 +72,11 @@ class User extends Authenticatable
         return $this->belongsTo(District::class);
     }
 
+    public function block(): BelongsTo
+    {
+        return $this->belongsTo(Block::class);
+    }
+
     public function school(): BelongsTo
     {
         return $this->belongsTo(School::class);
@@ -94,6 +100,11 @@ class User extends Authenticatable
     public function scopeDistrictAdmins($query)
     {
         return $query->where('role', 'district_admin');
+    }
+
+    public function scopeBlockAdmins($query)
+    {
+        return $query->where('role', 'block_admin');
     }
 
     public function staff(): HasOne

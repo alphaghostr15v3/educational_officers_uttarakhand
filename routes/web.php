@@ -222,6 +222,7 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
         Route::resource('users', \App\Http\Controllers\Admin\UserManagementController::class);
         Route::resource('divisions', \App\Http\Controllers\Admin\DivisionController::class);
         Route::resource('districts', \App\Http\Controllers\Admin\DistrictController::class);
+        Route::resource('blocks', \App\Http\Controllers\Admin\AdminBlockController::class);
         Route::resource('hero-slides', \App\Http\Controllers\Admin\AdminHeroSlideController::class);
     });
     

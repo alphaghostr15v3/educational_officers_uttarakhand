@@ -14,9 +14,12 @@ class AdminLeaveController extends Controller
         $user = auth()->user();
         $query = Leave::with('user');
 
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $query->whereHas('user.staff.school', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
+                if ($user->role === 'block_admin') {
+                    $q->where('block_id', $user->block_id);
+                }
             });
         } elseif ($user->role === 'division_admin') {
             $query->whereHas('user.staff.school', function($q) use ($user) {
@@ -34,9 +37,12 @@ class AdminLeaveController extends Controller
         $user = auth()->user();
         $usersQuery = User::where('role', 'officer')->with('staff.school');
         
-        if ($user->role === 'district_admin') {
+        if ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $usersQuery->whereHas('staff.school', function($q) use ($user) {
                 $q->where('district_id', $user->district_id);
+                if ($user->role === 'block_admin') {
+                    $q->where('block_id', $user->block_id);
+                }
             });
         } elseif ($user->role === 'division_admin') {
             $usersQuery->whereHas('staff.school', function($q) use ($user) {

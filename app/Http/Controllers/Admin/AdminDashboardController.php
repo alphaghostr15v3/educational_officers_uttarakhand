@@ -35,6 +35,10 @@ class AdminDashboardController extends Controller
             $orderQuery->where('district_id', $user->district_id);
             $donationQuery->where('district_id', $user->district_id);
             $userQuery->where('district_id', $user->district_id);
+        } elseif ($user->role === 'block_admin') {
+            $officerQuery->where('district_id', $user->district_id); // Blocks are within districts
+            // Further filter by block if officers/orders are block-linked in future
+            $userQuery->where('block_id', $user->block_id);
         }
 
         $stats = [

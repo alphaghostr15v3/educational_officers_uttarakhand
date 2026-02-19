@@ -31,7 +31,7 @@ class MemberLoginController extends Controller
             return redirect()->route('school.login')->with('error', 'Access denied. Please use the School Login portal.');
         }
 
-        if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+        if (in_array($user->role, ['state_admin', 'division_admin', 'district_admin', 'block_admin'])) {
             return redirect()->route('admin.dashboard');
         }
 

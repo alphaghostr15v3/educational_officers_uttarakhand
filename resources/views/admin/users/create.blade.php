@@ -36,6 +36,7 @@
                                 <option value="state_admin">State Administrator (Full Access)</option>
                                 <option value="division_admin">Division Administrator (Regional)</option>
                                 <option value="district_admin">District Administrator (Local)</option>
+                                <option value="block_admin">Block Administrator (Block Level)</option>
                             </select>
                         </div>
 
@@ -51,10 +52,20 @@
 
                         <div class="col-md-6" id="district-field" style="display:none;">
                             <label class="form-label small fw-bold">Assign District</label>
-                            <select name="district_id" class="form-select">
+                            <select name="district_id" class="form-select" id="district-select">
                                 <option value="">-- Select District --</option>
                                 @foreach($districts as $district)
-                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" data-division="{{ $district->division_id }}">{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6" id="block-field" style="display:none;">
+                            <label class="form-label small fw-bold">Assign Block</label>
+                            <select name="block_id" class="form-select" id="block-select">
+                                <option value="">-- Select Block --</option>
+                                @foreach($blocks as $block)
+                                    <option value="{{ $block->id }}" data-district="{{ $block->district_id }}">{{ $block->name }} ({{ $block->district->name }})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -72,10 +83,41 @@
 
 @push('scripts')
 <script>
-    document.getElementById('role-select').addEventListener('change', function() {
+    const roleSelect = document.getElementById('role-select');
+    const divisionSelect = document.querySelector('select[name="division_id"]');
+    const districtSelect = document.querySelector('select[name="district_id"]');
+    const blockSelect = document.querySelector('select[name="block_id"]');
+
+    roleSelect.addEventListener('change', function() {
         const role = this.value;
-        document.getElementById('division-field').style.display = (role === 'division_admin' || role === 'district_admin') ? 'block' : 'none';
-        document.getElementById('district-field').style.display = (role === 'district_admin') ? 'block' : 'none';
+        document.getElementById('division-field').style.display = (role === 'division_admin' || role === 'district_admin' || role === 'block_admin') ? 'block' : 'none';
+        document.getElementById('district-field').style.display = (role === 'district_admin' || role === 'block_admin') ? 'block' : 'none';
+        document.getElementById('block-field').style.display = (role === 'block_admin') ? 'block' : 'none';
+    });
+
+    divisionSelect.addEventListener('change', function() {
+        const divisionId = this.value;
+        const districtOptions = districtSelect.querySelectorAll('option');
+        
+        districtSelect.value = '';
+        blockSelect.value = '';
+        
+        districtOptions.forEach(opt => {
+            if (!opt.value) return; // Skip placeholder
+            opt.style.display = (!divisionId || opt.dataset.division === divisionId) ? 'block' : 'none';
+        });
+    });
+
+    districtSelect.addEventListener('change', function() {
+        const districtId = this.value;
+        const blockOptions = blockSelect.querySelectorAll('option');
+        
+        blockSelect.value = '';
+        
+        blockOptions.forEach(opt => {
+            if (!opt.value) return; // Skip placeholder
+            opt.style.display = (!districtId || opt.dataset.district === districtId) ? 'block' : 'none';
+        });
     });
 </script>
 @endpush
