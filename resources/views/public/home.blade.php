@@ -82,10 +82,21 @@
 
 
 
-<!-- Birthday Slider Section -->
-@if(isset($today_birthdays) && $today_birthdays->count() > 0)
+<!-- Birthday Section - Always Visible -->
 <div class="birthday-section position-relative py-5">
     <div class="container">
+
+        {{-- Section Title --}}
+        <div class="text-center mb-4 position-relative" style="z-index: 2;">
+            <h2 class="fw-bold" style="font-family: 'Georgia', serif; color: #1a237e;">
+                🎂 Birthday Celebrations 🎂
+            </h2>
+            <p class="text-muted mb-0">
+                {{ \Carbon\Carbon::now()->format('F Y') }} — Wishing our colleagues a wonderful birthday!
+            </p>
+        </div>
+
+        @if(isset($today_birthdays) && $today_birthdays->count() > 0)
         <div class="birthday-card-wrapper mx-auto position-relative">
             <!-- Decorative Background Elements -->
             <div class="confetti-bg"></div>
@@ -157,10 +168,45 @@
                 @endif
             </div>
         </div>
+
+        @else
+        {{-- Upcoming Birthdays Fallback --}}
+        <div class="birthday-card-wrapper mx-auto position-relative">
+            <div class="p-4 p-md-5 text-center position-relative" style="z-index: 2;">
+                <div class="mb-4">
+                    <span style="font-size: 5rem; line-height: 1;">🎂</span>
+                </div>
+                <h4 class="fw-bold text-secondary mb-2">No Birthdays This Month</h4>
+                <p class="text-muted mb-0">
+                    No member birthdays are recorded for {{ \Carbon\Carbon::now()->format('F Y') }}.<br>
+                    <small>Employees can update their date of birth from their profile to appear here.</small>
+                </p>
+
+                @if(isset($upcoming_birthdays) && $upcoming_birthdays->count() > 0)
+                <hr class="my-4">
+                <h5 class="fw-bold text-primary mb-3">🗓️ Upcoming Birthdays</h5>
+                <div class="row justify-content-center g-3">
+                    @foreach($upcoming_birthdays->take(6) as $upcoming)
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center gap-2 bg-white rounded-pill px-3 py-2 shadow-sm border">
+                            <img src="{{ $upcoming->image_url }}" alt="{{ $upcoming->name }}" 
+                                 class="rounded-circle border border-2 border-warning" 
+                                 style="width: 38px; height: 38px; object-fit: cover;">
+                            <div class="text-start">
+                                <div class="fw-bold small" style="line-height: 1.2; color: #1a237e;">{{ $upcoming->name }}</div>
+                                <div class="text-muted" style="font-size: 0.73rem;">{{ $upcoming->dob->format('d F') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+        </div>
+        @endif
+
     </div>
 </div>
-
-@endif
 
 <!-- Main Content -->
 <div class="container my-5">

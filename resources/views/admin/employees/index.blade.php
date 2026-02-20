@@ -22,6 +22,7 @@
                         <th>Designation</th>
                         <th>Current School</th>
                         <th>Mobile</th>
+                        <th>Birthday</th>
                         <th class="text-end px-4">Actions</th>
                     </tr>
                 </thead>
@@ -41,6 +42,28 @@
                         <td>{{ $employee->designation }}</td>
                         <td>{{ $employee->staff->school->name ?? 'N/A' }}</td>
                         <td>{{ $employee->mobile ?? 'N/A' }}</td>
+                        <td>
+                            @if($employee->dob)
+                                @php
+                                    $dob = $employee->dob;
+                                    $isThisMonth = $dob->month == now()->month;
+                                    $isToday = $dob->month == now()->month && $dob->day == now()->day;
+                                @endphp
+                                <div class="d-flex align-items-center gap-1">
+                                    @if($isToday)
+                                        <span class="badge bg-warning text-dark">🎂 Today!</span>
+                                    @elseif($isThisMonth)
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle">🎈 This Month</span>
+                                    @endif
+                                    <div>
+                                        <div class="small fw-bold">{{ $dob->format('d M Y') }}</div>
+                                        <small class="text-muted">Age: {{ $dob->age }} yrs</small>
+                                    </div>
+                                </div>
+                            @else
+                                <span class="text-muted small fst-italic">Not Set</span>
+                            @endif
+                        </td>
                         <td class="text-end px-4">
                             <a href="{{ route('admin.employees.show', $employee) }}" class="btn btn-sm btn-light text-success" title="View Profile">
                                 <i class="fas fa-id-card me-1"></i> View Profile
@@ -49,7 +72,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5">
+                        <td colspan="7" class="text-center py-5">
                             <div class="text-muted mb-3">
                                 <i class="fas fa-user-slash fa-3x"></i>
                             </div>

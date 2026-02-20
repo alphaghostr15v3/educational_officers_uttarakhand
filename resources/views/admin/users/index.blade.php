@@ -18,6 +18,7 @@
                         <th class="ps-4">Name</th>
                         <th>Email & Role</th>
                         <th>Jurisdiction</th>
+                        <th>Birthday</th>
                         <th>Status</th>
                         <th class="text-end pe-4">Actions</th>
                     </tr>
@@ -51,6 +52,26 @@
                             @endif
                         </td>
                         <td><span class="badge bg-success-subtle text-success small">Active</span></td>
+                        <td>
+                            @if($user->dob)
+                                @php
+                                    $dob = $user->dob;
+                                    $isToday = $dob->month == now()->month && $dob->day == now()->day;
+                                    $isThisMonth = $dob->month == now()->month;
+                                @endphp
+                                <div>
+                                    @if($isToday)
+                                        <span class="badge bg-warning text-dark mb-1">🎂 Today!</span><br>
+                                    @elseif($isThisMonth)
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle mb-1">🎈 This Month</span><br>
+                                    @endif
+                                    <span class="small fw-bold">{{ $dob->format('d M Y') }}</span><br>
+                                    <small class="text-muted">Age: {{ $dob->age }} yrs</small>
+                                </div>
+                            @else
+                                <span class="text-muted small fst-italic">Not Set</span>
+                            @endif
+                        </td>
                         <td class="text-end pe-4">
                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this user?')">
                                 @csrf
@@ -61,7 +82,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center py-5">No other administrative users found.</td>
+                        <td colspan="6" class="text-center py-5">No other administrative users found.</td>
                     </tr>
                     @endforelse
                 </tbody>

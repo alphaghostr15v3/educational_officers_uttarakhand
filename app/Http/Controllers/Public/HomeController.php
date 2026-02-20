@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -30,7 +31,17 @@ class HomeController extends Controller
                                       ->orderByRaw('DAY(dob) ASC')
                                       ->get();
 
-        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'today_birthdays'));
+        // Get upcoming birthdays in next 2 months (fallback when no current month birthdays)
+        $nextMonth1 = now()->addMonth()->month;
+        $nextMonth2 = now()->addMonths(2)->month;
+        $upcoming_birthdays = \App\Models\User::with('staff')
+                                      ->whereNotNull('dob')
+                                      ->whereIn(DB::raw('MONTH(dob)'), [$nextMonth1, $nextMonth2])
+                                      ->where('is_active', true)
+                                      ->orderByRaw('MONTH(dob) ASC, DAY(dob) ASC')
+                                      ->get();
+
+        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'today_birthdays', 'upcoming_birthdays'));
     }
     public function officers()
     {
