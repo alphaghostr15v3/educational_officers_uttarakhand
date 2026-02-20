@@ -13,21 +13,47 @@ class UserManagementController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        $user = auth()->user();
+        if (!in_array($user->role, ['state_admin', 'district_admin', 'block_admin'])) {
+            abort(403);
+        }
         
-        $users = User::with(['division', 'district', 'block'])
-            ->where('id', '!=', auth()->id())
-            ->latest()
-            ->paginate(10);
+        $query = User::with(['division', 'district', 'block'])
+            ->where('id', '!=', $user->id)
+            ->latest();
+
+        if ($user->role === 'district_admin') {
+            $query->where('district_id', $user->district_id);
+        } elseif ($user->role === 'block_admin') {
+            $query->where('block_id', $user->block_id);
+        }
+
+        $users = $query->paginate(10);
             
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        $divisions = \App\Models\Division::all();
-        $districts = \App\Models\District::all();
-        $blocks = \App\Models\Block::all();
+        $user = auth()->user();
+        $divisions = [];
+        $districts = [];
+        $blocks = [];
+
+        if ($user->role === 'state_admin') {
+            $divisions = Division::all();
+            $districts = District::all();
+            $blocks = \App\Models\Block::all();
+        } elseif ($user->role === 'district_admin') {
+            $divisions = Division::where('id', $user->division_id)->get();
+            $districts = District::where('id', $user->district_id)->get();
+            $blocks = \App\Models\Block::where('district_id', $user->district_id)->get();
+        } elseif ($user->role === 'block_admin') {
+            $divisions = Division::where('id', $user->division_id)->get();
+            $districts = District::where('id', $user->district_id)->get();
+            $blocks = \App\Models\Block::where('id', $user->block_id)->get();
+        }
+
         return view('admin.users.create', compact('divisions', 'districts', 'blocks'));
     }
 
@@ -43,6 +69,24 @@ class UserManagementController extends Controller
             'block_id' => 'nullable|exists:blocks,id',
         ]);
 
+        $user = auth()->user();
+        
+        // Ensure non-state admins create users within their jurisdiction
+        if ($user->role === 'district_admin') {
+            $validated['district_id'] = $user->district_id;
+            $validated['division_id'] = $user->division_id;
+            if ($validated['role'] === 'state_admin' || $validated['role'] === 'division_admin') {
+                abort(403, 'You cannot create a user with a higher role than yours.');
+            }
+        } elseif ($user->role === 'block_admin') {
+            $validated['block_id'] = $user->block_id;
+            $validated['district_id'] = $user->district_id;
+            $validated['division_id'] = $user->division_id;
+             if (in_array($validated['role'], ['state_admin', 'division_admin', 'district_admin'])) {
+                abort(403, 'You can only create users within your block.');
+            }
+        }
+
         $validated['password'] = Hash::make($validated['password']);
         
         User::create($validated);
@@ -52,7 +96,23 @@ class UserManagementController extends Controller
 
     public function destroy(User $user)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        $admin = auth()->user();
+        
+        // Authorization check
+        if ($admin->role === 'state_admin') {
+            // State admin can delete anyone except themselves (handled by index filter usually)
+        } elseif ($admin->role === 'district_admin') {
+            if ($user->district_id !== $admin->district_id || $user->role === 'state_admin' || $user->role === 'division_admin') {
+                abort(403, 'You can only delete users within your district.');
+            }
+        } elseif ($admin->role === 'block_admin') {
+            if ($user->block_id !== $admin->block_id || in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+                abort(403, 'You can only delete users within your block.');
+            }
+        } else {
+            abort(403);
+        }
+
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }

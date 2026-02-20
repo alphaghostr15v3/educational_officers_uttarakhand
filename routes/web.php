@@ -217,9 +217,18 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::get('/content-manager', [\App\Http\Controllers\Admin\FrontendAdminController::class, 'index'])->name('frontend.index');
     Route::get('/content-manager/slider', [\App\Http\Controllers\Admin\FrontendAdminController::class, 'slider'])->name('frontend.slider');
 
-    // User Management (State Admin Only)
-    Route::middleware(['role:state_admin'])->group(function () {
+    // User Management (State Admin only)
+    Route::middleware(['role:state_admin', 'admin'])->group(function () {
         Route::resource('users', \App\Http\Controllers\Admin\UserManagementController::class);
+    });
+
+    // Employee List (Block, District, State Admins)
+    Route::middleware(['role:state_admin,district_admin,block_admin', 'admin'])->group(function () {
+        Route::resource('employees', \App\Http\Controllers\Admin\AdminEmployeeController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+    });
+
+    // System Features (State Admin)
+    Route::middleware(['role:state_admin'])->group(function () {
         Route::resource('divisions', \App\Http\Controllers\Admin\DivisionController::class);
         Route::resource('districts', \App\Http\Controllers\Admin\DistrictController::class);
         Route::resource('blocks', \App\Http\Controllers\Admin\AdminBlockController::class);

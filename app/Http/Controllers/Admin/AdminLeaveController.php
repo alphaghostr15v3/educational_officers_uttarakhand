@@ -66,6 +66,20 @@ class AdminLeaveController extends Controller
             'status' => 'required|in:pending,approved,rejected',
         ]);
 
+        $user = auth()->user();
+        $targetUser = User::with('staff.school')->find($validated['user_id']);
+
+        // Authorization check
+        if ($user->role === 'block_admin' && (!$targetUser->staff || $targetUser->staff->school->block_id !== $user->block_id)) {
+            abort(403, 'You can only record leave for employees in your block.');
+        }
+        if ($user->role === 'district_admin' && (!$targetUser->staff || $targetUser->staff->school->district_id !== $user->district_id)) {
+            abort(403, 'You can only record leave for employees in your district.');
+        }
+        if ($user->role === 'division_admin' && (!$targetUser->staff || $targetUser->staff->school->division_id !== $user->division_id)) {
+            abort(403, 'You can only record leave for employees in your division.');
+        }
+
         Leave::create($validated);
 
         return redirect()->route('admin.leaves.index')->with('success', 'Leave record created successfully.');
@@ -73,6 +87,20 @@ class AdminLeaveController extends Controller
 
     public function update(Request $request, Leave $leave)
     {
+        $user = auth()->user();
+        $leave->load('user.staff.school');
+
+        // Authorization check
+        if ($user->role === 'block_admin' && (!$leave->user->staff || $leave->user->staff->school->block_id !== $user->block_id)) {
+            abort(403);
+        }
+        if ($user->role === 'district_admin' && (!$leave->user->staff || $leave->user->staff->school->district_id !== $user->district_id)) {
+            abort(403);
+        }
+        if ($user->role === 'division_admin' && (!$leave->user->staff || $leave->user->staff->school->division_id !== $user->division_id)) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'status' => 'required|in:approved,rejected',
             'admin_remarks' => 'nullable|string',

@@ -172,8 +172,12 @@
                         <a href="{{ route('admin.schools.index') }}" class="nav-link {{ request()->routeIs('admin.schools.*') ? 'active' : '' }}">
                             <i class="fas fa-school"></i> School Management
                         </a>
+                        <div class="sidebar-heading px-3 mt-4 mb-1 text-muted small text-uppercase fw-bold">District Control</div>
+                        <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Employee List
+                        </a>
                         <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
-                            <i class="fas fa-chalkboard-teacher"></i> Staff & Service Book
+                            <i class="fas fa-chalkboard-teacher"></i> Service Records
                         </a>
                          <a href="{{ route('admin.transfers.index') }}" class="nav-link {{ request()->routeIs('admin.transfers.*') ? 'active' : '' }}">
                             <i class="fas fa-exchange-alt"></i> Transfer Forwarding
@@ -207,8 +211,12 @@
                         <a href="{{ route('admin.schools.index') }}" class="nav-link {{ request()->routeIs('admin.schools.*') ? 'active' : '' }}">
                             <i class="fas fa-school"></i> Schools (My Block)
                         </a>
-                        <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
-                            <i class="fas fa-chalkboard-teacher"></i> Staff Records
+                        <div class="sidebar-heading px-3 mt-4 mb-1 text-muted small text-uppercase fw-bold">Management</div>
+                        <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Employee List
+                        </a>
+                         <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
+                            <i class="fas fa-file-invoice"></i> Service Records
                         </a>
                          <a href="{{ route('admin.leaves.index') }}" class="nav-link {{ request()->routeIs('admin.leaves.*') ? 'active' : '' }}">
                             <i class="fas fa-calendar-check"></i> Leave Requests

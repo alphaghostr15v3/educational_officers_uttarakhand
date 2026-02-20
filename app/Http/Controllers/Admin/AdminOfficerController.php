@@ -20,7 +20,7 @@ class AdminOfficerController extends Controller
 
         if ($user->role === 'division_admin') {
             $query->where('division_id', $user->division_id);
-        } elseif ($user->role === 'district_admin') {
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $query->where('district_id', $user->district_id);
         }
 
@@ -36,7 +36,7 @@ class AdminOfficerController extends Controller
 
         if ($user->role === 'division_admin') {
             $districts->where('division_id', $user->division_id);
-        } elseif ($user->role === 'district_admin') {
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $districts->where('id', $user->district_id);
         }
 
@@ -57,6 +57,14 @@ class AdminOfficerController extends Controller
             'mobile' => 'nullable|string|max:15',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        $user = auth()->user();
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $validated['district_id'] != $user->district_id) {
+             abort(403, 'You can only add officers to your district.');
+        }
+        if ($user->role === 'division_admin' && $validated['division_id'] != $user->division_id) {
+             abort(403, 'You can only add officers to your division.');
+        }
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -82,7 +90,7 @@ class AdminOfficerController extends Controller
 
         if ($user->role === 'division_admin') {
             $districts->where('division_id', $user->division_id);
-        } elseif ($user->role === 'district_admin') {
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
             $districts->where('id', $user->district_id);
         }
 
@@ -148,7 +156,7 @@ class AdminOfficerController extends Controller
         if ($user->role === 'division_admin' && $officer->division_id !== $user->division_id) {
             abort(403);
         }
-        if ($user->role === 'district_admin' && $officer->district_id !== $user->district_id) {
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $officer->district_id !== $user->district_id) {
             abort(403);
         }
     }

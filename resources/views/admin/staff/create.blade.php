@@ -13,7 +13,7 @@
                 </h6>
             </div>
             <div class="card-body p-4">
-                <form action="{{ isset($staff) ? route('admin.staff.update', $staff) : route('admin.staff.store') }}" method="POST">
+                <form action="{{ isset($staff) ? route('admin.staff.update', $staff) : route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if(isset($staff)) @method('PUT') @endif
                     <h6 class="fw-bold mb-3 text-primary">Personal Information</h6>
@@ -25,6 +25,21 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Email Address <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control" value="{{ old('email', (isset($staff) && $staff->user) ? $staff->user->email : '') }}" required placeholder="Official Email">
+                        </div>
+                    </div>
+
+                    {{-- Profile Picture --}}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Profile Picture</label>
+                            @if(isset($staff) && $staff->user && $staff->user->profile_picture)
+                                <div class="mb-2">
+                                    <img src="{{ asset($staff->user->profile_picture) }}" alt="Current Picture" class="rounded-circle border" style="width:64px; height:64px; object-fit:cover;">
+                                    <small class="text-muted ms-2">Current picture</small>
+                                </div>
+                            @endif
+                            <input type="file" name="profile_picture" class="form-control" accept="image/jpeg,image/png,image/jpg">
+                            <div class="form-text small">Max 2MB (JPEG, PNG). Leave blank to keep existing.</div>
                         </div>
                     </div>
 

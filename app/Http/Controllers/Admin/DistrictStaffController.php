@@ -63,22 +63,46 @@ class DistrictStaffController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255', // User name
-            'email' => 'required|email|unique:users,email',
-            'mobile' => 'required|string|max:15',
-            'designation' => 'required|string',
-            'school_id' => 'required|exists:schools,id',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|unique:users,email',
+            'mobile'       => 'required|string|max:15',
+            'designation'  => 'required|string',
+            'school_id'    => 'required|exists:schools,id',
             'joining_date' => 'required|date',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $user = auth()->user();
+        $school = School::find($validated['school_id']);
+
+        // Authorization check for the selected school
+        if ($user->role === 'block_admin' && $school->block_id !== $user->block_id) {
+            abort(403, 'You can only add staff to schools within your block.');
+        }
+        if ($user->role === 'district_admin' && $school->district_id !== $user->district_id) {
+            abort(403, 'You can only add staff to schools within your district.');
+        }
+        if ($user->role === 'division_admin' && $school->division_id !== $user->division_id) {
+            abort(403, 'You can only add staff to schools within your division.');
+        }
+
         // Create User first
+        $imagePath = null;
+        if ($request->hasFile('profile_picture')) {
+            $image    = $request->file('profile_picture');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/profile_pictures'), $filename);
+            $imagePath = 'uploads/profile_pictures/' . $filename;
+        }
+
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => \Illuminate\Support\Facades\Hash::make('password123'), // Default password
-            'mobile' => $validated['mobile'],
-            'role' => 'officer',
-            'is_active' => true,
+            'name'            => $validated['name'],
+            'email'           => $validated['email'],
+            'password'        => \Illuminate\Support\Facades\Hash::make('password123'),
+            'mobile'          => $validated['mobile'],
+            'role'            => 'officer',
+            'profile_picture' => $imagePath,
+            'is_active'       => true,
         ]);
 
         // Create Staff Record
@@ -192,21 +216,48 @@ class DistrictStaffController extends Controller
 
     public function update(Request $request, Staff $staff)
     {
+        $user = auth()->user();
+        
+        // Authorization check for the staff record
+        if ($user->role === 'block_admin' && $staff->school->block_id !== $user->block_id) {
+            abort(403);
+        }
+        if ($user->role === 'district_admin' && $staff->school->district_id !== $user->district_id) {
+            abort(403);
+        }
+        if ($user->role === 'division_admin' && $staff->school->division_id !== $user->division_id) {
+            abort(403);
+        }
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $staff->user_id,
-            'mobile' => 'required|string|max:15',
-            'designation' => 'required|string',
-            'school_id' => 'required|exists:schools,id',
-            'joining_date' => 'required|date',
-            'current_status' => 'required|in:active,inactive,on_leave,retired,transferred,suspended',
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|email|unique:users,email,' . $staff->user_id,
+            'mobile'          => 'required|string|max:15',
+            'designation'     => 'required|string',
+            'school_id'       => 'required|exists:schools,id',
+            'joining_date'    => 'required|date',
+            'current_status'  => 'required|in:active,inactive,on_leave,retired,transferred,suspended',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $staff->user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+        $userUpdates = [
+            'name'   => $validated['name'],
+            'email'  => $validated['email'],
             'mobile' => $validated['mobile'],
-        ]);
+        ];
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old image if exists
+            if ($staff->user->profile_picture && file_exists(public_path($staff->user->profile_picture))) {
+                unlink(public_path($staff->user->profile_picture));
+            }
+            $image    = $request->file('profile_picture');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/profile_pictures'), $filename);
+            $userUpdates['profile_picture'] = 'uploads/profile_pictures/' . $filename;
+        }
+
+        $staff->user->update($userUpdates);
 
         $staff->update([
             'school_id' => $validated['school_id'],

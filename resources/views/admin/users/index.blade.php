@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('page_title', 'System User Management')
+@section('page_title', auth()->user()->role === 'state_admin' ? 'System User Management' : 'Employee Accounts')
 
 @section('admin_content')
 <div class="card table-card">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h6 class="fw-bold mb-0">Portal Administrators</h6>
+        <h6 class="fw-bold mb-0">{{ auth()->user()->role === 'state_admin' ? 'Portal Administrators' : 'Employee Portal Accounts' }}</h6>
         <a href="{{ route('admin.users.create') }}" class="btn btn-dark btn-sm px-3">
-            <i class="fas fa-user-plus me-1"></i> Add Admin
+            <i class="fas fa-user-plus me-1"></i> Add Account
         </a>
     </div>
     <div class="card-body p-0">
@@ -15,7 +15,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Admin Name</th>
+                        <th class="ps-4">Name</th>
                         <th>Email & Role</th>
                         <th>Jurisdiction</th>
                         <th>Status</th>

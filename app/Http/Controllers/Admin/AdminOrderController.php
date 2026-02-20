@@ -19,10 +19,12 @@ class AdminOrderController extends Controller
 
         if ($user->role === 'division_admin') {
             $query->where('division_id', $user->division_id)->orWhere('level', 'state');
-        } elseif ($user->role === 'district_admin') {
-            $query->where('district_id', $user->district_id)
+        } elseif ($user->role === 'district_admin' || $user->role === 'block_admin') {
+            $query->where(function($q) use ($user) {
+                $q->where('district_id', $user->district_id)
                   ->orWhere('division_id', $user->division_id)
                   ->orWhere('level', 'state');
+            });
         }
 
         $orders = $query->latest()->paginate(10);
@@ -67,6 +69,14 @@ class AdminOrderController extends Controller
 
     public function destroy(Order $order)
     {
+        $user = auth()->user();
+        if ($user->role === 'division_admin' && $order->division_id !== $user->division_id && $order->level !== 'state') {
+            abort(403);
+        }
+        if (($user->role === 'district_admin' || $user->role === 'block_admin') && $order->district_id !== $user->district_id && $order->level === 'district') {
+            abort(403);
+        }
+        
         if ($order->file_path) {
             $path = public_path('uploads/orders/' . $order->file_path);
             if (File::exists($path)) File::delete($path);

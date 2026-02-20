@@ -33,42 +33,83 @@
                         <div class="col-md-12">
                             <label class="form-label small fw-bold">Administrative Role</label>
                             <select name="role" class="form-select" id="role-select" required>
-                                <option value="state_admin">State Administrator (Full Access)</option>
-                                <option value="division_admin">Division Administrator (Regional)</option>
-                                <option value="district_admin">District Administrator (Local)</option>
-                                <option value="block_admin">Block Administrator (Block Level)</option>
+                                @if(auth()->user()->role === 'state_admin')
+                                    <option value="state_admin">State Administrator (Full Access)</option>
+                                    <option value="division_admin">Division Administrator (Regional)</option>
+                                    <option value="district_admin">District Administrator (Local)</option>
+                                @endif
+                                
+                                @if(auth()->user()->role === 'state_admin' || auth()->user()->role === 'district_admin')
+                                    <option value="block_admin">Block Administrator (Block Level)</option>
+                                @endif
+
+                                @if(auth()->user()->role === 'block_admin')
+                                    <option value="block_admin" selected>Block Level Account</option>
+                                @endif
                             </select>
                         </div>
 
-                        <div class="col-md-6" id="division-field" style="display:none;">
-                            <label class="form-label small fw-bold">Assign Division</label>
-                            <select name="division_id" class="form-select">
-                                <option value="">-- Select Division --</option>
-                                @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @php $user = auth()->user(); @endphp
 
-                        <div class="col-md-6" id="district-field" style="display:none;">
-                            <label class="form-label small fw-bold">Assign District</label>
-                            <select name="district_id" class="form-select" id="district-select">
-                                <option value="">-- Select District --</option>
-                                @foreach($districts as $district)
-                                    <option value="{{ $district->id }}" data-division="{{ $district->division_id }}">{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if($user->role === 'state_admin')
+                            <div class="col-md-6" id="division-field" style="display:none;">
+                                <label class="form-label small fw-bold">Assign Division</label>
+                                <select name="division_id" class="form-select">
+                                    <option value="">-- Select Division --</option>
+                                    @foreach($divisions as $division)
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="col-md-6" id="block-field" style="display:none;">
-                            <label class="form-label small fw-bold">Assign Block</label>
-                            <select name="block_id" class="form-select" id="block-select">
-                                <option value="">-- Select Block --</option>
-                                @foreach($blocks as $block)
-                                    <option value="{{ $block->id }}" data-district="{{ $block->district_id }}">{{ $block->name }} ({{ $block->district->name }})</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="col-md-6" id="district-field" style="display:none;">
+                                <label class="form-label small fw-bold">Assign District</label>
+                                <select name="district_id" class="form-select" id="district-select">
+                                    <option value="">-- Select District --</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{ $district->id }}" data-division="{{ $district->division_id }}">{{ $district->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6" id="block-field" style="display:none;">
+                                <label class="form-label small fw-bold">Assign Block</label>
+                                <select name="block_id" class="form-select" id="block-select">
+                                    <option value="">-- Select Block --</option>
+                                    @foreach($blocks as $block)
+                                        <option value="{{ $block->id }}" data-district="{{ $block->district_id }}">{{ $block->name }} ({{ $block->district->name }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            {{-- Pre-filled fields for Block/District Admin --}}
+                            <input type="hidden" name="division_id" value="{{ $user->division_id }}">
+                            <input type="hidden" name="district_id" value="{{ $user->district_id }}">
+                            
+                            @if($user->role === 'district_admin')
+                                <div class="col-md-12">
+                                    <div class="alert alert-info py-2 small mb-0">
+                                        <i class="fas fa-info-circle me-1"></i> Creating account for <strong>{{ $user->district->name }}</strong> district.
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="block-field">
+                                    <label class="form-label small fw-bold">Assign Block</label>
+                                    <select name="block_id" class="form-select" id="block-select" required>
+                                        <option value="">-- Select Block --</option>
+                                        @foreach($blocks as $block)
+                                            <option value="{{ $block->id }}">{{ $block->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @elseif($user->role === 'block_admin')
+                                <input type="hidden" name="block_id" value="{{ $user->block_id }}">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info py-2 small">
+                                        <i class="fas fa-info-circle me-1"></i> Creating account for <strong>{{ $user->block->name }}</strong> block.
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
 
                         <div class="col-12 mt-4 pt-3 border-top text-end">
                             <button type="submit" class="btn btn-dark px-5 fw-bold">Create Admin User</button>
@@ -83,6 +124,7 @@
 
 @push('scripts')
 <script>
+    @if(auth()->user()->role === 'state_admin')
     const roleSelect = document.getElementById('role-select');
     const divisionSelect = document.querySelector('select[name="division_id"]');
     const districtSelect = document.querySelector('select[name="district_id"]');
@@ -119,6 +161,7 @@
             opt.style.display = (!districtId || opt.dataset.district === districtId) ? 'block' : 'none';
         });
     });
+    @endif
 </script>
 @endpush
 @endsection
