@@ -32,7 +32,7 @@ class AdminPromotionController extends Controller
         return view('admin.promotions.index', compact('promotions'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $user = auth()->user();
         $usersQuery = User::where('role', 'officer')->with('staff.school');
@@ -48,7 +48,10 @@ class AdminPromotionController extends Controller
         }
 
         $users = $usersQuery->get();
-        return view('admin.promotions.create', compact('users'));
+        $designations = \App\Models\Designation::where('is_active', true)->orderBy('level')->get();
+        $selected_employee_id = $request->query('employee_id');
+
+        return view('admin.promotions.create', compact('users', 'designations', 'selected_employee_id'));
     }
 
     public function store(Request $request)
@@ -73,6 +76,15 @@ class AdminPromotionController extends Controller
         unset($validated['file']); // Remove file object from array to prevent DB column error
 
         $promotion = Promotion::create($validated);
+
+        if ($promotion->status === 'approved') {
+            // AUTOMATED DATA UPDATE: Update designation in Officers and Staffs tables
+            \App\Models\Officer::where('user_id', $promotion->user_id)
+                ->update(['designation' => $promotion->promoted_designation]);
+            
+            \App\Models\Staff::where('user_id', $promotion->user_id)
+                ->update(['designation' => $promotion->promoted_designation]);
+        }
 
         ActivityLogService::log('create', "Promotion record created for User ID: {$validated['user_id']}", Promotion::class, $promotion->id);
 

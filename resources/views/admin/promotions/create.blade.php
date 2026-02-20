@@ -16,10 +16,14 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label fw-bold small text-uppercase text-muted">Select Employee <span class="text-danger">*</span></label>
-                            <select name="user_id" class="form-select" required>
-                                <option value="" disabled selected>Choose Employee</option>
+                            <select name="user_id" id="user_id" class="form-select" required>
+                                <option value="" disabled {{ !isset($selected_employee_id) ? 'selected' : '' }}>Choose Employee</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    <option value="{{ $user->id }}" 
+                                        {{ (isset($selected_employee_id) && $selected_employee_id == $user->id) ? 'selected' : '' }}
+                                        data-designation="{{ $user->designation }}">
+                                        {{ $user->name }} ({{ $user->email }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -28,11 +32,16 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Current Designation <span class="text-danger">*</span></label>
-                            <input type="text" name="current_designation" class="form-control" required placeholder="e.g. Junior Assistant">
+                            <input type="text" name="current_designation" id="current_designation" class="form-control" required placeholder="e.g. Junior Assistant" value="{{ isset($selected_employee_id) ? $users->find($selected_employee_id)->designation : '' }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-uppercase text-muted">Promoted Designation <span class="text-danger">*</span></label>
-                            <input type="text" name="promoted_designation" class="form-control" required placeholder="e.g. Senior Assistant">
+                            <select name="promoted_designation" class="form-select" required>
+                                <option value="" disabled selected>Select New Designation</option>
+                                @foreach($designations as $des)
+                                    <option value="{{ $des->name }}">{{ $des->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -59,7 +68,7 @@
                                  <option value="pending">Pending Approval</option>
                                  <option value="district_forwarded">Forwarded to Division</option>
                                  <option value="division_recommended">Recommended to State</option>
-                                 <option value="approved">Approved & Finalized</option>
+                                 <option value="approved" selected>Approved & Finalized</option>
                              </select>
                          @else
                              <input type="text" class="form-control" value="Pending Approval" readonly>
@@ -76,4 +85,17 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    document.getElementById('user_id').addEventListener('change', function() {
+        const designation = this.options[this.selectedIndex].getAttribute('data-designation');
+        const currentDesignationInput = document.getElementById('current_designation');
+        if (designation) {
+            currentDesignationInput.value = designation;
+        } else {
+            currentDesignationInput.value = "";
+        }
+    });
+</script>
+@endpush
 @endsection

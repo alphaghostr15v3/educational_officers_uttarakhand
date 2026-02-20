@@ -33,7 +33,7 @@ class AdminTransferController extends Controller
         return view('admin.transfers.index', compact('transfers'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $user = auth()->user();
         $usersQuery = User::where('role', 'officer')->with('staff');
@@ -53,8 +53,9 @@ class AdminTransferController extends Controller
 
         $users = $usersQuery->get(); 
         $offices = $officesQuery->get(); 
+        $selected_employee_id = $request->query('employee_id');
         
-        return view('admin.transfers.create', compact('users', 'offices'));
+        return view('admin.transfers.create', compact('users', 'offices', 'selected_employee_id'));
     }
 
     public function store(Request $request)
@@ -71,10 +72,28 @@ class AdminTransferController extends Controller
             $transfer = Transfer::create($validated);
             
             if ($transfer->status === 'approved') {
+                $school = $transfer->toOffice;
+                
+                // Update Staff record
                 $staff = \App\Models\Staff::where('user_id', $transfer->user_id)->first();
                 if ($staff) {
                     $staff->update(['school_id' => $transfer->to_school_id]);
                 }
+
+                // Sync User jurisdiction
+                $userUpdate = [
+                    'school_id' => $transfer->to_school_id,
+                    'block_id' => $school->block_id,
+                    'district_id' => $school->district_id,
+                    'division_id' => $school->division_id,
+                ];
+                \App\Models\User::where('id', $transfer->user_id)->update($userUpdate);
+
+                // Sync Officer record
+                \App\Models\Officer::where('user_id', $transfer->user_id)->update([
+                    'district_id' => $school->district_id,
+                    'division_id' => $school->division_id,
+                ]);
             }
 
             return redirect()->route('admin.transfers.index')->with('success', 'Transfer request created successfully.');
@@ -114,11 +133,28 @@ class AdminTransferController extends Controller
         ]);
 
         if ($status === Transfer::STATUS_APPROVED) {
+            $school = $transfer->toOffice;
+
             // Final approval logic: update staff's school
             $staff = \App\Models\Staff::where('user_id', $transfer->user_id)->first();
             if ($staff) {
                 $staff->update(['school_id' => $transfer->to_school_id]);
             }
+
+            // Sync User jurisdiction
+            $userUpdate = [
+                'school_id' => $transfer->to_school_id,
+                'block_id' => $school->block_id,
+                'district_id' => $school->district_id,
+                'division_id' => $school->division_id,
+            ];
+            \App\Models\User::where('id', $transfer->user_id)->update($userUpdate);
+
+            // Sync Officer record
+            \App\Models\Officer::where('user_id', $transfer->user_id)->update([
+                'district_id' => $school->district_id,
+                'division_id' => $school->division_id,
+            ]);
         }
 
         return redirect()->route('admin.transfers.index')->with('success', 'Transfer request updated successfully.');

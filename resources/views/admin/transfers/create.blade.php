@@ -26,9 +26,12 @@
                         <div class="col-md-12">
                             <label class="form-label fw-bold small text-uppercase text-muted">Select Employee <span class="text-danger">*</span></label>
                             <select name="user_id" id="employee_select" class="form-select" required>
-                                <option value="" disabled selected>Choose Employee</option>
+                                <option value="" disabled {{ !isset($selected_employee_id) ? 'selected' : '' }}>Choose Employee</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" data-school-id="{{ $user->staff->school_id ?? '' }}">
+                                    @php
+                                        $isSelected = (isset($selected_employee_id) && $selected_employee_id == $user->id);
+                                    @endphp
+                                    <option value="{{ $user->id }}" data-school-id="{{ $user->staff->school_id ?? '' }}" {{ $isSelected ? 'selected' : '' }}>
                                         {{ $user->name }} ({{ $user->email }}) 
                                         @if(isset($user->staff->school))
                                             - {{ $user->staff->school->name }}
@@ -69,7 +72,7 @@
                          <label class="form-label fw-bold small text-uppercase text-muted">Initial Status</label>
                          <select name="status" class="form-select">
                              <option value="pending">Pending Approval (Start Workflow)</option>
-                             <option value="approved">Approved (Issue Immediately)</option>
+                             <option value="approved" selected>Approved (Issue Immediately)</option>
                          </select>
                     </div>
 
@@ -93,6 +96,15 @@
             fromOfficeSelect.value = schoolId;
         } else {
             fromOfficeSelect.value = "";
+        }
+    });
+
+    // Handle pre-selected employee on page load
+    window.addEventListener('load', function() {
+        const employeeSelect = document.getElementById('employee_select');
+        if (employeeSelect.value) {
+            const event = new Event('change');
+            employeeSelect.dispatchEvent(event);
         }
     });
 </script>

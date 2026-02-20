@@ -132,9 +132,20 @@
                             @endif
                         </td>
                         <td class="text-end px-4">
-                            <a href="{{ route('admin.employees.show', $employee) }}" class="btn btn-sm btn-light text-success" title="View Profile">
-                                <i class="fas fa-id-card me-1"></i> View Profile
-                            </a>
+                            <div class="btn-group">
+                                <a href="{{ route('admin.employees.show', $employee) }}" class="btn btn-sm btn-light text-success" title="View Profile">
+                                    <i class="fas fa-id-card"></i>
+                                </a>
+                                <a href="{{ route('admin.promotions.create', ['employee_id' => $employee->id]) }}" class="btn btn-sm btn-light text-primary" title="Grant Promotion">
+                                    <i class="fas fa-level-up-alt"></i>
+                                </a>
+                                <a href="{{ route('admin.transfers.create', ['employee_id' => $employee->id]) }}" class="btn btn-sm btn-light text-warning" title="Initiate Transfer">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </a>
+                                <a href="{{ route('admin.employees.edit', $employee) }}" class="btn btn-sm btn-light text-info" title="Edit Employee">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     @empty
