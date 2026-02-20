@@ -226,6 +226,8 @@
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="loginDropdown">
                                     <li><a class="dropdown-item" href="{{ route('employee.login') }}"><i class="fas fa-sign-in-alt me-2"></i> Employee Login</a></li>
                                     <li><a class="dropdown-item" href="{{ route('employee.register') }}"><i class="fas fa-user-plus me-2"></i> Employee Register</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.login') }}"><i class="fas fa-user-shield me-2"></i> Admin Login</a></li>
                                 </ul>
                             </li>
                         @endauth
