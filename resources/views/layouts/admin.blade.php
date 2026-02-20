@@ -49,6 +49,9 @@
                         <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
                             <i class="fas fa-id-badge"></i> Staff Master Data
                         </a>
+                        <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Employee List
+                        </a>
                     </div>
 
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Organizational Structure</small>

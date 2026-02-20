@@ -16,14 +16,14 @@ class AdminEmployeeController extends Controller
     /**
      * Display a listing of employees (users with role 'officer').
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
         
-        $query = User::with(['staff.school', 'block', 'district'])
-            ->where('role', 'officer')
-            ->latest();
+        $query = User::with(['staff.school', 'block', 'district', 'division'])
+            ->where('role', 'officer');
 
+        // Apply jurisdiction filters
         if ($user->role === 'division_admin') {
             $query->where('division_id', $user->division_id);
         } elseif ($user->role === 'district_admin') {
@@ -32,9 +32,50 @@ class AdminEmployeeController extends Controller
             $query->where('block_id', $user->block_id);
         }
 
-        $employees = $query->paginate(20);
+        // Apply dynamic filters
+        if ($request->filled('division_id')) {
+            $query->where('division_id', $request->division_id);
+        }
+        if ($request->filled('district_id')) {
+            $query->where('district_id', $request->district_id);
+        }
+        if ($request->filled('block_id')) {
+            $query->where('block_id', $request->block_id);
+        }
+        if ($request->filled('designation')) {
+            $query->whereHas('staff', function($q) use ($request) {
+                $q->where('designation', 'like', '%' . $request->designation . '%');
+            });
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('employee_code', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
 
-        return view('admin.employees.index', compact('employees'));
+        $employees = $query->latest()->paginate(20)->withQueryString();
+
+        // Fetch filter data for State/Division Admins
+        $divisions = [];
+        $districts = [];
+        $blocks = [];
+
+        if (in_array($user->role, ['state_admin', 'division_admin'])) {
+            $divisions = \App\Models\Division::all();
+            if ($request->filled('division_id')) {
+                $districts = \App\Models\District::where('division_id', $request->division_id)->get();
+            }
+            if ($request->filled('district_id')) {
+                $blocks = \App\Models\Block::where('district_id', $request->district_id)->get();
+            }
+        }
+
+        $designations = Designation::where('is_active', true)->orderBy('level')->get();
+
+        return view('admin.employees.index', compact('employees', 'divisions', 'districts', 'blocks', 'designations'));
     }
 
     /**
@@ -92,7 +133,7 @@ class AdminEmployeeController extends Controller
         try {
             DB::beginTransaction();
 
-            $defaultPassword = ($admin->role === 'block_admin') ? 'block@123' : 'district@123';
+            $defaultPassword = 'emou@123';
 
             $imagePath = null;
             if ($request->hasFile('profile_picture')) {

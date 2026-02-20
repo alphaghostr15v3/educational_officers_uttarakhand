@@ -47,7 +47,7 @@ class SchoolStaffController extends Controller
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make('password123'), // Default
+                'password' => Hash::make('emou@123'), // Default
                 'mobile' => $validated['mobile'],
                 'role' => 'officer',
                 'school_id' => $school->id,

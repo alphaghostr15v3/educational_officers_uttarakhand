@@ -5,12 +5,79 @@
 @section('admin_content')
 <div class="card shadow-sm mb-4">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold">Employees in Jurisdiction</h5>
+        <h5 class="mb-0 fw-bold">
+            @if(auth()->user()->role === 'state_admin')
+                All Employees
+            @else
+                Employees in Jurisdiction
+            @endif
+        </h5>
         <div>
             <a href="{{ route('admin.employees.create') }}" class="btn btn-dark btn-sm px-3 fw-bold">
                 <i class="fas fa-user-plus me-1"></i> Add Employee
             </a>
         </div>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="card-body bg-light border-bottom">
+        <form action="{{ route('admin.employees.index') }}" method="GET" class="row g-3">
+            @if(isset($divisions) && count($divisions) > 0)
+            <div class="col-md-2">
+                <select name="division_id" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Divisions</option>
+                    @foreach($divisions as $div)
+                        <option value="{{ $div->id }}" {{ request('division_id') == $div->id ? 'selected' : '' }}>{{ $div->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            @if(isset($districts) && count($districts) > 0)
+            <div class="col-md-2">
+                <select name="district_id" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Districts</option>
+                    @foreach($districts as $dist)
+                        <option value="{{ $dist->id }}" {{ request('district_id') == $dist->id ? 'selected' : '' }}>{{ $dist->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            @if(isset($blocks) && count($blocks) > 0)
+            <div class="col-md-2">
+                <select name="block_id" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Blocks</option>
+                    @foreach($blocks as $blk)
+                        <option value="{{ $blk->id }}" {{ request('block_id') == $blk->id ? 'selected' : '' }}>{{ $blk->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
+            <div class="col-md-2">
+                <select name="designation" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Designations</option>
+                    @foreach($designations as $des)
+                        <option value="{{ $des->name }}" {{ request('designation') == $des->name ? 'selected' : '' }}>{{ $des->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <div class="input-group input-group-sm">
+                    <input type="text" name="search" class="form-control" placeholder="Search by name, code or email..." value="{{ request('search') }}">
+                    <button class="btn btn-dark" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    @if(request()->anyFilled(['division_id', 'district_id', 'block_id', 'designation', 'search']))
+                        <a href="{{ route('admin.employees.index') }}" class="btn btn-outline-secondary" title="Clear Filters">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </form>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">

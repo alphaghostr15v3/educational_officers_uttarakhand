@@ -98,7 +98,7 @@ class DistrictStaffController extends Controller
         $user = User::create([
             'name'            => $validated['name'],
             'email'           => $validated['email'],
-            'password'        => \Illuminate\Support\Facades\Hash::make('password123'),
+            'password'        => \Illuminate\Support\Facades\Hash::make('emou@123'),
             'mobile'          => $validated['mobile'],
             'role'            => 'officer',
             'profile_picture' => $imagePath,
@@ -114,7 +114,7 @@ class DistrictStaffController extends Controller
             'current_status' => 'active',
         ]);
 
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member added successfully. Default password is "password123".');
+        return redirect()->route('admin.staff.index')->with('success', 'Staff member added successfully. Default password is "emou@123".');
     }
     public function export()
     {

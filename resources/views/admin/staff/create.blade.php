@@ -96,7 +96,7 @@
 
                     @if(!isset($staff))
                     <div class="alert alert-info small">
-                        <i class="fas fa-info-circle me-1"></i> A user account will be automatically created with default password <strong>password123</strong>.
+                        <i class="fas fa-info-circle me-1"></i> A user account will be automatically created with default password <strong>emou@123</strong>.
                     </div>
                     @endif
 

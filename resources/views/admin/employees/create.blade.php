@@ -85,7 +85,7 @@
                             <div class="alert alert-info small mb-0">
                                 <i class="fas fa-info-circle me-1"></i>
                                 A login account will be created automatically with default password:
-                                <strong>{{ auth()->user()->role === 'block_admin' ? 'block@123' : 'district@123' }}</strong>.
+                                <strong>emou@123</strong>.
                                 Please share this with the employee.
                             </div>
                         </div>
