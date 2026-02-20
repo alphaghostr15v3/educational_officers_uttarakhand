@@ -294,9 +294,18 @@
 
                     <div class="me-4 text-end">
                         <div class="fw-bold small">{{ auth()->user()->name }}</div>
-                        <span class="badge {{ auth()->user()->role == 'state_admin' ? 'badge-state' : (auth()->user()->role == 'division_admin' ? 'badge-division' : (auth()->user()->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} small" style="font-size: 0.65rem;">
-                            {{ strtoupper(str_replace('_', ' ', auth()->user()->role)) }}
-                        </span>
+                        <div class="d-flex flex-column align-items-end">
+                            <span class="badge {{ auth()->user()->role == 'state_admin' ? 'badge-state' : (auth()->user()->role == 'division_admin' ? 'badge-division' : (auth()->user()->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} mb-1" style="font-size: 0.65rem;">
+                                {{ strtoupper(str_replace('_', ' ', auth()->user()->role)) }}
+                            </span>
+                            @if(auth()->user()->role === 'district_admin' && auth()->user()->district)
+                                <small class="text-muted fw-bold" style="font-size: 0.7rem;">District: {{ auth()->user()->district->name }}</small>
+                            @elseif(auth()->user()->role === 'division_admin' && auth()->user()->division)
+                                <small class="text-muted fw-bold" style="font-size: 0.7rem;">Division: {{ auth()->user()->division->name }}</small>
+                            @elseif(auth()->user()->role === 'block_admin' && auth()->user()->block)
+                                <small class="text-muted fw-bold" style="font-size: 0.7rem;">Block: {{ auth()->user()->block->name }} ({{ auth()->user()->district->name ?? '' }})</small>
+                            @endif
+                        </div>
                     </div>
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle text-dark" data-bs-toggle="dropdown">

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page_title', 'Dashboard Overview')
+@section('page_title', 'Dashboard Overview' . (auth()->user()->district ? ' - ' . auth()->user()->district->name : ''))
 
 @section('admin_content')
 <div class="row g-4 mb-4">
