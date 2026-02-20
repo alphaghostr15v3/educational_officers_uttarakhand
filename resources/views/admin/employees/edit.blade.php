@@ -50,6 +50,10 @@
                             <input type="text" name="mobile" class="form-control" value="{{ old('mobile', $employee->mobile) }}" required>
                         </div>
 
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Date of Birth</label>
+                            <input type="date" name="dob" class="form-control" value="{{ old('dob', $employee->dob?->format('Y-m-d')) }}">
+                        </div>
                         {{-- Profile Picture --}}
                         <div class="col-md-6">
                             <label class="form-label small fw-bold">Profile Picture</label>

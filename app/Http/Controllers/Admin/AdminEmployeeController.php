@@ -68,14 +68,14 @@ class AdminEmployeeController extends Controller
         $admin = auth()->user();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'mobile' => 'required|string|max:15',
-            'designation' => 'required|string',
-            'joining_date' => 'required|date',
-            'employee_code' => 'required|string|unique:users,employee_code',
-            'school_id' => 'required|exists:schools,id',
-            'password' => 'required|string|min:8|confirmed',
+            'name'            => 'required|string|max:255',
+            'email'           => 'required|email|unique:users,email',
+            'mobile'          => 'required|string|max:15',
+            'dob'             => 'nullable|date',
+            'designation'     => 'required|string',
+            'joining_date'    => 'required|date',
+            'employee_code'   => 'required|string|unique:users,employee_code',
+            'school_id'       => 'required|exists:schools,id',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -92,6 +92,8 @@ class AdminEmployeeController extends Controller
         try {
             DB::beginTransaction();
 
+            $defaultPassword = ($admin->role === 'block_admin') ? 'block@123' : 'district@123';
+
             $imagePath = null;
             if ($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
@@ -101,18 +103,19 @@ class AdminEmployeeController extends Controller
             }
 
             $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role' => 'officer',
-                'mobile' => $validated['mobile'],
-                'employee_code' => $validated['employee_code'],
-                'division_id' => $school->division_id,
-                'district_id' => $school->district_id,
-                'block_id' => $school->block_id,
-                'school_id' => $school->id,
+                'name'            => $validated['name'],
+                'email'           => $validated['email'],
+                'password'        => Hash::make($defaultPassword),
+                'role'            => 'officer',
+                'mobile'          => $validated['mobile'],
+                'dob'             => $validated['dob'] ?? null,
+                'employee_code'   => $validated['employee_code'],
+                'division_id'     => $school->division_id,
+                'district_id'     => $school->district_id,
+                'block_id'        => $school->block_id,
+                'school_id'       => $school->id,
                 'profile_picture' => $imagePath,
-                'is_active' => true,
+                'is_active'       => true,
             ]);
 
             Staff::create([
@@ -201,6 +204,7 @@ class AdminEmployeeController extends Controller
             'name'            => 'required|string|max:255',
             'email'           => 'required|email|unique:users,email,' . $employee->id,
             'mobile'          => 'required|string|max:15',
+            'dob'             => 'nullable|date',
             'employee_code'   => 'required|string|unique:users,employee_code,' . $employee->id,
             'school_id'       => 'required|exists:schools,id',
             'designation'     => 'required|string',
@@ -217,6 +221,7 @@ class AdminEmployeeController extends Controller
             'name'          => $validated['name'],
             'email'         => $validated['email'],
             'mobile'        => $validated['mobile'],
+            'dob'           => $validated['dob'] ?? null,
             'employee_code' => $validated['employee_code'],
             'school_id'     => $school->id,
             'division_id'   => $school->division_id,

@@ -45,6 +45,10 @@
                             <input type="text" name="mobile" class="form-control" value="{{ old('mobile') }}" required placeholder="10-digit mobile number">
                         </div>
 
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Date of Birth</label>
+                            <input type="date" name="dob" class="form-control" value="{{ old('dob') }}">
+                        </div>
                         <!-- Professional Details -->
                         <div class="col-12 mt-5">
                             <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">Professional Details</h6>
@@ -76,19 +80,14 @@
                             <div class="form-text small">Only schools/offices in your jurisdiction are listed.</div>
                         </div>
 
-                        <!-- Security -->
-                        <div class="col-12 mt-5">
-                            <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">Security & Password</h6>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Password</label>
-                            <input type="password" name="password" class="form-control" required placeholder="Min. 8 characters">
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">Confirm Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" required placeholder="Re-type password">
+                        {{-- Default Password Notice --}}
+                        <div class="col-12 mt-3">
+                            <div class="alert alert-info small mb-0">
+                                <i class="fas fa-info-circle me-1"></i>
+                                A login account will be created automatically with default password:
+                                <strong>{{ auth()->user()->role === 'block_admin' ? 'block@123' : 'district@123' }}</strong>.
+                                Please share this with the employee.
+                            </div>
                         </div>
 
                         <div class="col-12 mt-4 pt-3 border-top text-end">
