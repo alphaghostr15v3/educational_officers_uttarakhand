@@ -46,6 +46,7 @@ class AdminWorkFormController extends Controller
 
         $validated['uploaded_by'] = auth()->id();
         $validated['is_active'] = $request->has('is_active');
+        $validated['require_login'] = $request->has('require_login');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['work_type'] = trim($validated['work_type']);
 
@@ -92,6 +93,7 @@ class AdminWorkFormController extends Controller
         }
 
         $validated['is_active'] = $request->has('is_active');
+        $validated['require_login'] = $request->has('require_login');
         $validated['sort_order'] = $validated['sort_order'] ?? $workForm->sort_order;
         $validated['work_type'] = trim($validated['work_type']);
 

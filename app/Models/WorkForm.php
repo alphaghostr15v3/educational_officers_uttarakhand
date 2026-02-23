@@ -23,11 +23,13 @@ class WorkForm extends Model
         'uploaded_by',
         'sort_order',
         'is_active',
+        'require_login',
         'download_count'
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'     => 'boolean',
+        'require_login' => 'boolean',
     ];
 
     /**

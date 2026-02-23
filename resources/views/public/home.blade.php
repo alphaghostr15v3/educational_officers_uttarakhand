@@ -215,8 +215,9 @@
         <!-- Work Forms Section -->
         <div class="col-md-12 mt-4">
             <h3 class="mb-4 fw-bold border-start border-4 border-primary ps-3">Work Forms</h3>
-            
+
             @auth
+            {{-- Logged-in: show ALL work forms --}}
             <div class="portal-grid mb-5">
                 @forelse($work_forms as $workType => $forms)
                 <a href="{{ route('work-forms.by-type', urlencode($workType)) }}" class="portal-grid-item">
@@ -256,26 +257,64 @@
                 </div>
                 @endforelse
             </div>
+
             @else
-            <div class="card border-0 shadow-sm rounded-4 p-5 text-center mb-5 bg-light">
-                <div class="mb-4">
-                    <i class="fas fa-lock fa-4x text-muted opacity-50"></i>
+            {{-- Guest: show only PUBLIC work forms --}}
+            @if($public_work_forms->count() > 0)
+            <div class="portal-grid mb-4">
+                @foreach($public_work_forms as $workType => $forms)
+                <a href="{{ route('work-forms.by-type', urlencode($workType)) }}" class="portal-grid-item">
+                    <div class="icon-wrapper">
+                        @php
+                            $icons = [
+                                'Forms' => 'fa-file-alt',
+                                'Pannat' => 'fa-clipboard-list',
+                                'Income Tax' => 'fa-calculator',
+                                'Pension Data' => 'fa-user-clock',
+                                'Government Orders' => 'fa-file-contract',
+                                'Promotion Orders' => 'fa-award',
+                                'House Rent Allowance' => 'fa-home',
+                                'Dearness Allowance Rent' => 'fa-money-bill-wave',
+                                'General Provident Fund' => 'fa-piggy-bank',
+                                'Transfer Orders' => 'fa-exchange-alt',
+                                'Seniority' => 'fa-list-ol',
+                                'Bulk List' => 'fa-list',
+                                'Tutorials' => 'fa-graduation-cap',
+                                'Ministerial Class' => 'fa-user-tie',
+                                'GIS Rate' => 'fa-chart-line',
+                                'Notification' => 'fa-bell',
+                                'Appointment Orders' => 'fa-user-plus',
+                                'Statutory Orders' => 'fa-gavel',
+                                'Upgrade Letter Orders' => 'fa-level-up-alt'
+                            ];
+                            $icon = $icons[$workType] ?? 'fa-file';
+                        @endphp
+                        <i class="fas {{ $icon }} fa-2x text-success"></i>
+                    </div>
+                    <div class="title-en">{{ $workType }}</div>
+                    <div class="title-hi text-muted small">{{ $forms->count() }} {{ $forms->count() == 1 ? 'Document' : 'Documents' }}</div>
+                </a>
+                @endforeach
+            </div>
+            @endif
+
+            {{-- Login prompt to see more --}}
+            <div class="d-flex align-items-center gap-3 p-3 rounded-4 border border-primary-subtle bg-primary-subtle mb-5">
+                <i class="fas fa-lock fa-2x text-primary opacity-75 flex-shrink-0"></i>
+                <div class="flex-grow-1">
+                    <div class="fw-bold text-primary">More forms available after login</div>
+                    <div class="text-muted small">Login to access all departmental work forms, templates &amp; administrative documents.</div>
                 </div>
-                <h4 class="fw-bold mb-3">Employee Access Only</h4>
-                <p class="text-muted mb-4 mx-auto" style="max-width: 500px;">
-                    Departmental work forms, templates, and administrative documents are restricted to registered employees only. Please login with your credentials to view and download these forms.
-                </p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="{{ route('employee.login') }}" class="btn btn-primary px-4 fw-bold">
-                        <i class="fas fa-sign-in-alt me-2"></i> Login to View
+                <div class="d-flex gap-2 flex-shrink-0">
+                    <a href="{{ route('employee.login') }}" class="btn btn-primary btn-sm fw-bold px-3">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
                     </a>
-                    <a href="{{ route('employee.register') }}" class="btn btn-outline-primary px-4 fw-bold">
-                        <i class="fas fa-user-plus me-2"></i> Register Now
-                    </a>
+                    <a href="{{ route('employee.register') }}" class="btn btn-outline-primary btn-sm fw-bold px-3">Register</a>
                 </div>
             </div>
             @endauth
         </div>
+
     </div>
 
     <div class="row g-4 mt-2">

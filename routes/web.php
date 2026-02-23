@@ -20,12 +20,10 @@ Route::get('/events', [HomeController::class, 'events'])->name('events');
 Route::get('/orders/download/{id}', [\App\Http\Controllers\Public\HomeController::class, 'downloadOrder'])->name('orders.download');
 Route::get('/circulars/download/{id}', [\App\Http\Controllers\Public\HomeController::class, 'downloadCircular'])->name('circulars.download');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/work-forms', [\App\Http\Controllers\Public\WorkFormController::class, 'index'])->name('work-forms');
-    Route::get('/work-forms/{workType}', [\App\Http\Controllers\Public\WorkFormController::class, 'byType'])->name('work-forms.by-type');
-    Route::get('/work-forms/download/{id}', [\App\Http\Controllers\Public\WorkFormController::class, 'download'])->name('work-forms.download');
-});
-
+// Work Form Routes (public; per-form login enforcement is handled in the controller)
+Route::get('/work-forms', [\App\Http\Controllers\Public\WorkFormController::class, 'index'])->name('work-forms');
+Route::get('/work-forms/download/{id}', [\App\Http\Controllers\Public\WorkFormController::class, 'download'])->name('work-forms.download');
+Route::get('/work-forms/{workType}', [\App\Http\Controllers\Public\WorkFormController::class, 'byType'])->name('work-forms.by-type');
 
 // Tools Routes
 Route::prefix('tools')->name('tools.')->group(function () {

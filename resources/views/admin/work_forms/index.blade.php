@@ -22,6 +22,7 @@
                         <th>UPLOADED BY</th>
                         <th>DATE</th>
                         <th>STATUS</th>
+                        <th>ACCESS</th>
                         <th class="text-end pe-4">ACTIONS</th>
                     </tr>
                 </thead>
@@ -55,6 +56,13 @@
                                 <span class="badge bg-secondary">Inactive</span>
                             @endif
                         </td>
+                        <td>
+                            @if($workForm->require_login)
+                                <span class="badge bg-warning text-dark"><i class="fas fa-lock me-1"></i>Login Required</span>
+                            @else
+                                <span class="badge bg-success"><i class="fas fa-globe me-1"></i>Public</span>
+                            @endif
+                        </td>
                         <td class="text-end pe-4">
                             <div class="btn-group btn-group-sm" role="group">
                                 <a href="{{ asset('uploads/work_forms/' . $workForm->file_path) }}" target="_blank" class="btn btn-light text-info" title="Download">
@@ -74,7 +82,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center py-5 text-muted">
+                        <td colspan="9" class="text-center py-5 text-muted">
                             <i class="fas fa-folder-open fa-3x mb-3 d-block"></i>
                             <h6>No work forms uploaded yet.</h6>
                             <p class="small">Start by uploading your first work document.</p>

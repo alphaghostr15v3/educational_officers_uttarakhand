@@ -16,6 +16,7 @@ class HomeController extends Controller
         $hero_slides = \App\Models\HeroSlide::where('is_active', true)->orderBy('sort_order')->get();
         $gallery_photos = \App\Models\Gallery::with('photos')->where('is_active', true)->latest()->take(8)->get();
         $work_forms = \App\Models\WorkForm::where('is_active', true)->ordered()->get()->groupBy('work_type');
+        $public_work_forms = \App\Models\WorkForm::where('is_active', true)->where('require_login', false)->ordered()->get()->groupBy('work_type');
         $popup_news = \App\Models\News::where('is_published', true)
                                       ->where(function($q) {
                                           $q->where('is_ticker', false)
@@ -41,7 +42,7 @@ class HomeController extends Controller
                                       ->orderByRaw('MONTH(dob) ASC, DAY(dob) ASC')
                                       ->get();
 
-        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'today_birthdays', 'upcoming_birthdays'));
+        return view('public.home', compact('news', 'recent_orders', 'portal_forms', 'hero_slides', 'gallery_photos', 'popup_news', 'work_forms', 'public_work_forms', 'today_birthdays', 'upcoming_birthdays'));
     }
     public function officers()
     {

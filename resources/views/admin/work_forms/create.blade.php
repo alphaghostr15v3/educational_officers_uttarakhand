@@ -119,7 +119,7 @@
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="sort_order" class="form-label fw-bold">Sort Order</label>
                             <input type="number" class="form-control @error('sort_order') is-invalid @enderror" id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0">
                             <div class="form-text">Lower numbers appear first</div>
@@ -127,12 +127,22 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="is_active">Active</label>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold d-block">Access Control</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="require_login" name="require_login" value="1" {{ old('require_login', true) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="require_login">
+                                    <i class="fas fa-lock me-1 text-warning"></i> Require Login
+                                </label>
+                            </div>
+                            <div class="form-text">Uncheck to make this form <strong class="text-success">public</strong> (no login needed)</div>
                         </div>
                     </div>
 
