@@ -228,6 +228,14 @@
                             <i class="fas fa-chart-bar"></i> Block Reports
                         </a>
                     </div>
+                @elseif(auth()->user()->role === 'state_admin')
+                    <!-- State Admin Menu -->
+                    <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Main Menu</small>
+                    <div class="mt-2">
+                        <a href="{{ route('state-admin.dashboard') }}" class="nav-link {{ request()->routeIs('state-admin.dashboard') ? 'active' : '' }}">
+                            <i class="fas fa-chess-king"></i> State Dashboard
+                        </a>
+                    </div>
                 @endif
             </div>
         </nav>
@@ -313,7 +321,9 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                             <li><a class="dropdown-item" href="{{ url('/') }}" target="_blank"><i class="fas fa-external-link-alt me-2 text-muted"></i> Visit Website</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user me-2 text-muted"></i> Profile</a></li>
+                            @if(auth()->user()->role !== 'state_admin')
+                                <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user me-2 text-muted"></i> Profile</a></li>
+                            @endif
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('admin.logout') }}" method="POST">

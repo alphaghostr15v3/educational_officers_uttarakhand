@@ -1,23 +1,9 @@
-@extends('state-admin.layouts.app')
+@extends('layouts.admin')
 
-@section('content')
+@section('page_title', 'State Administration Portal')
+
+@section('admin_content')
 <div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm border-0 bg-primary text-white">
-                <div class="card-body p-4 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h2 class="mb-1 fw-bold">State Administration Portal</h2>
-                        <p class="mb-0 opacity-75">Overview of Uttarkhand Educational Ministerial Officers</p>
-                    </div>
-                    <div>
-                        <i class="fas fa-chess-king fa-3x opacity-50"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row">
         <!-- Quick Stats placeholder -->
         <div class="col-md-3 mb-4">
