@@ -19,7 +19,7 @@ class AdminHelpRequestController extends Controller
 
         // Filter based on admin role and region
         if ($user->role === 'state_admin' || $user->role === 'admin_panel') {
-            $query->where('target_level', 'state');
+            // State Admin and Admin Panel see ALL requests (no filter)
         } elseif ($user->role === 'division_admin') {
             $query->where('target_level', 'division')
                   ->where('target_division_id', $user->division_id);
