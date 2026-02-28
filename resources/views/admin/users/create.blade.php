@@ -35,6 +35,7 @@
                             <select name="role" class="form-select" id="role-select" required>
                                 @if(auth()->user()->role === 'admin_panel')
                                     <option value="admin_panel">Admin Panelistrator (Full Access)</option>
+                                    <option value="state_admin">State Administrator (State Level)</option>
                                     <option value="division_admin">Division Administrator (Regional)</option>
                                     <option value="district_admin">District Administrator (Local)</option>
                                 @endif

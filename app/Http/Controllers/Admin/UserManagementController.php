@@ -63,7 +63,7 @@ class UserManagementController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:division_admin,district_admin,admin_panel,block_admin',
+            'role' => 'required|in:division_admin,district_admin,admin_panel,block_admin,state_admin',
             'division_id' => 'nullable|exists:divisions,id',
             'district_id' => 'nullable|exists:districts,id',
             'block_id' => 'nullable|exists:blocks,id',
