@@ -63,7 +63,7 @@
 
                     <div class="mb-4">
                          <label class="form-label fw-bold small text-uppercase text-muted">Status</label>
-                         @if(auth()->user()->role === 'state_admin')
+                         @if(auth()->user()->role === 'admin_panel')
                              <select name="status" class="form-select">
                                  <option value="pending">Pending Approval</option>
                                  <option value="district_forwarded">Forwarded to Division</option>

@@ -15,7 +15,7 @@ class AdminHeroSlideController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $slides = HeroSlide::orderBy('sort_order')->get();
         return view('admin.hero_slides.index', compact('slides'));
     }
@@ -25,7 +25,7 @@ class AdminHeroSlideController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         return view('admin.hero_slides.create');
     }
 
@@ -34,7 +34,7 @@ class AdminHeroSlideController extends Controller
      */
     public function store(Request $request)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
@@ -59,13 +59,13 @@ class AdminHeroSlideController extends Controller
 
     public function edit(HeroSlide $hero_slide)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         return view('admin.hero_slides.edit', compact('hero_slide'));
     }
 
     public function update(Request $request, HeroSlide $hero_slide)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
@@ -94,7 +94,7 @@ class AdminHeroSlideController extends Controller
 
     public function destroy(HeroSlide $hero_slide)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $title = $hero_slide->title;
         if ($hero_slide->image_path) {
             $path = public_path('uploads/hero_slides/' . $hero_slide->image_path);

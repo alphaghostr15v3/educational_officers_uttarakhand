@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['state_admin', 'division_admin', 'district_admin', 'officer'])->default('officer')->after('password');
+            $table->enum('role', ['admin_panel', 'division_admin', 'district_admin', 'officer'])->default('officer')->after('password');
             $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null')->after('role');
             $table->foreignId('district_id')->nullable()->constrained()->onDelete('set null')->after('division_id');
             $table->string('employee_code')->unique()->nullable()->after('district_id');

@@ -63,7 +63,7 @@ class AdminEmployeeController extends Controller
         $districts = [];
         $blocks = [];
 
-        if (in_array($user->role, ['state_admin', 'division_admin'])) {
+        if (in_array($user->role, ['admin_panel', 'division_admin'])) {
             $divisions = \App\Models\Division::all();
             if ($request->filled('division_id')) {
                 $districts = \App\Models\District::where('division_id', $request->division_id)->get();

@@ -20,8 +20,8 @@ class AdminPromotionController extends Controller
             $query->pendingDistrict();
         } elseif ($user->role === 'division_admin') {
             $query->pendingDivision();
-        } elseif ($user->role === 'state_admin') {
-            // State admin can see all or just pending state (we'll show all for state admin but with specific focus)
+        } elseif ($user->role === 'admin_panel') {
+            // Admin panel can see all or just pending state (we'll show all for admin panel but with specific focus)
             $query->latest();
         } else {
             // Other roles shouldn't access this normally, but let's be safe
@@ -116,7 +116,7 @@ class AdminPromotionController extends Controller
             return back()->with('success', 'Promotion recommended to State.');
         }
 
-        if ($user->role === 'state_admin' && $promotion->status === Promotion::STATUS_DIVISION_RECOMMENDED) {
+        if ($user->role === 'admin_panel' && $promotion->status === Promotion::STATUS_DIVISION_RECOMMENDED) {
             $promotion->update(['status' => Promotion::STATUS_APPROVED]);
 
             // AUTOMATED DATA UPDATE: Update designation in Officers and Staffs tables
@@ -135,7 +135,7 @@ class AdminPromotionController extends Controller
 
     public function edit(Promotion $promotion)
     {
-        if ($promotion->status !== Promotion::STATUS_PENDING && auth()->user()->role !== 'state_admin') {
+        if ($promotion->status !== Promotion::STATUS_PENDING && auth()->user()->role !== 'admin_panel') {
             return redirect()->route('admin.promotions.index')->with('error', 'Only pending promotions can be edited.');
         }
 
@@ -145,7 +145,7 @@ class AdminPromotionController extends Controller
 
     public function update(Request $request, Promotion $promotion)
     {
-        if ($promotion->status !== Promotion::STATUS_PENDING && auth()->user()->role !== 'state_admin') {
+        if ($promotion->status !== Promotion::STATUS_PENDING && auth()->user()->role !== 'admin_panel') {
             return redirect()->route('admin.promotions.index')->with('error', 'Only pending promotions can be updated.');
         }
 

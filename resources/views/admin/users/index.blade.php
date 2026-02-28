@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('page_title', auth()->user()->role === 'state_admin' ? 'System User Management' : 'Employee Accounts')
+@section('page_title', auth()->user()->role === 'admin_panel' ? 'System User Management' : 'Employee Accounts')
 
 @section('admin_content')
 <div class="card table-card">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h6 class="fw-bold mb-0">{{ auth()->user()->role === 'state_admin' ? 'Portal Administrators' : 'Employee Portal Accounts' }}</h6>
+        <h6 class="fw-bold mb-0">{{ auth()->user()->role === 'admin_panel' ? 'Portal Administrators' : 'Employee Portal Accounts' }}</h6>
         <a href="{{ route('admin.users.create') }}" class="btn btn-dark btn-sm px-3">
             <i class="fas fa-user-plus me-1"></i> Add Account
         </a>
@@ -34,12 +34,12 @@
                         </td>
                         <td>
                             <div class="small fw-bold">{{ $user->email }}</div>
-                            <span class="badge {{ $user->role == 'state_admin' ? 'badge-state' : ($user->role == 'division_admin' ? 'badge-division' : ($user->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} small" style="font-size: 0.6rem;">
+                            <span class="badge {{ $user->role == 'admin_panel' ? 'badge-admin-panel' : ($user->role == 'division_admin' ? 'badge-division' : ($user->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} small" style="font-size: 0.6rem;">
                                 {{ strtoupper(str_replace('_', ' ', $user->role)) }}
                             </span>
                         </td>
                         <td>
-                            @if($user->role == 'state_admin')
+                            @if($user->role == 'admin_panel')
                                 <span class="text-muted small">Uttarakhand (All)</span>
                             @elseif($user->role == 'division_admin')
                                 <span class="small fw-bold text-dark">{{ $user->division->name ?? 'N/A' }}</span>

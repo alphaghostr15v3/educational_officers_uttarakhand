@@ -15,7 +15,7 @@ class DistrictStaffController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin', 'block_admin'])) {
+        if (!in_array($user->role, ['district_admin', 'division_admin', 'admin_panel', 'block_admin'])) {
             abort(403);
         }
 
@@ -119,7 +119,7 @@ class DistrictStaffController extends Controller
     public function export()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin'])) {
+        if (!in_array($user->role, ['district_admin', 'division_admin', 'admin_panel'])) {
             abort(403);
         }
 
@@ -274,7 +274,7 @@ class DistrictStaffController extends Controller
     public function destroy(Staff $staff)
     {
         $user = auth()->user();
-        if ($user->role !== 'state_admin' && $user->role !== 'division_admin' && 
+        if ($user->role !== 'admin_panel' && $user->role !== 'division_admin' && 
            (($user->role === 'district_admin' || $user->role === 'block_admin') && $staff->school->district_id !== $user->district_id)) {
             abort(403);
         }

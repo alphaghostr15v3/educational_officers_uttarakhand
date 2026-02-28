@@ -80,8 +80,8 @@
                                     </form>
                                 @endif
 
-                                {{-- State Admin Actions --}}
-                                @if($role === 'state_admin' && $promo->status === 'division_recommended')
+                                {{-- Admin Panel Actions --}}
+                                @if($role === 'admin_panel' && $promo->status === 'division_recommended')
                                     <form action="{{ route('admin.promotions.status.update', $promo) }}" method="POST" class="d-inline">
                                         @csrf
                                         <input type="hidden" name="action" value="approve">

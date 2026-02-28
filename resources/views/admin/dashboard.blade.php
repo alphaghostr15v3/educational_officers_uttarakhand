@@ -137,7 +137,7 @@
             <div class="list-group list-group-flush small">
                 <div class="list-group-item px-0 border-0 mb-3">
                     <div class="d-flex w-100 justify-content-between mb-1">
-                        <span class="badge bg-primary-subtle text-primary">State Admin</span>
+                        <span class="badge bg-primary-subtle text-primary">Admin Panel</span>
                         <small class="text-muted">2 mins ago</small>
                     </div>
                     <p class="mb-0 fw-bold">Login successful</p>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('message');
             $table->string('type')->default('info'); // info, success, warning, danger
-            $table->string('target_role')->nullable(); // state_admin, district_admin, employee, etc.
+            $table->string('target_role')->nullable(); // admin_panel, district_admin, employee, etc.
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // specific user if any
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->boolean('is_read')->default(false);

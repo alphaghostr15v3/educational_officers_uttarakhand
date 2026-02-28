@@ -12,7 +12,7 @@ class DistrictController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $districts = District::with('division')->latest()->get();
         $divisions = Division::all();
         return view('admin.districts.index', compact('districts', 'divisions'));
@@ -33,7 +33,7 @@ class DistrictController extends Controller
 
     public function update(Request $request, District $district)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'division_id' => 'required|exists:divisions,id',
             'name' => 'required|string|max:255',

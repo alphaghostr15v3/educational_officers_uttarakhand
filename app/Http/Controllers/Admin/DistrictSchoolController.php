@@ -18,7 +18,7 @@ class DistrictSchoolController extends Controller
         $user = auth()->user();
         
         // Ensure only authorized admins can access
-        if (!in_array($user->role, ['district_admin', 'division_admin', 'state_admin', 'block_admin'])) {
+        if (!in_array($user->role, ['district_admin', 'division_admin', 'admin_panel', 'block_admin'])) {
             abort(403, 'Unauthorized access');
         }
 
@@ -44,7 +44,7 @@ class DistrictSchoolController extends Controller
         $districts = [];
         $blocks = [];
         
-        if ($user->role === 'state_admin') {
+        if ($user->role === 'admin_panel') {
             $districts = District::all();
             $blocks = \App\Models\Block::all();
         } elseif ($user->role === 'division_admin') {
@@ -74,7 +74,7 @@ class DistrictSchoolController extends Controller
         ];
 
         // Superior admins must select a district
-        if (in_array($user->role, ['state_admin', 'division_admin'])) {
+        if (in_array($user->role, ['admin_panel', 'division_admin'])) {
             $rules['district_id'] = 'required|exists:districts,id';
         }
 
@@ -124,7 +124,7 @@ class DistrictSchoolController extends Controller
 
         $districts = [];
         $blocks = [];
-        if ($user->role === 'state_admin') {
+        if ($user->role === 'admin_panel') {
             $districts = District::all();
             $blocks = \App\Models\Block::all();
         } elseif ($user->role === 'division_admin') {
@@ -160,7 +160,7 @@ class DistrictSchoolController extends Controller
             'is_active' => 'required|boolean',
         ];
 
-        if (in_array($user->role, ['state_admin', 'division_admin'])) {
+        if (in_array($user->role, ['admin_panel', 'division_admin'])) {
             $rules['district_id'] = 'required|exists:districts,id';
         }
 
@@ -185,7 +185,7 @@ class DistrictSchoolController extends Controller
     public function destroy(School $school)
     {
         $user = auth()->user();
-        if ($user->role !== 'state_admin' && $user->role !== 'division_admin' && 
+        if ($user->role !== 'admin_panel' && $user->role !== 'division_admin' && 
            (($user->role === 'district_admin' || $user->role === 'block_admin') && $school->district_id !== $user->district_id)) {
             abort(403);
         }

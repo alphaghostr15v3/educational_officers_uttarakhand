@@ -12,26 +12,26 @@ class FrontendAdminController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         return view('admin.frontend.dashboard');
     }
 
     public function slider()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $slides = HeroSlide::orderBy('sort_order')->get();
         return view('admin.frontend.slider.index', compact('slides'));
     }
 
     public function createSlide()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         return view('admin.frontend.slider.create');
     }
 
     public function editSlide(HeroSlide $hero_slide)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         return view('admin.frontend.slider.edit', compact('hero_slide'));
     }
 }

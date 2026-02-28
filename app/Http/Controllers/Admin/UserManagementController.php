@@ -14,7 +14,7 @@ class UserManagementController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['state_admin', 'district_admin', 'block_admin'])) {
+        if (!in_array($user->role, ['admin_panel', 'district_admin', 'block_admin'])) {
             abort(403);
         }
         
@@ -40,7 +40,7 @@ class UserManagementController extends Controller
         $districts = [];
         $blocks = [];
 
-        if ($user->role === 'state_admin') {
+        if ($user->role === 'admin_panel') {
             $divisions = Division::all();
             $districts = District::all();
             $blocks = \App\Models\Block::all();
@@ -63,7 +63,7 @@ class UserManagementController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:division_admin,district_admin,state_admin,block_admin',
+            'role' => 'required|in:division_admin,district_admin,admin_panel,block_admin',
             'division_id' => 'nullable|exists:divisions,id',
             'district_id' => 'nullable|exists:districts,id',
             'block_id' => 'nullable|exists:blocks,id',
@@ -71,18 +71,18 @@ class UserManagementController extends Controller
 
         $user = auth()->user();
         
-        // Ensure non-state admins create users within their jurisdiction
+        // Ensure non-admin panels create users within their jurisdiction
         if ($user->role === 'district_admin') {
             $validated['district_id'] = $user->district_id;
             $validated['division_id'] = $user->division_id;
-            if ($validated['role'] === 'state_admin' || $validated['role'] === 'division_admin') {
+            if ($validated['role'] === 'admin_panel' || $validated['role'] === 'division_admin') {
                 abort(403, 'You cannot create a user with a higher role than yours.');
             }
         } elseif ($user->role === 'block_admin') {
             $validated['block_id'] = $user->block_id;
             $validated['district_id'] = $user->district_id;
             $validated['division_id'] = $user->division_id;
-             if (in_array($validated['role'], ['state_admin', 'division_admin', 'district_admin'])) {
+             if (in_array($validated['role'], ['admin_panel', 'division_admin', 'district_admin'])) {
                 abort(403, 'You can only create users within your block.');
             }
         }
@@ -99,14 +99,14 @@ class UserManagementController extends Controller
         $admin = auth()->user();
         
         // Authorization check
-        if ($admin->role === 'state_admin') {
-            // State admin can delete anyone except themselves (handled by index filter usually)
+        if ($admin->role === 'admin_panel') {
+            // Admin panel can delete anyone except themselves (handled by index filter usually)
         } elseif ($admin->role === 'district_admin') {
-            if ($user->district_id !== $admin->district_id || $user->role === 'state_admin' || $user->role === 'division_admin') {
+            if ($user->district_id !== $admin->district_id || $user->role === 'admin_panel' || $user->role === 'division_admin') {
                 abort(403, 'You can only delete users within your district.');
             }
         } elseif ($admin->role === 'block_admin') {
-            if ($user->block_id !== $admin->block_id || in_array($user->role, ['state_admin', 'division_admin', 'district_admin'])) {
+            if ($user->block_id !== $admin->block_id || in_array($user->role, ['admin_panel', 'division_admin', 'district_admin'])) {
                 abort(403, 'You can only delete users within your block.');
             }
         } else {

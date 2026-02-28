@@ -56,7 +56,7 @@
                             <select name="division_id" class="form-select @error('division_id') is-invalid @enderror" required>
                                 <option value="">Select Division</option>
                                 @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}" {{ (auth()->user()->role !== 'state_admin' && auth()->user()->division_id == $division->id) || old('division_id') == $division->id ? 'selected' : '' }}>
+                                    <option value="{{ $division->id }}" {{ (auth()->user()->role !== 'admin_panel' && auth()->user()->division_id == $division->id) || old('division_id') == $division->id ? 'selected' : '' }}>
                                         {{ $division->name }}
                                     </option>
                                 @endforeach

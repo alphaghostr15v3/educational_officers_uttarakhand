@@ -37,7 +37,7 @@ class AdminDonationController extends Controller
             'total_count' => Donation::where('payment_status', 'completed')->count(),
             'pending_amount' => Donation::where('payment_status', 'pending')->sum('amount'),
             'district_total' => Donation::where('payment_status', 'completed')
-                ->when($user->role !== 'state_admin', function($q) use ($user) {
+                ->when($user->role !== 'admin_panel', function($q) use ($user) {
                     return $q->where('district_id', $user->district_id);
                 })
                 ->sum('amount')

@@ -59,7 +59,7 @@
                                     $canAction = true;
                                     $actionName = 'Recommend to State';
                                     $actionValue = 'recommend';
-                                } elseif ($user->role === 'state_admin' && $transfer->status === 'division_recommended') {
+                                } elseif ($user->role === 'admin_panel' && $transfer->status === 'division_recommended') {
                                     $canAction = true;
                                     $actionName = 'Final Approve';
                                     $actionValue = 'approve';

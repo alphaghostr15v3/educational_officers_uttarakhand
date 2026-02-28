@@ -33,13 +33,13 @@
                         <div class="col-md-12">
                             <label class="form-label small fw-bold">Administrative Role</label>
                             <select name="role" class="form-select" id="role-select" required>
-                                @if(auth()->user()->role === 'state_admin')
-                                    <option value="state_admin">State Administrator (Full Access)</option>
+                                @if(auth()->user()->role === 'admin_panel')
+                                    <option value="admin_panel">Admin Panelistrator (Full Access)</option>
                                     <option value="division_admin">Division Administrator (Regional)</option>
                                     <option value="district_admin">District Administrator (Local)</option>
                                 @endif
                                 
-                                @if(auth()->user()->role === 'state_admin' || auth()->user()->role === 'district_admin')
+                                @if(auth()->user()->role === 'admin_panel' || auth()->user()->role === 'district_admin')
                                     <option value="block_admin">Block Administrator (Block Level)</option>
                                 @endif
 
@@ -51,7 +51,7 @@
 
                         @php $user = auth()->user(); @endphp
 
-                        @if($user->role === 'state_admin')
+                        @if($user->role === 'admin_panel')
                             <div class="col-md-6" id="division-field" style="display:none;">
                                 <label class="form-label small fw-bold">Assign Division</label>
                                 <select name="division_id" class="form-select">
@@ -124,7 +124,7 @@
 
 @push('scripts')
 <script>
-    @if(auth()->user()->role === 'state_admin')
+    @if(auth()->user()->role === 'admin_panel')
     const roleSelect = document.getElementById('role-select');
     const divisionSelect = document.querySelector('select[name="division_id"]');
     const districtSelect = document.querySelector('select[name="district_id"]');

@@ -25,7 +25,7 @@
                         <td class="ps-4 small">{{ $log->created_at->format('d M y, H:i:s') }}</td>
                         <td>
                             <div class="fw-bold small">{{ $log->user->name }}</div>
-                            <span class="badge {{ $log->user->role == 'state_admin' ? 'bg-dark' : 'bg-secondary' }} small" style="font-size: 0.6rem;">{{ strtoupper($log->user->role) }}</span>
+                            <span class="badge {{ $log->user->role == 'admin_panel' ? 'bg-dark' : 'bg-secondary' }} small" style="font-size: 0.6rem;">{{ strtoupper($log->user->role) }}</span>
                         </td>
                         <td><span class="badge bg-primary-subtle text-primary">{{ strtoupper($log->action) }}</span></td>
                         <td><p class="small mb-0 text-muted">{{ $log->description }}</p></td>

@@ -16,7 +16,7 @@ class AdminNotificationController extends Controller
         $user = auth()->user();
         $query = Notification::with('creator');
 
-        if ($user->role !== 'state_admin') {
+        if ($user->role !== 'admin_panel') {
             $query->where('created_by', $user->id);
         }
 
@@ -50,8 +50,8 @@ class AdminNotificationController extends Controller
 
     public function destroy(Notification $notification)
     {
-        // Only creator or state admin can delete
-        if (auth()->id() !== $notification->created_by && auth()->user()->role !== 'state_admin') {
+        // Only creator or admin panel can delete
+        if (auth()->id() !== $notification->created_by && auth()->user()->role !== 'admin_panel') {
             abort(403);
         }
 

@@ -12,7 +12,7 @@ class AdminBlockController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $blocks = Block::with('district')->latest()->get();
         $districts = District::all();
         return view('admin.blocks.index', compact('blocks', 'districts'));
@@ -20,7 +20,7 @@ class AdminBlockController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'district_id' => 'required|exists:districts,id',
             'name' => 'required|string|max:255',
@@ -34,7 +34,7 @@ class AdminBlockController extends Controller
 
     public function update(Request $request, Block $block)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'district_id' => 'required|exists:districts,id',
             'name' => 'required|string|max:255',
@@ -48,7 +48,7 @@ class AdminBlockController extends Controller
 
     public function destroy(Block $block)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $name = $block->name;
         $id = $block->id;
         $block->delete();

@@ -11,7 +11,7 @@ class DivisionController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $divisions = Division::withCount('districts')->latest()->get();
         return view('admin.divisions.index', compact('divisions'));
     }
@@ -30,7 +30,7 @@ class DivisionController extends Controller
 
     public function update(Request $request, Division $division)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|unique:divisions,code,' . $division->id,

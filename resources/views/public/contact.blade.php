@@ -6,7 +6,7 @@
         <!-- Contact Info -->
         <div class="col-md-5">
             <h2 class="fw-bold text-primary mb-4">Get in Touch</h2>
-            <p class="text-muted mb-5">Have any queries or suggestions? Reach out to our regional or state administrative offices across Uttarakhand.</p>
+            <p class="text-muted mb-5">Have any queries or suggestions? Reach out to our regional or admin panelistrative offices across Uttarakhand.</p>
             
             <div class="d-flex mb-4">
                 <div class="me-3">

@@ -26,7 +26,7 @@ class AdminTransferController extends Controller
                 $q->where('division_id', $user->division_id);
             });
         } 
-        // State Admin sees all
+        // Admin Panel sees all
 
         $transfers = $query->latest()->paginate(15);
 
@@ -120,7 +120,7 @@ class AdminTransferController extends Controller
                 $status = Transfer::STATUS_DISTRICT_FORWARDED;
             } elseif ($user->role === 'division_admin' && $status === Transfer::STATUS_DISTRICT_FORWARDED) {
                 $status = Transfer::STATUS_DIVISION_RECOMMENDED;
-            } elseif ($user->role === 'state_admin' && $status === Transfer::STATUS_DIVISION_RECOMMENDED) {
+            } elseif ($user->role === 'admin_panel' && $status === Transfer::STATUS_DIVISION_RECOMMENDED) {
                 $status = Transfer::STATUS_APPROVED;
             } else {
                 return back()->with('error', 'Unauthorized action for this transfer status.');

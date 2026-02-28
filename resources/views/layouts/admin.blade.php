@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="p-3">
-                @if(auth()->user()->role === 'state_admin')
+                @if(auth()->user()->role === 'admin_panel')
                     <!-- Super Admin Menu -->
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Main</small>
                     <div class="mt-2 mb-4">
@@ -295,8 +295,8 @@
                     <div class="me-4 text-end">
                         <div class="fw-bold small">{{ auth()->user()->name }}</div>
                         <div class="d-flex flex-column align-items-end">
-                            <span class="badge {{ auth()->user()->role == 'state_admin' ? 'badge-state' : (auth()->user()->role == 'division_admin' ? 'badge-division' : (auth()->user()->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} mb-1" style="font-size: 0.65rem;">
-                                {{ strtoupper(str_replace('_', ' ', auth()->user()->role)) }}
+                            <span class="badge {{ auth()->user()->role == 'admin_panel' ? 'badge-admin-panel' : (auth()->user()->role == 'division_admin' ? 'badge-division' : (auth()->user()->role == 'district_admin' ? 'badge-district' : 'bg-warning text-dark')) }} mb-1" style="font-size: 0.65rem;">
+                                {{ auth()->user()->role === 'admin_panel' ? 'ADMIN PANEL' : strtoupper(str_replace('_', ' ', auth()->user()->role)) }}
                             </span>
                             @if(auth()->user()->role === 'district_admin' && auth()->user()->district)
                                 <small class="text-muted fw-bold" style="font-size: 0.7rem;">District: {{ auth()->user()->district->name }}</small>

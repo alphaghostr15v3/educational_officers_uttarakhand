@@ -98,7 +98,7 @@
 </head>
 <body>
     @auth
-        @if(in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']))
+        @if(in_array(auth()->user()->role, ['admin_panel', 'division_admin', 'district_admin']))
         <div class="bg-dark text-white py-1 sticky-top" style="z-index: 1060; opacity: 0.95; border-bottom: 2px solid var(--uk-saffron);">
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="small">
@@ -197,7 +197,7 @@
                                     <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown">
-                                    @if(in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']))
+                                    @if(in_array(auth()->user()->role, ['admin_panel', 'division_admin', 'district_admin']))
                                         <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-columns me-2"></i> Admin Panel</a></li>
                                     @else
                                         <li><a class="dropdown-item" href="{{ route('employee.dashboard') }}"><i class="fas fa-th-large me-2"></i> My Dashboard</a></li>

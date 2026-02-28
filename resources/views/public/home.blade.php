@@ -20,7 +20,7 @@
                             
                             <div class="d-flex gap-3 animate__animated animate__zoomIn">
                                 @auth
-                                    <a href="{{ in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
+                                    <a href="{{ in_array(auth()->user()->role, ['admin_panel', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
                                     <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
                                 @else
                                     @if($slide->link)
@@ -51,7 +51,7 @@
                 <p class="animate__animated animate__fadeInUp">Department of Education, Government of Uttarakhand</p>
                 <div class="d-flex gap-3">
                     @auth
-                        <a href="{{ in_array(auth()->user()->role, ['state_admin', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
+                        <a href="{{ in_array(auth()->user()->role, ['admin_panel', 'division_admin', 'district_admin']) ? route('admin.dashboard') : route('employee.dashboard') }}" class="btn btn-warning btn-lg px-4 fw-bold">Go to My Dashboard</a>
                         <a href="{{ route('orders') }}" class="btn btn-light btn-lg px-4 fw-bold border-2">Departmental Orders</a>
                     @else
                         <a href="{{ route('seniority') }}" class="btn btn-warning btn-lg px-4 fw-bold">View Seniority List</a>

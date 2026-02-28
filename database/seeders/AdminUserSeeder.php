@@ -13,12 +13,12 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // State Admin
+        // Admin Panel
         User::create([
-            'name' => 'State Admin',
+            'name' => 'Admin Panel',
             'email' => 'admin@uk.gov.in',
             'password' => Hash::make('password'),
-            'role' => 'state_admin',
+            'role' => 'admin_panel',
             'employee_code' => 'UK-ADMIN-001',
             'is_active' => true,
         ]);

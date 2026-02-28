@@ -11,14 +11,14 @@ class SettingController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         $settings = Setting::all()->pluck('value', 'key');
         return view('admin.settings.index', compact('settings'));
     }
 
     public function update(Request $request)
     {
-        if (auth()->user()->role !== 'state_admin') abort(403);
+        if (auth()->user()->role !== 'admin_panel') abort(403);
         
         $data = $request->except('_token');
         

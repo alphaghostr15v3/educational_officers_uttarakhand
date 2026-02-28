@@ -105,7 +105,7 @@
                         </a>
                     </div>
                     @endif
-                    @if(auth()->user()->role === 'state_admin')
+                    @if(auth()->user()->role === 'admin_panel')
                     <div class="col-md-4">
                         <a href="{{ route('admin.users.index', ['search' => $employee->email]) }}" class="btn btn-outline-dark w-100 btn-sm py-2">
                             <i class="fas fa-key me-2"></i> Manage Account

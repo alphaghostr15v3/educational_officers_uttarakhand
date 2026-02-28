@@ -14,7 +14,7 @@
                     <img src="https://ui-avatars.com/api/?name={{ $user->name }}&background=1e3a8a&color=fff&size=128" class="rounded-circle me-4 shadow-sm" style="width: 80px; height: 80px;">
                     <div>
                         <h4 class="fw-bold mb-1">{{ $user->name }}</h4>
-                        <span class="badge {{ $user->role == 'state_admin' ? 'badge-state' : ($user->role === 'division_admin' ? 'badge-division' : 'badge-district') }} px-3 py-2">
+                        <span class="badge {{ $user->role == 'admin_panel' ? 'badge-admin-panel' : ($user->role === 'division_admin' ? 'badge-division' : 'badge-district') }} px-3 py-2">
                             {{ strtoupper(str_replace('_', ' ', $user->role)) }}
                         </span>
                     </div>

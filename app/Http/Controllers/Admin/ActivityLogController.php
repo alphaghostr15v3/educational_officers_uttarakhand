@@ -11,7 +11,7 @@ class ActivityLogController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!in_array($user->role, ['state_admin', 'division_admin', 'district_admin', 'block_admin'])) {
+        if (!in_array($user->role, ['admin_panel', 'division_admin', 'district_admin', 'block_admin'])) {
             abort(403);
         }
 
