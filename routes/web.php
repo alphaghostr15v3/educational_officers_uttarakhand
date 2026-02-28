@@ -95,6 +95,11 @@ Route::prefix('employee')->name('employee.')->group(function () {
         // Notifications Route
         Route::get('/notifications', [\App\Http\Controllers\Employee\EmployeeNotificationController::class, 'index'])->name('notifications.index');
         Route::post('/notifications/{notification}/read', [\App\Http\Controllers\Employee\EmployeeNotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+
+        // Help & Support Routes
+        Route::get('/help', [\App\Http\Controllers\Employee\EmployeeHelpController::class, 'index'])->name('help.index');
+        Route::get('/help/create', [\App\Http\Controllers\Employee\EmployeeHelpController::class, 'create'])->name('help.create');
+        Route::post('/help', [\App\Http\Controllers\Employee\EmployeeHelpController::class, 'store'])->name('help.store');
     });
 });
 
@@ -210,6 +215,10 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
 
     // Donation Management
     Route::get('/donations', [\App\Http\Controllers\Admin\AdminDonationController::class, 'index'])->name('donations.index');
+
+    // Help Requests Management
+    Route::get('/help-requests', [\App\Http\Controllers\Admin\AdminHelpRequestController::class, 'index'])->name('help-requests.index');
+    Route::post('/help-requests/{id}/status', [\App\Http\Controllers\Admin\AdminHelpRequestController::class, 'updateStatus'])->name('help-requests.status.update');
 
     // Frontend Content Management (Specialized)
     Route::get('/content-manager', [\App\Http\Controllers\Admin\FrontendAdminController::class, 'index'])->name('frontend.index');

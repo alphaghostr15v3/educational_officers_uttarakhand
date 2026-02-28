@@ -150,6 +150,9 @@
                 <li class="{{ request()->routeIs('employee.service-book*') ? 'active' : '' }}">
                     <a href="{{ route('employee.service-book') }}"><i class="fas fa-book"></i> My Service Book</a>
                 </li>
+                <li class="{{ request()->routeIs('employee.help*') ? 'active' : '' }}">
+                    <a href="{{ route('employee.help.index') }}" class="fw-bold text-warning"><i class="fas fa-headset"></i> Support Desk</a>
+                </li>
                 <li>
                     <a href="{{ route('orders') }}"><i class="fas fa-file-pdf"></i> Official Orders</a>
                 </li>
@@ -263,7 +266,7 @@
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="close" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
                 

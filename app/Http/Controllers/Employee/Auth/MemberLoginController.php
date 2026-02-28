@@ -35,6 +35,10 @@ class MemberLoginController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
+        if ($user->role === 'state_admin') {
+            return redirect()->route('state-admin.dashboard');
+        }
+
         return redirect()->route('employee.dashboard');
     }
 }

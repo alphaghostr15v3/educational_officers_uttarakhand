@@ -4,8 +4,15 @@
 <div class="container-fluid">
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="h3 mb-0 text-gray-800">Welcome, {{ auth()->user()->name }}</h1>
-            <p class="text-muted">Education Ministerial Officers Association Uttarakhand Employee Portal</p>
+            <div class="d-flex justify-content-between align-items-end">
+                <div>
+                    <h1 class="h3 mb-0 text-gray-800">Welcome, {{ auth()->user()->name }}</h1>
+                    <p class="text-muted mb-0">Education Ministerial Officers Association Uttarakhand Employee Portal</p>
+                </div>
+                <a href="{{ route('employee.help.create') }}" class="btn btn-warning shadow-sm">
+                    <i class="fas fa-question-circle me-2"></i> Need Help? Submit Request
+                </a>
+            </div>
         </div>
     </div>
 
@@ -80,6 +87,24 @@
                 </div>
                 <div class="card-footer bg-transparent border-0 pt-0">
                     <a href="#election-duty-section" class="small text-danger text-decoration-none">View Details <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden bg-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 bg-info bg-opacity-10 p-3 rounded">
+                            <i class="fas fa-question-circle text-info fa-2x"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-uppercase fw-bold text-muted small mb-1">Help Requests</h6>
+                            <h2 class="mb-0">{{ $stats['pending_help'] ?? 0 }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <a href="{{ route('employee.help.index') }}" class="small text-info text-decoration-none">Support Desk <i class="fas fa-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
@@ -194,12 +219,15 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-3">
-                    <h6 class="m-0 fw-bold text-primary">Request Correction</h6>
+                    <h6 class="m-0 fw-bold text-primary">Support Desk</h6>
                 </div>
                 <div class="card-body">
-                    <p class="small text-muted mb-3">Notice an error in your data? Request a correction from the admin.</p>
-                    <a href="{{ route('employee.service-book.correction') }}" class="btn btn-outline-danger w-100">
-                        <i class="fas fa-edit me-2"></i> Request Correction
+                    <p class="small text-muted mb-3">Questions? Reach out to your Division, District, or State admin.</p>
+                    <a href="{{ route('employee.help.create') }}" class="btn btn-primary w-100">
+                        <i class="fas fa-plus-circle me-2"></i> New Help Request
+                    </a>
+                    <a href="{{ route('employee.help.index') }}" class="btn btn-outline-secondary w-100 mt-2">
+                        View All Requests
                     </a>
                 </div>
             </div>

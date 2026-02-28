@@ -134,6 +134,9 @@
                         <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                             <i class="fas fa-envelope-open-text"></i> Contact Inquiries
                         </a>
+                        <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
+                            <i class="fas fa-question-circle"></i> Help Requests
+                        </a>
                         <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-history"></i> System Reports
                         </a>
@@ -160,6 +163,9 @@
                         </a>
                          <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-chart-bar"></i> Division Reports
+                        </a>
+                        <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
+                            <i class="fas fa-question-circle"></i> Help Requests
                         </a>
                         <a href="{{ route('admin.circulars.index') }}" class="nav-link {{ request()->routeIs('admin.circulars.*') ? 'active' : '' }}">
                             <i class="fas fa-file-alt"></i> Circulars (Distribute)
@@ -203,6 +209,9 @@
                          <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-chart-bar"></i> District Reports
                         </a>
+                        <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
+                            <i class="fas fa-question-circle"></i> Help Requests
+                        </a>
                     </div>
                 @elseif(auth()->user()->role === 'block_admin')
                     <!-- Block Admin Menu -->
@@ -227,6 +236,9 @@
                          <a href="{{ route('admin.logs.index') }}" class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
                             <i class="fas fa-chart-bar"></i> Block Reports
                         </a>
+                        <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
+                            <i class="fas fa-question-circle"></i> Help Requests
+                        </a>
                     </div>
                 @elseif(auth()->user()->role === 'state_admin')
                     <!-- State Admin Menu -->
@@ -234,6 +246,9 @@
                     <div class="mt-2">
                         <a href="{{ route('state-admin.dashboard') }}" class="nav-link {{ request()->routeIs('state-admin.dashboard') ? 'active' : '' }}">
                             <i class="fas fa-chess-king"></i> State Dashboard
+                        </a>
+                        <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
+                            <i class="fas fa-question-circle"></i> Help Requests
                         </a>
                     </div>
                 @endif

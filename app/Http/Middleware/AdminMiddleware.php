@@ -25,7 +25,7 @@ class AdminMiddleware
         $user = auth()->user();
 
         // Check if user has an admin role
-        $adminRoles = ['admin_panel', 'division_admin', 'district_admin', 'block_admin'];
+        $adminRoles = ['admin_panel', 'division_admin', 'district_admin', 'block_admin', 'state_admin'];
         
         if (!in_array($user->role, $adminRoles)) {
             abort(403, 'Unauthorized access - Administrative privileges required.');

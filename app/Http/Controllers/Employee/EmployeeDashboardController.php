@@ -33,12 +33,17 @@ class EmployeeDashboardController extends Controller
         if (in_array($user->role, ['admin_panel', 'division_admin', 'district_admin', 'block_admin'])) {
             return redirect()->route('admin.dashboard');
         }
+
+        if ($user->role === 'state_admin') {
+            return redirect()->route('state-admin.dashboard');
+        }
         
         $stats = [
             'pending_leaves' => \App\Models\Leave::where('user_id', $user->id)->where('status', 'pending')->count(),
             'pending_transfers' => \App\Models\Transfer::where('user_id', $user->id)->where('status', 'pending')->count(),
             'total_circulars' => Circular::where('is_published', true)->count(),
             'active_duties' => \App\Models\ElectionDuty::where('user_id', $user->id)->where('status', 'assigned')->count(),
+            'pending_help' => \App\Models\HelpRequest::where('employee_id', $user->id)->where('status', 'pending')->count(),
         ];
 
         $recent_circulars = Circular::where('is_published', true)->latest()->take(5)->get();

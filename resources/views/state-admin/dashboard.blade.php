@@ -15,10 +15,13 @@
             </div>
         </div>
         <div class="col-md-3 mb-4">
-            <div class="card shadow-sm border-0 border-start border-success border-4 h-100">
+            <div class="card shadow-sm border-0 border-start border-warning border-4 h-100">
                 <div class="card-body">
-                    <h6 class="text-muted fw-bold text-uppercase mb-2">Active Officers</h6>
-                    <h2 class="mb-0 fw-bold text-dark">--</h2>
+                    <h6 class="text-muted fw-bold text-uppercase mb-2">Pending Help Requests</h6>
+                    <h2 class="mb-0 fw-bold text-dark">{{ $stats['pending_help'] }}</h2>
+                </div>
+                <div class="card-footer bg-white border-0 py-2">
+                    <a href="{{ route('admin.help-requests.index') }}" class="small text-warning text-decoration-none">View All <i class="fas fa-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
