@@ -230,7 +230,7 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     });
 
     // Employee List (Block, District, Admin Panels)
-    Route::middleware(['role:admin_panel,district_admin,block_admin', 'admin'])->group(function () {
+    Route::middleware(['role:admin_panel,state_admin,district_admin,block_admin', 'admin'])->group(function () {
         Route::resource('employees', \App\Http\Controllers\Admin\AdminEmployeeController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
     });
 

@@ -24,7 +24,9 @@ class AdminEmployeeController extends Controller
             ->where('role', 'officer');
 
         // Apply jurisdiction filters
-        if ($user->role === 'division_admin') {
+        if ($user->role === 'state_admin' || $user->role === 'admin_panel') {
+            // State Admin and Admin Panel see ALL employees
+        } elseif ($user->role === 'division_admin') {
             $query->where('division_id', $user->division_id);
         } elseif ($user->role === 'district_admin') {
             $query->where('district_id', $user->district_id);
@@ -63,7 +65,7 @@ class AdminEmployeeController extends Controller
         $districts = [];
         $blocks = [];
 
-        if (in_array($user->role, ['admin_panel', 'division_admin'])) {
+        if (in_array($user->role, ['admin_panel', 'division_admin', 'state_admin'])) {
             $divisions = \App\Models\Division::all();
             if ($request->filled('division_id')) {
                 $districts = \App\Models\District::where('division_id', $request->division_id)->get();

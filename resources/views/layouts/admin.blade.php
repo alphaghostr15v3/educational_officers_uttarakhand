@@ -247,6 +247,9 @@
                         <a href="{{ route('state-admin.dashboard') }}" class="nav-link {{ request()->routeIs('state-admin.dashboard') ? 'active' : '' }}">
                             <i class="fas fa-chess-king"></i> State Dashboard
                         </a>
+                        <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.*') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Employee List
+                        </a>
                         <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
                             <i class="fas fa-question-circle"></i> Help Requests
                         </a>
