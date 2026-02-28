@@ -242,3 +242,9 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::get('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'index'])->name('profile');
     Route::post('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
 });
+
+
+// State Admin Routes (Protected)
+Route::prefix('state-admin')->name('state-admin.')->middleware(['auth', 'role:state_admin'])->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\StateAdmin\StateAdminDashboardController::class, 'index'])->name('dashboard');
+});

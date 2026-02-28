@@ -89,7 +89,7 @@ class User extends Authenticatable
 
     public function scopeStateAdmins($query)
     {
-        return $query->where('role', 'admin_panel');
+        return $query->where('role', 'state_admin');
     }
 
     public function scopeDivisionAdmins($query)
