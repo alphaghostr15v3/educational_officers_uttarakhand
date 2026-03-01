@@ -9,6 +9,8 @@ class Anshandan extends Model
     protected $fillable = [
         'user_id',
         'member_name',
+        'depositor_name',
+        'school_office',
         'amount',
         'month',
         'year',
@@ -19,6 +21,7 @@ class Anshandan extends Model
         'transaction_id',
         'district_id',
         'block_id',
+        'academic_year',
         'remarks',
         'created_by',
     ];

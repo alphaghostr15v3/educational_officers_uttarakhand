@@ -142,10 +142,10 @@
                             <td><span class="badge bg-light text-dark hvr-division">{{ $item->district->division->name ?? 'na' }}</span></td>
                             <td>{{ $item->user->staff->designation ?? 'na' }}</td>
                             <td>na</td> <!-- Team Member Designation Placeholder -->
-                            <td><small>{{ $item->user->staff->school->name ?? 'na' }}</small></td>
+                            <td><small>{{ $item->school_office }}</small></td>
                             <td>{{ $item->year }}</td>
                             <td class="fw-bold text-primary">₹{{ number_format($item->amount, 2) }}</td>
-                            <td>na</td> <!-- Depositor Name Placeholder -->
+                            <td>{{ $item->depositor_name ?? 'na' }}</td>
                             <td class="text-center action-col">
                                 <div class="btn-group">
                                     <a href="{{ route('admin.anshandan.show', $item->id) }}" class="btn btn-sm btn-outline-info" title="Print/View" target="_blank">

@@ -3,86 +3,81 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
-        body { font-family: sans-serif; font-size: 14px; color: #333; }
-        .receipt-box { border: 1px solid #333; padding: 20px; position: relative; }
-        .header { text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 20px; }
-        .header h1 { margin: 0; color: #1e3a8a; font-size: 20px; text-transform: uppercase; }
-        .header p { margin: 5px 0 0; font-size: 12px; color: #666; }
-        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .table td { padding: 8px 0; border-bottom: 1px dashed #eee; }
-        .label { font-weight: bold; width: 30%; color: #1e3a8a; }
-        .amount-row { background: #f9f9f9; margin-top: 20px; padding: 15px; text-align: right; border-left: 4px solid #1e3a8a; }
-        .amount-row h3 { margin: 0; color: #1e3a8a; font-size: 24px; }
-        .footer { margin-top: 40px; font-size: 10px; color: #888; }
-        .signature-box { margin-top: 40px; text-align: right; }
-        .signature-line { border-top: 1px solid #333; display: inline-block; width: 150px; margin-top: 40px; text-align: center; font-weight: bold; }
-        .watermark { position: absolute; transform: rotate(-45deg); opacity: 0.05; font-size: 60px; font-weight: bold; top: 40%; left: 10%; width: 100%; text-align: center; }
+        body { font-family: 'Courier', monospace; font-size: 14px; color: #003366; margin: 0; padding: 0; }
+        .receipt-container { border: 2px solid #333; padding: 20px; position: relative; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 16px; font-weight: bold; }
+        .header h2 { margin: 2px 0; font-size: 14px; font-weight: bold; }
+        .header h3 { margin: 10px 0; font-size: 14px; font-weight: bold; text-decoration: underline; }
+        
+        .details-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .details-table td { border: 1px solid #333; padding: 6px 10px; }
+        .label { font-weight: bold; width: 25%; color: #333; }
+        .value { color: #0056b3; }
+        
+        .amount-box { margin: 20px auto; text-align: center; border: 2px solid #333; width: 200px; padding: 10px; font-size: 18px; font-weight: bold; }
+        
+        .signatory-section { margin-top: 40px; text-align: right; }
+        .signatory-line { border-top: 1px solid #666; display: inline-block; width: 180px; padding-top: 5px; font-size: 11px; text-align: center; }
+        
+        .footer-note { text-align: center; font-size: 10px; color: #666; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="receipt-box">
-        <div class="watermark">OFFICIAL RECEIPT</div>
-        
+    <div class="receipt-container">
         <div class="header">
-            <h1>Educational Ministerial Officers Association</h1>
-            <p>Uttarakhand</p>
-            <p><strong>Official Contribution Receipt</strong></p>
+            <h1 style="font-size: 18px;">Educational Ministerial Office - State Education Department</h1>
+            <h2>District {{ $anshandan->district->name }}</h2>
+            <h3 style="font-size: 16px;">Anshdaan Receipt</h3>
         </div>
 
-        <table class="table">
+        <table class="details-table" cellspacing="0">
             <tr>
-                <td class="label">Receipt No:</td>
-                <td>{{ $anshandan->receipt_no }}</td>
-                <td class="label" style="text-align: right;">Date:</td>
-                <td style="text-align: right;">{{ \Carbon\Carbon::parse($anshandan->payment_date)->format('d M, Y') }}</td>
+                <td class="label">Receipt No.</td>
+                <td class="value">{{ $anshandan->receipt_no }}</td>
+                <td class="label">Date</td>
+                <td class="value">{{ \Carbon\Carbon::parse($anshandan->payment_date)->format('Y-m-d') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Mr./Ms.</td>
+                <td class="value" colspan="3" style="text-transform: uppercase;">{{ $anshandan->member_name }}</td>
+            </tr>
+            <tr>
+                <td class="label">Depositor</td>
+                <td class="value" colspan="3" style="text-transform: uppercase;">{{ $anshandan->depositor_name ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td class="label">School/Office</td>
+                <td class="value" colspan="3" style="text-transform: uppercase;">{{ $anshandan->school_office ?? ($anshandan->user->staff->school->name ?? 'N/A') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Block</td>
+                <td class="value" colspan="3">{{ $anshandan->block->name ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td class="label">Year</td>
+                <td class="value" colspan="3">{{ $anshandan->year }}</td>
+            </tr>
+            <tr>
+                <td class="label">Academic Year</td>
+                <td class="value" colspan="3">{{ $anshandan->academic_year ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td class="label">Remarks</td>
+                <td class="value" colspan="3">{{ $anshandan->remarks ?? 'N/A' }}</td>
             </tr>
         </table>
 
-        <table class="table" style="margin-top: 20px;">
-            <tr>
-                <td class="label">Received From:</td>
-                <td>{{ $anshandan->member_name }}</td>
-            </tr>
-            @if($anshandan->user_id)
-            <tr>
-                <td class="label">Employee Code:</td>
-                <td>{{ $anshandan->user->employee_code ?? 'N/A' }}</td>
-            </tr>
-            @endif
-            <tr>
-                <td class="label">Contribution For:</td>
-                <td>{{ $anshandan->month }}, {{ $anshandan->year }}</td>
-            </tr>
-            <tr>
-                <td class="label">District:</td>
-                <td>{{ $anshandan->district->name }}</td>
-            </tr>
-            @if($anshandan->block_id)
-            <tr>
-                <td class="label">Block:</td>
-                <td>{{ $anshandan->block->name }}</td>
-            </tr>
-            @endif
-            <tr>
-                <td class="label">Payment Method:</td>
-                <td>{{ $anshandan->payment_method }} {{ $anshandan->transaction_id ? '(ID: '.$anshandan->transaction_id.')' : '' }}</td>
-            </tr>
-        </table>
-
-        <div class="amount-row">
-            <span style="font-size: 12px; color: #666;">Total Amount Received</span><br>
-            <h3>₹{{ number_format($anshandan->amount, 2) }}</h3>
+        <div class="amount-box">
+            Rs {{ number_format($anshandan->amount, 2) }}
         </div>
 
-        <div class="signature-box">
-            <div class="signature-line">
-                Authorized Signatory
-            </div>
+        <div class="signatory-section">
+            <div class="signatory-line">Authorized Signatory</div>
         </div>
 
-        <div class="footer">
-            <p>This is a computer-generated receipt and does not require a physical signature.</p>
-            <p>Generated on: {{ now()->format('d M, Y h:i A') }} | Generated by: {{ $anshandan->creator->name }}</p>
+        <div class="footer-note">
+            <i>This is a computer generated receipt and does not require a physical signature.</i>
         </div>
     </div>
 </body>

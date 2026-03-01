@@ -8,6 +8,7 @@ use App\Models\Anshandan;
 use App\Models\User;
 use App\Models\District;
 use App\Models\Block;
+use App\Models\School;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -73,6 +74,7 @@ class AdminAnshandanController extends Controller
             : ($user->role === 'block_admin' ? Block::where('id', $user->block_id)->get() : Block::all());
         
         $members = User::where('role', 'member')
+            ->with('staff.school')
             ->when($user->role === 'district_admin', function($q) use ($user) {
                 return $q->where('district_id', $user->district_id);
             })
@@ -81,7 +83,15 @@ class AdminAnshandanController extends Controller
             })
             ->get();
 
-        return view('admin.anshandan.create', compact('districts', 'blocks', 'members'));
+        // Calculate next receipt number (numeric serial)
+        $lastReceipt = Anshandan::whereRaw("receipt_no REGEXP '^[0-9]+$'")
+            ->orderByRaw('CAST(receipt_no AS UNSIGNED) DESC')
+            ->first();
+        
+        $schools = School::orderBy('name')->get();
+        $nextReceiptNo = $lastReceipt ? (int)$lastReceipt->receipt_no + 1 : 1;
+
+        return view('admin.anshandan.create', compact('districts', 'blocks', 'members', 'nextReceiptNo', 'schools'));
     }
 
     public function store(Request $request)
@@ -90,6 +100,8 @@ class AdminAnshandanController extends Controller
         $validated = $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'member_name' => 'required|string|max:255',
+            'depositor_name' => 'required|string|max:255',
+            'school_office' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string',
             'year' => 'required|integer',
@@ -98,7 +110,8 @@ class AdminAnshandanController extends Controller
             'receipt_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'payment_method' => 'required|string',
             'transaction_id' => 'nullable|string',
-            'district_id' => 'required|exists:districts,id',
+            'academic_year' => 'nullable|string|max:255',
+            'district_id' => 'nullable|exists:districts,id',
             'block_id' => 'nullable|exists:blocks,id',
             'remarks' => 'nullable|string',
         ]);
@@ -109,6 +122,12 @@ class AdminAnshandanController extends Controller
             $file->move(public_path('uploads/receipts'), $filename);
             $validated['receipt_file'] = 'uploads/receipts/' . $filename;
         }
+
+        // Re-calculate next receipt number to ensure sequential integrity on save
+        $lastReceipt = Anshandan::whereRaw("receipt_no REGEXP '^[0-9]+$'")
+            ->orderByRaw('CAST(receipt_no AS UNSIGNED) DESC')
+            ->first();
+        $validated['receipt_no'] = $lastReceipt ? (int)$lastReceipt->receipt_no + 1 : 1;
 
         // Auto-assign jurisdiction for non-state admins
         if ($user->role === 'district_admin') {
@@ -128,6 +147,7 @@ class AdminAnshandanController extends Controller
     public function show(Anshandan $anshandan)
     {
         $this->authorizeAccess($anshandan);
+        $anshandan->load(['district', 'block', 'user.staff.school', 'creator']);
         return view('admin.anshandan.show', compact('anshandan'));
     }
 
@@ -142,6 +162,7 @@ class AdminAnshandanController extends Controller
             : ($user->role === 'block_admin' ? Block::where('id', $user->block_id)->get() : Block::all());
         
         $members = User::where('role', 'member')
+            ->with('staff.school')
             ->when($user->role === 'district_admin', function($q) use ($user) {
                 return $q->where('district_id', $user->district_id);
             })
@@ -150,7 +171,9 @@ class AdminAnshandanController extends Controller
             })
             ->get();
 
-        return view('admin.anshandan.edit', compact('anshandan', 'districts', 'blocks', 'members'));
+        $schools = School::orderBy('name')->get();
+
+        return view('admin.anshandan.edit', compact('anshandan', 'districts', 'blocks', 'members', 'schools'));
     }
 
     public function update(Request $request, Anshandan $anshandan)
@@ -161,6 +184,8 @@ class AdminAnshandanController extends Controller
         $validated = $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'member_name' => 'required|string|max:255',
+            'depositor_name' => 'required|string|max:255',
+            'school_office' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string',
             'year' => 'required|integer',
@@ -169,7 +194,8 @@ class AdminAnshandanController extends Controller
             'receipt_file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'payment_method' => 'required|string',
             'transaction_id' => 'nullable|string',
-            'district_id' => 'required|exists:districts,id',
+            'academic_year' => 'nullable|string|max:255',
+            'district_id' => 'nullable|exists:districts,id',
             'block_id' => 'nullable|exists:blocks,id',
             'remarks' => 'nullable|string',
         ]);
@@ -206,9 +232,12 @@ class AdminAnshandanController extends Controller
         return redirect()->route('admin.anshandan.index')->with('success', 'Anshandan deleted successfully.');
     }
 
-    public function downloadReceipt(Anshandan $anshandan)
+    public function downloadReceipt($id)
     {
+        $anshandan = Anshandan::findOrFail($id);
         $this->authorizeAccess($anshandan);
+        $anshandan->load(['district', 'block', 'user.staff.school', 'creator']);
+
         $pdf = Pdf::loadView('admin.anshandan.pdf_receipt', compact('anshandan'));
         return $pdf->download('Receipt-' . $anshandan->receipt_no . '.pdf');
     }
