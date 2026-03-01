@@ -84,6 +84,12 @@
                          <a href="{{ route('admin.donations.index') }}" class="nav-link {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
                             <i class="fas fa-hand-holding-heart"></i> Welfare Fund
                         </a>
+                        <a href="{{ route('admin.anshandan.index') }}" class="nav-link {{ request()->routeIs('admin.anshandan.index') ? 'active' : '' }}">
+                            <i class="fas fa-hand-holding-usd"></i> Anshandan List
+                        </a>
+                        <a href="{{ route('admin.anshandan.create') }}" class="nav-link {{ request()->routeIs('admin.anshandan.create') ? 'active' : '' }}">
+                            <i class="fas fa-plus-circle"></i> Add New Receipt
+                        </a>
                     </div>
 
                     <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Downloads & Uploads</small>
@@ -212,6 +218,12 @@
                         <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
                             <i class="fas fa-question-circle"></i> Help Requests
                         </a>
+                        <a href="{{ route('admin.anshandan.index') }}" class="nav-link {{ request()->routeIs('admin.anshandan.index') ? 'active' : '' }}">
+                            <i class="fas fa-hand-holding-usd"></i> Anshandan List
+                        </a>
+                        <a href="{{ route('admin.anshandan.create') }}" class="nav-link {{ request()->routeIs('admin.anshandan.create') ? 'active' : '' }}">
+                            <i class="fas fa-plus-circle"></i> Add New Receipt
+                        </a>
                     </div>
                 @elseif(auth()->user()->role === 'block_admin')
                     <!-- Block Admin Menu -->
@@ -239,6 +251,12 @@
                         <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
                             <i class="fas fa-question-circle"></i> Help Requests
                         </a>
+                        <a href="{{ route('admin.anshandan.index') }}" class="nav-link {{ request()->routeIs('admin.anshandan.index') ? 'active' : '' }}">
+                            <i class="fas fa-hand-holding-usd"></i> Anshandan List
+                        </a>
+                        <a href="{{ route('admin.anshandan.create') }}" class="nav-link {{ request()->routeIs('admin.anshandan.create') ? 'active' : '' }}">
+                            <i class="fas fa-plus-circle"></i> Add New Receipt
+                        </a>
                     </div>
                 @elseif(auth()->user()->role === 'state_admin')
                     <!-- State Admin Menu -->
@@ -252,6 +270,12 @@
                         </a>
                         <a href="{{ route('admin.help-requests.index') }}" class="nav-link {{ request()->routeIs('admin.help-requests.*') ? 'active' : '' }}">
                             <i class="fas fa-question-circle"></i> Help Requests
+                        </a>
+                        <a href="{{ route('admin.anshandan.index') }}" class="nav-link {{ request()->routeIs('admin.anshandan.index') ? 'active' : '' }}">
+                            <i class="fas fa-hand-holding-usd"></i> Anshandan List
+                        </a>
+                        <a href="{{ route('admin.anshandan.create') }}" class="nav-link {{ request()->routeIs('admin.anshandan.create') ? 'active' : '' }}">
+                            <i class="fas fa-plus-circle"></i> Add New Receipt
                         </a>
                     </div>
                 @endif

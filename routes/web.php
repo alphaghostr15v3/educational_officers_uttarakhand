@@ -216,6 +216,10 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     // Donation Management
     Route::get('/donations', [\App\Http\Controllers\Admin\AdminDonationController::class, 'index'])->name('donations.index');
 
+    // Anshandan Management
+    Route::get('/anshandan/{anshandan}/download', [\App\Http\Controllers\Admin\AdminAnshandanController::class, 'downloadReceipt'])->name('anshandan.download');
+    Route::resource('anshandan', \App\Http\Controllers\Admin\AdminAnshandanController::class);
+
     // Help Requests Management
     Route::get('/help-requests', [\App\Http\Controllers\Admin\AdminHelpRequestController::class, 'index'])->name('help-requests.index');
     Route::post('/help-requests/{id}/status', [\App\Http\Controllers\Admin\AdminHelpRequestController::class, 'updateStatus'])->name('help-requests.status.update');
